@@ -19,7 +19,7 @@ import {
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
-export const NOTES_ADD_DEPS = [
+export const NOTES_SAVE_DEPS = [
   NgIf,
   ReactiveFormsModule,
   IonButtons,

@@ -6,17 +6,17 @@ import { Router } from "@angular/router";
 import { AlertButton, IonTextarea, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 
-import { NOTES_ADD_DEPS } from "./notes-add.dependencies";
+import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 import { Note, NoteForm } from "../../interfaces/note.interface";
 import { NotesService } from "../../services/notes.service";
 
 @Component({
-  templateUrl: "./notes-add.component.html",
-  styleUrls: ["./notes-add.component.scss"],
+  templateUrl: "./notes-save.component.html",
+  styleUrls: ["./notes-save.component.scss"],
   standalone: true,
-  imports: [NOTES_ADD_DEPS]
+  imports: [NOTES_SAVE_DEPS]
 })
-export class NotesAddComponent implements OnInit, ViewDidEnter {
+export class NotesSaveComponent implements OnInit, ViewDidEnter {
   public form!: FormGroup;
   private isDirty = false;
   @Input() id!: number;

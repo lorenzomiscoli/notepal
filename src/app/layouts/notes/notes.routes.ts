@@ -5,6 +5,6 @@ export const NOTES_ROUTES: Routes = [
     path: "", loadComponent: () => import('./components/notes-list/notes-list.component').then(m => m.NotesListComponent)
   },
   {
-    path: "add", loadComponent: () => import('./components/notes-add/notes-add.component').then(m => m.NotesAddComponent)
+    path: "save", loadComponent: () => import('./components/notes-save/notes-save.component').then(m => m.NotesSaveComponent)
   }
 ];

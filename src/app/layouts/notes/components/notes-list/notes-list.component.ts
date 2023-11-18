@@ -35,7 +35,7 @@ export class NotesListComponent implements OnInit {
   }
 
   public tap(id: number): void {
-    this.router.navigate(["add"], { relativeTo: this.route, queryParams: { id: id } });
+    this.router.navigate(["save"], { relativeTo: this.route, queryParams: { id: id } });
   }
 
   public press(id: number): void {

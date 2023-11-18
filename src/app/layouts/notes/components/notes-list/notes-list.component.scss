@@ -1,0 +1,29 @@
+$cardMargin :12px;
+
+ion-searchbar {
+  padding: 3px 7px 3px 7px;
+}
+
+.grid {
+  column-count: 2;
+  width: 100%;
+  column-gap: $cardMargin;
+}
+
+ion-card {
+  margin: 0 0 $cardMargin 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  ion-card-content {
+    white-space: pre-line;
+  }
+}
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #ddd;
+}

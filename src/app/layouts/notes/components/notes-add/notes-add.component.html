@@ -1,0 +1,34 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/" text="{{ 'back' | translate }}"></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!id" id="delete-alert">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="!id || checkEmptyNote()" (click)="saveNote()">
+        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <form [formGroup]="form">
+    <ion-list>
+        <ion-item lines="none">
+          <ion-input placeholder="{{ 'title' | translate }}" class="title-size" formControlName="title"
+            (ionBlur)="this.saveNote()"></ion-input>
+        </ion-item>
+        <ion-item lines="none" class="date">
+          <ion-label>{{date}}</ion-label>
+        </ion-item>
+      <ion-item lines="none">
+        <ion-textarea [autoGrow]="true" placeholder="{{ 'note' | translate }}" formControlName="value" #textArea
+          (ionBlur)="this.saveNote()"></ion-textarea>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+<ion-alert trigger="delete-alert" header="{{'deleteNote' | translate}}" message="{{'deleteThisNote' | translate}}"
+  [buttons]="deleteAlertBtns"></ion-alert>

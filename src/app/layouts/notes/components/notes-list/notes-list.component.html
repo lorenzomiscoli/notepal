@@ -1,0 +1,26 @@
+<ion-toolbar color="light">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-searchbar placeholder="{{'search-notes'| translate}}" [debounce]="500" (ionInput)="onSearch($event)"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>
+<ion-content class="ion-padding" color="light">
+  <div class="grid">
+    <ion-card *ngFor="let note of notes$ | async | appFilterProperty:searchValue:'title'" class="ion-activatable ripple-parent"
+      appLongPress (tap)="tap(note.id)" (press)="press(note.id)">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-card-header>
+        <ion-card-title>{{note.title}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>{{note.value | appLineClamp}}</ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button size="small" routerLink="add">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

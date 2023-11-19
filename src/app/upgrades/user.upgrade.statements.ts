@@ -4,7 +4,7 @@ export class UserUpgradeStatements {
       toVersion: 1,
       statements: [
         `CREATE TABLE IF NOT EXISTS note(
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id INTEGER PRIMARY KEY,
           title TEXT,
           value TEXT,
           date TEXT

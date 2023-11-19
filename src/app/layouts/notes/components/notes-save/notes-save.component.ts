@@ -111,7 +111,7 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   private parseDate(date = new Date().toISOString()): string {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const format = this.translateService.instant("dateFormat");
-    const locale = this.translateService.getDefaultLang();
+    const locale = this.translateService.currentLang;
     return formatDate(date, format, locale, timezone);
   }
 

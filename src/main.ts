@@ -27,8 +27,8 @@ export function initializeFactory(init: InitializeAppService) {
 }
 
 // Define language
-export function initializeLanguage(locale:LocaleService){
-  return ()=> locale.setLanguage();
+export function initializeLanguage(locale: LocaleService) {
+  return () => locale.setLanguage();
 }
 
 if (environment.production) {
@@ -60,6 +60,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     importProvidersFrom(
       TranslateModule.forRoot({
+        defaultLanguage: "en",
         loader: {
           provide: TranslateLoader,
           useFactory: createTranslateLoader,

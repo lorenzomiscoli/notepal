@@ -21,7 +21,7 @@
             (ionBlur)="this.saveNote()"></ion-input>
         </ion-item>
         <ion-item lines="none" class="date">
-          <ion-label>{{date}}</ion-label>
+          <ion-label>{{date | date:'longDate':timezone:locale }}</ion-label>
         </ion-item>
       <ion-item lines="none">
         <ion-textarea [autoGrow]="true" placeholder="{{ 'note' | translate }}" formControlName="value" #textArea

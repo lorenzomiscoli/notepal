@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
-import { formatDate } from "@angular/common";
 import { FormControl, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 
@@ -21,11 +20,15 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   private isDirty = false;
   @Input() id!: number;
   public date: string;
+  public locale: string;
+  public timezone: string;
   @ViewChild("textArea") textArea!: IonTextarea;
   public deleteAlertBtns!: AlertButton[];
 
   constructor(private notesService: NotesService, private translateService: TranslateService, private router: Router) {
-    this.date = this.parseDate();
+    this.date = new Date().toISOString();
+    this.locale = translateService.currentLang;
+    this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 
   ionViewDidEnter(): void {
@@ -51,7 +54,7 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   }
 
   private updateForm(note: Note): void {
-    this.date = this.parseDate(note.date);
+    this.date = note.date;
     this.form.patchValue(note, { emitEvent: false });
   }
 
@@ -106,13 +109,6 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
         handler: () => this.delete()
       },
     ];
-  }
-
-  private parseDate(date = new Date().toISOString()): string {
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const format = this.translateService.instant("dateFormat");
-    const locale = this.translateService.currentLang;
-    return formatDate(date, format, locale, timezone);
   }
 
 }

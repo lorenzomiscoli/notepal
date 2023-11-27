@@ -1,0 +1,25 @@
+<ion-toolbar color="light" *ngIf="!selectedMode; else elseBlock">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-searchbar placeholder="{{'search-notes'| translate}}" [debounce]="500" (ionInput)="search($event)"
+          [value]="filterValue"></ion-searchbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>
+<ng-template #elseBlock>
+  <ion-toolbar color="light">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-buttons>
+            <ion-button (click)="cancel()">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ng-template>

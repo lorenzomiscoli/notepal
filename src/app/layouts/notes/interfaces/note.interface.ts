@@ -5,6 +5,7 @@ export interface Note {
   title: string;
   value: string;
   date: string;
+  isSelected?: boolean;
 }
 
 export interface NoteForm {

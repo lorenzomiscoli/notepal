@@ -1,16 +1,9 @@
-<ion-toolbar color="light">
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-searchbar placeholder="{{'search-notes'| translate}}" [debounce]="500" (ionInput)="onSearch($event)"></ion-searchbar>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-toolbar>
+<app-notes-list-header [selectedMode]="isSelectedMode()" (onSearch)="onSearch($event)"
+  (onCancel)="onCancel()"></app-notes-list-header>
 <ion-content class="ion-padding" color="light">
   <div class="grid">
-    <ion-card *ngFor="let note of notes$ | async | appFilterProperty:searchValue:'title'" class="ion-activatable ripple-parent"
-      appLongPress (tap)="tap(note.id)" (press)="press(note.id)">
+    <ion-card *ngFor="let note of notes | appFilterProperty:searchValue:'title'" class="ion-activatable ripple-parent"
+      appLongPress (tap)="tap(note)" (press)="press(note)" [ngClass]="{'activated':note.isSelected}">
       <ion-ripple-effect></ion-ripple-effect>
       <ion-card-header>
         <ion-card-title>{{note.title}}</ion-card-title>
@@ -19,7 +12,7 @@
     </ion-card>
   </div>
 </ion-content>
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isSelectedMode()">
   <ion-fab-button size="small" routerLink="save">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>

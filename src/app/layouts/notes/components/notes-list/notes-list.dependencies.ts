@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import {
@@ -23,10 +23,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FilterPropertyPipe } from '../../../../pipes/filter-property.pipe';
 import { LineClampPipe } from '../../../../pipes/line-clamp.pipe';
 import { LongPressDirective } from '../../../../directives/long-press.directive';
+import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
 
 export const NOTES_LIST_DEPS = [
-  AsyncPipe,
+  NgClass,
   NgFor,
+  NgIf,
   RouterLink,
   IonCard,
   IonCardContent,
@@ -46,5 +48,6 @@ export const NOTES_LIST_DEPS = [
   TranslateModule,
   FilterPropertyPipe,
   LineClampPipe,
-  LongPressDirective
+  LongPressDirective,
+  NotesListHeaderComponent
 ]

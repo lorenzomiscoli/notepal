@@ -27,3 +27,7 @@ ion-card {
   overflow: hidden;
   border: 1px solid #ddd;
 }
+
+.activated {
+  border: 2px solid var(--ion-color-primary);
+}

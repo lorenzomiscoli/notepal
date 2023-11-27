@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { Observable, map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 import { Note } from '../../interfaces/note.interface';
@@ -14,7 +14,7 @@ import { NotesService } from "../../services/notes.service";
   imports: [NOTES_LIST_DEPS]
 })
 export class NotesListComponent implements OnInit {
-  public notes$!: Observable<Note[] | any>;
+  public notes: Note[] = [];
   public searchValue = '';
 
   constructor(private notesService: NotesService, private router: Router, private route: ActivatedRoute) { }
@@ -24,7 +24,8 @@ export class NotesListComponent implements OnInit {
   }
 
   private getAllNotes(): void {
-    this.notes$ = this.notesService.getAllNotes().pipe(map((value => this.sortByDate(value))));
+    this.notesService.getAllNotes().pipe(tap(value => this.notes = value), map((value => this.sortByDate(value))))
+      .subscribe(value => this.notes = value);
   }
 
   private sortByDate(notes: Note[]): Note[] {
@@ -34,16 +35,41 @@ export class NotesListComponent implements OnInit {
     });
   }
 
-  public tap(id: number): void {
-    this.router.navigate(["save"], { relativeTo: this.route, queryParams: { id: id } });
+  public tap(note: Note): void {
+    if (this.isSelectedMode()) {
+      if (note.isSelected) {
+        note.isSelected = false;
+      }
+      else {
+        note.isSelected = true;
+      }
+    } else {
+      this.router.navigate(["save"], { relativeTo: this.route, queryParams: { id: note.id } });
+    }
   }
 
-  public press(id: number): void {
-    this.notesService.delete([id]).subscribe();
+  public press(note: Note): void {
+    if (this.isSelectedMode()) {
+      if (note.isSelected) {
+        note.isSelected = false;
+      } else {
+        note.isSelected = true;
+      }
+    } else {
+      note.isSelected = true;
+    }
   }
 
-  public onSearch(event: any): void {
-    this.searchValue = event.detail.value;
+  public isSelectedMode(): boolean {
+    return this.notes.find(note => note.isSelected) ? true : false;
+  }
+
+  public onSearch(filterValue: string): void {
+    this.searchValue = filterValue;
+  }
+
+  public onCancel(): void {
+    this.notes.forEach(note => note.isSelected = false);
   }
 
 }

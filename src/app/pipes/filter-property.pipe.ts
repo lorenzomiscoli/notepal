@@ -9,8 +9,10 @@ export class FilterPropertyPipe implements PipeTransform {
 
   transform(value: any[], filter: string, property: string) {
     if (!value || !filter) return value;
-    return value.filter(val => {
-      return val[property].toLowerCase().includes(filter.toLowerCase());
+    return value.filter(item => {
+      if (item[property]) {
+        return item[property].toLowerCase().includes(filter.toLowerCase());
+      }
     });
   }
 

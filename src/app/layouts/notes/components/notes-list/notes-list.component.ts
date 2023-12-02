@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { map, tap } from 'rxjs';
 
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
-import { Note } from '../../interfaces/note.interface';
+import { Note, ViewMode } from '../../interfaces/note.interface';
 import { NotesService } from "../../services/notes.service";
 
 @Component({
@@ -16,6 +16,7 @@ import { NotesService } from "../../services/notes.service";
 export class NotesListComponent implements OnInit {
   public notes: Note[] = [];
   public searchValue = '';
+  public viewMode!: ViewMode;
 
   constructor(private notesService: NotesService, private router: Router, private route: ActivatedRoute) { }
 
@@ -70,6 +71,14 @@ export class NotesListComponent implements OnInit {
 
   public onCancel(): void {
     this.notes.forEach(note => note.isSelected = false);
+  }
+
+  public onChangeView(viewMode: ViewMode): void {
+    this.viewMode = viewMode;
+  }
+
+  public isGridMode(): boolean {
+    return this.viewMode === ViewMode.GRID ? true : false;
   }
 
 }

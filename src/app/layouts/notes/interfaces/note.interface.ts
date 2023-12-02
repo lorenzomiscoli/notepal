@@ -12,3 +12,7 @@ export interface NoteForm {
   title: FormControl<string | null>;
   value: FormControl<string | null>;
 }
+
+export enum ViewMode {
+  GRID, LIST
+}

@@ -1,19 +1,13 @@
-<app-notes-list-header [selectedMode]="isSelectedMode()" (onSearch)="onSearch($event)"
-  (onCancel)="onCancel()"></app-notes-list-header>
 <ion-content class="ion-padding" color="light">
-  <div class="grid">
-    <ion-card *ngFor="let note of notes | appFilterProperty:searchValue:'title'" class="ion-activatable ripple-parent"
+  <app-notes-list-header [selectedMode]="isSelectedMode()" (onSearch)="onSearch($event)" (onCancel)="onCancel()"
+    (onChangeView)="onChangeView($event)"></app-notes-list-header>
+  <div class="grid" [ngClass]="{'grid': isGridMode()}">
+    <div class="card ion-activatable ripple-parent" *ngFor="let note of notes | appFilterProperty:searchValue:'title'"
       appLongPress (tap)="tap(note)" (press)="press(note)" [ngClass]="{'activated':note.isSelected}">
       <ion-ripple-effect></ion-ripple-effect>
-      <ion-card-header>
-        <ion-card-title>{{note.title}}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>{{note.value | appLineClamp}}</ion-card-content>
-    </ion-card>
+      <div class="card-title">{{note.title}}</div>
+      <div class="card-content">{{note.value | appLineClamp}}</div>
+    </div>
   </div>
+  <app-notes-list-footer [selectedMode]="isSelectedMode()"></app-notes-list-footer>
 </ion-content>
-<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isSelectedMode()">
-  <ion-fab-button size="small" routerLink="save">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>

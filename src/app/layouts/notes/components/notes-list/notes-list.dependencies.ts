@@ -8,8 +8,6 @@ import {
   IonCardTitle,
   IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -24,6 +22,7 @@ import { FilterPropertyPipe } from '../../../../pipes/filter-property.pipe';
 import { LineClampPipe } from '../../../../pipes/line-clamp.pipe';
 import { LongPressDirective } from '../../../../directives/long-press.directive';
 import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
+import { NotesListFooterComponent } from '../notes-list-footer/notes-list-footer.component';
 
 export const NOTES_LIST_DEPS = [
   NgClass,
@@ -36,8 +35,6 @@ export const NOTES_LIST_DEPS = [
   IonCardTitle,
   IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -49,5 +46,6 @@ export const NOTES_LIST_DEPS = [
   FilterPropertyPipe,
   LineClampPipe,
   LongPressDirective,
-  NotesListHeaderComponent
+  NotesListHeaderComponent,
+  NotesListFooterComponent
 ]

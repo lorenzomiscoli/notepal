@@ -1,25 +1,30 @@
-<ion-toolbar color="light" *ngIf="!selectedMode; else elseBlock">
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-searchbar placeholder="{{'search-notes'| translate}}" [debounce]="500" (ionInput)="search($event)"
-          [value]="filterValue"></ion-searchbar>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-toolbar>
+<div *ngIf="!selectedMode; else elseBlock" class="toolbar">
+  <span class="app-title">Notepal</span>
+  <ion-buttons>
+    <ion-button (click)="changeView()">
+      <ion-icon name="grid-outline" slot="icon-only" *ngIf="isGridView"></ion-icon>
+      <ion-icon name="list-outline" slot="icon-only" *ngIf="!isGridView"></ion-icon>
+    </ion-button>
+    <ion-button>
+      <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button>
+      <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</div>
+<div class="searchbar">
+  <ion-icon name="search-outline"></ion-icon>
+  <input type="text" placeholder="Search notes" (keyup)="search(searchInput.value)" [(ngModel)]="filterValue"
+    #searchInput>
+  <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="cancel()"></ion-icon>
+</div>
 <ng-template #elseBlock>
-  <ion-toolbar color="light">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-buttons>
-            <ion-button (click)="cancel()">
-              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-            </ion-button>
-          </ion-buttons>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+  <div class="toolbar">
+    <ion-buttons>
+      <ion-button (click)="cancel()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
 </ng-template>

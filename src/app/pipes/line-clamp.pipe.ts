@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
   name: "appLineClamp",
-  pure: true,
   standalone: true
 })
 export class LineClampPipe implements PipeTransform {

@@ -39,7 +39,6 @@ export class NotesListHeaderComponent implements OnInit {
   }
 
   public cancel(): void {
-    this.filterValue = '';
     this.onCancel.emit();
   }
 

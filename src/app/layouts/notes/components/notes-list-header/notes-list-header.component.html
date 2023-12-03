@@ -5,7 +5,7 @@
       <ion-icon name="grid-outline" slot="icon-only" *ngIf="isGridView"></ion-icon>
       <ion-icon name="list-outline" slot="icon-only" *ngIf="!isGridView"></ion-icon>
     </ion-button>
-    <ion-button>
+    <ion-button (click)="openSortModal(true)">
       <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button>
@@ -15,8 +15,8 @@
 </div>
 <div class="searchbar">
   <ion-icon name="search-outline"></ion-icon>
-  <input type="text" placeholder="Search notes" (keyup)="search(searchInput.value)" [(ngModel)]="filterValue"
-    #searchInput>
+  <input type="text" placeholder="{{'search-notes' | translate}}" (keyup)="search(searchInput.value)"
+    [(ngModel)]="filterValue" #searchInput>
   <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="cancel()"></ion-icon>
 </div>
 <ng-template #elseBlock>
@@ -28,3 +28,26 @@
     </ion-buttons>
   </div>
 </ng-template>
+<ion-modal #sortModal [isOpen]="isSortModalOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
+  (ionModalDidDismiss)="openSortModal(false)">
+  <ng-template>
+    <div class="block">
+      <ion-content class="ion-padding">
+        <ion-radio-group [value]="sortMode" (ionChange)="changeSort($event)">
+          <div class="grid-radio">
+            <div class="sort-title">{{'sortBy' | translate}}</div>
+            <div class="radio-div">
+              <ion-radio value="az" labelPlacement="end">{{'name' | translate}} A-Z</ion-radio>
+            </div>
+            <div class="radio-div">
+              <ion-radio value="za" labelPlacement="end">{{'name' | translate}} Z-A</ion-radio>
+            </div>
+            <div class="radio-div">
+              <ion-radio value="modifiedDate" labelPlacement="end">{{'modifiedDate' | translate}}</ion-radio>
+            </div>
+          </div>
+        </ion-radio-group>
+      </ion-content>
+    </div>
+  </ng-template>
+</ion-modal>

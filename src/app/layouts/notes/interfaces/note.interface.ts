@@ -14,5 +14,12 @@ export interface NoteForm {
 }
 
 export enum ViewMode {
-  GRID, LIST
+  GRID = 'grid',
+  LIST = 'list'
+}
+
+export enum SortMode {
+  AZ = 'az',
+  ZA = 'za',
+  MODIFIED_DATE = 'modifiedDate'
 }

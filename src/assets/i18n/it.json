@@ -1,11 +1,14 @@
 {
-  "search-notes":"Cerca note",
+  "search-notes": "Cerca note",
   "back": "Indietro",
   "title": "Titolo",
   "dateFormat": "d MMMM y, HH:mm",
-  "note":"Nota",
+  "note": "Nota",
   "deleteNote": "Elimina nota",
   "deleteThisNote": "Eliminare questa nota?",
   "cancel": "Cancella",
-  "delete": "Elimina"
+  "delete": "Elimina",
+  "sortBy": "Ordina per",
+  "name": "Nome",
+  "modifiedDate": "Data di modifica"
 }

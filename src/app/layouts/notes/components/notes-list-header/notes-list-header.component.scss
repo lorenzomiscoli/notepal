@@ -54,3 +54,27 @@
   }
 
 }
+
+ion-modal {
+  --height: auto;
+}
+
+.block {
+  width: 100%;
+  height: 215px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sort-title {
+  --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+  padding-bottom: 20px;
+  color: var(--color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
+}
+
+.grid-radio {
+  height: 100%;
+  display: grid;
+  row-gap: 20px;
+}

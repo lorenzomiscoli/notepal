@@ -1,3 +1,4 @@
+
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -23,6 +24,7 @@ import { LineClampPipe } from '../../../../pipes/line-clamp.pipe';
 import { LongPressDirective } from '../../../../directives/long-press.directive';
 import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
 import { NotesListFooterComponent } from '../notes-list-footer/notes-list-footer.component';
+import { SortNotesPipe } from './../../../../pipes/sort-property.pipe';
 
 export const NOTES_LIST_DEPS = [
   NgClass,
@@ -47,5 +49,6 @@ export const NOTES_LIST_DEPS = [
   LineClampPipe,
   LongPressDirective,
   NotesListHeaderComponent,
-  NotesListFooterComponent
+  NotesListFooterComponent,
+  SortNotesPipe
 ]

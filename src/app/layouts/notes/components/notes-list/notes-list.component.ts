@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { map, tap } from 'rxjs';
-
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
-import { Note, ViewMode } from '../../interfaces/note.interface';
+import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
 import { NotesService } from "../../services/notes.service";
 
 @Component({
@@ -16,7 +14,8 @@ import { NotesService } from "../../services/notes.service";
 export class NotesListComponent implements OnInit {
   public notes: Note[] = [];
   public searchValue = '';
-  public viewMode!: ViewMode;
+  public viewMode: ViewMode = ViewMode.GRID;
+  public sortMode: SortMode = SortMode.MODIFIED_DATE;
 
   constructor(private notesService: NotesService, private router: Router, private route: ActivatedRoute) { }
 
@@ -25,15 +24,7 @@ export class NotesListComponent implements OnInit {
   }
 
   private getAllNotes(): void {
-    this.notesService.getAllNotes().pipe(tap(value => this.notes = value), map((value => this.sortByDate(value))))
-      .subscribe(value => this.notes = value);
-  }
-
-  private sortByDate(notes: Note[]): Note[] {
-    if (!notes) return notes;
-    return notes.sort((a: Note, b: Note) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
+    this.notesService.getAllNotes().subscribe(value => this.notes = value);
   }
 
   public tap(note: Note): void {
@@ -73,12 +64,12 @@ export class NotesListComponent implements OnInit {
     this.notes.forEach(note => note.isSelected = false);
   }
 
-  public onChangeView(viewMode: ViewMode): void {
+  public onViewChange(viewMode: ViewMode): void {
     this.viewMode = viewMode;
   }
 
-  public isGridMode(): boolean {
-    return this.viewMode === ViewMode.GRID ? true : false;
+  public onSortChange(sortMode: SortMode): void {
+    this.sortMode = sortMode;
   }
 
 }

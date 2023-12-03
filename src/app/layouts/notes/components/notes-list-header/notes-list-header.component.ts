@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+
+import { IonModal } from "@ionic/angular/standalone";
 
 import { NOTES_LIST_HEADER_DEPS } from "./notes-list-header.dependencies";
-import { ViewMode } from "../../interfaces/note.interface";
+import { SortMode, ViewMode } from "../../interfaces/note.interface";
 
 @Component({
   selector: "app-notes-list-header",
@@ -14,17 +16,21 @@ export class NotesListHeaderComponent implements OnInit {
   @Input() public selectedMode = false;
   @Output() public onCancel = new EventEmitter<void>();
   @Output() public onSearch = new EventEmitter<string>();
-  @Output() public onChangeView = new EventEmitter<ViewMode>();
+  @Output() public viewChange = new EventEmitter<ViewMode>();
+  @Output() public sortChange = new EventEmitter<SortMode>();
   public filterValue = '';
   public isGridView = true;
+  public sortMode = SortMode.MODIFIED_DATE;
+  public isSortModalOpen = false;
+  @ViewChild(IonModal) sortModal!: IonModal;
 
   ngOnInit(): void {
-    this.onChangeView.emit(this.isGridView ? ViewMode.GRID : ViewMode.LIST);
+    this.viewChange.emit(this.isGridView ? ViewMode.GRID : ViewMode.LIST);
   }
 
   public changeView(): void {
     this.isGridView = !this.isGridView;
-    this.onChangeView.emit(this.isGridView ? ViewMode.GRID : ViewMode.LIST);
+    this.viewChange.emit(this.isGridView ? ViewMode.GRID : ViewMode.LIST);
   }
 
   public search(value: string): void {
@@ -35,6 +41,16 @@ export class NotesListHeaderComponent implements OnInit {
   public cancel(): void {
     this.filterValue = '';
     this.onCancel.emit();
+  }
+
+  public changeSort(event: CustomEvent): void {
+    this.sortMode = event.detail.value;
+    this.sortChange.emit(this.sortMode);
+    this.sortModal.dismiss();
+  }
+
+  public openSortModal(isOpen: boolean): void {
+    this.isSortModalOpen = isOpen;
   }
 
 }

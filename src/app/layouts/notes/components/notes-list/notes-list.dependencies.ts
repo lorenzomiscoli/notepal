@@ -22,8 +22,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FilterPropertyPipe } from '../../../../pipes/filter-property.pipe';
 import { LineClampPipe } from '../../../../pipes/line-clamp.pipe';
 import { LongPressDirective } from '../../../../directives/long-press.directive';
-import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
 import { NotesListFooterComponent } from '../notes-list-footer/notes-list-footer.component';
+import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
+import { NotesListSelectedHeaderComponent } from '../notes-list-selected-header/notes-list-selected-header.component';
 import { SortNotesPipe } from './../../../../pipes/sort-property.pipe';
 
 export const NOTES_LIST_DEPS = [
@@ -48,7 +49,8 @@ export const NOTES_LIST_DEPS = [
   FilterPropertyPipe,
   LineClampPipe,
   LongPressDirective,
-  NotesListHeaderComponent,
   NotesListFooterComponent,
+  NotesListHeaderComponent,
+  NotesListSelectedHeaderComponent,
   SortNotesPipe
 ]

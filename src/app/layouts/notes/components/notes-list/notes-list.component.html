@@ -1,6 +1,7 @@
 <ion-content class="ion-padding" color="light">
-  <app-notes-list-header [selectedMode]="isSelectedMode()" (onSearch)="onSearch($event)" (onCancel)="onCancel()"
-    (viewChange)="onViewChange($event)" (sortChange)="onSortChange($event)"></app-notes-list-header>
+  <app-notes-list-header *ngIf="!isSelectedMode()" (onSearch)="onSearch($event)" (viewChange)="onViewChange($event)"
+    (sortChange)="onSortChange($event)"></app-notes-list-header>
+  <app-notes-list-selected-header *ngIf="isSelectedMode()" (close)="deselectAll()"></app-notes-list-selected-header>
   <div class="grid" [ngClass]="{'grid': viewMode === 'grid'}">
     <div class="card ion-activatable ripple-parent"
       *ngFor="let note of notes | appFilterProperty:searchValue:'title' | appSortNotes:sortMode" appLongPress

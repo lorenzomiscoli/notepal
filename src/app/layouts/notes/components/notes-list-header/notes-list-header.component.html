@@ -1,4 +1,4 @@
-<div *ngIf="!selectedMode; else elseBlock" class="toolbar">
+<div class="toolbar">
   <span class="app-title">Notepal</span>
   <ion-buttons>
     <ion-button (click)="changeView()">
@@ -19,15 +19,6 @@
     [(ngModel)]="filterValue" #searchInput>
   <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="search('')"></ion-icon>
 </div>
-<ng-template #elseBlock>
-  <div class="toolbar">
-    <ion-buttons>
-      <ion-button (click)="cancel()">
-        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </div>
-</ng-template>
 <ion-modal #sortModal [isOpen]="isSortModalOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
   (ionModalDidDismiss)="openSortModal(false)">
   <ng-template>

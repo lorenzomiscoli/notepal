@@ -13,8 +13,6 @@ import { SortMode, ViewMode } from "../../interfaces/note.interface";
   imports: [NOTES_LIST_HEADER_DEPS]
 })
 export class NotesListHeaderComponent implements OnInit {
-  @Input() public selectedMode = false;
-  @Output() public onCancel = new EventEmitter<void>();
   @Output() public onSearch = new EventEmitter<string>();
   @Output() public viewChange = new EventEmitter<ViewMode>();
   @Output() public sortChange = new EventEmitter<SortMode>();
@@ -36,10 +34,6 @@ export class NotesListHeaderComponent implements OnInit {
   public search(value: string): void {
     this.filterValue = value;
     this.onSearch.emit(value);
-  }
-
-  public cancel(): void {
-    this.onCancel.emit();
   }
 
   public changeSort(event: CustomEvent): void {

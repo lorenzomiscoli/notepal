@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
 import { NotesService } from "../../services/notes.service";
+import { Platform } from "@ionic/angular";
 
 @Component({
   templateUrl: "./notes-list.component.html",
@@ -17,10 +18,16 @@ export class NotesListComponent implements OnInit {
   public viewMode: ViewMode = ViewMode.GRID;
   public sortMode: SortMode = SortMode.MODIFIED_DATE;
 
-  constructor(private notesService: NotesService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private notesService: NotesService, private router: Router, private route: ActivatedRoute, private platform: Platform) { }
 
   ngOnInit(): void {
     this.notesService.notesUpdated$.subscribe(() => this.getAllNotes())
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      if (this.isSelectedMode()) {
+        this.deselectAll();
+      }
+      processNextHandler();
+    });
   }
 
   private getAllNotes(): void {
@@ -60,7 +67,7 @@ export class NotesListComponent implements OnInit {
     this.searchValue = filterValue;
   }
 
-  public onCancel(): void {
+  public deselectAll(): void {
     this.notes.forEach(note => note.isSelected = false);
   }
 

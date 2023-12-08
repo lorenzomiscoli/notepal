@@ -13,12 +13,6 @@
     </ion-button>
   </ion-buttons>
 </div>
-<div class="searchbar">
-  <ion-icon name="search-outline"></ion-icon>
-  <input type="text" placeholder="{{'search-notes' | translate}}" (keyup)="search(searchInput.value)"
-    [(ngModel)]="filterValue" #searchInput>
-  <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="search('')"></ion-icon>
-</div>
 <ion-modal #sortModal [isOpen]="isSortModalOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
   (ionModalDidDismiss)="openSortModal(false)">
   <ng-template>

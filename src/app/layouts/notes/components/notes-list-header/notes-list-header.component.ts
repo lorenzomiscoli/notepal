@@ -13,10 +13,8 @@ import { SortMode, ViewMode } from "../../interfaces/note.interface";
   imports: [NOTES_LIST_HEADER_DEPS]
 })
 export class NotesListHeaderComponent implements OnInit {
-  @Output() public onSearch = new EventEmitter<string>();
   @Output() public viewChange = new EventEmitter<ViewMode>();
   @Output() public sortChange = new EventEmitter<SortMode>();
-  public filterValue = '';
   public isGridView = true;
   public sortMode = SortMode.MODIFIED_DATE;
   public isSortModalOpen = false;
@@ -29,11 +27,6 @@ export class NotesListHeaderComponent implements OnInit {
   public changeView(): void {
     this.isGridView = !this.isGridView;
     this.viewChange.emit(this.isGridView ? ViewMode.GRID : ViewMode.LIST);
-  }
-
-  public search(value: string): void {
-    this.filterValue = value;
-    this.onSearch.emit(value);
   }
 
   public changeSort(event: CustomEvent): void {

@@ -1,7 +1,8 @@
 <ion-content class="ion-padding" color="light">
   <app-notes-list-header *ngIf="!isSelectedMode()" (viewChange)="onViewChange($event)"
     (sortChange)="onSortChange($event)"></app-notes-list-header>
-  <app-notes-list-selected-header *ngIf="isSelectedMode()" (close)="deselectAll()"></app-notes-list-selected-header>
+  <app-notes-list-selected-header *ngIf="isSelectedMode()" (close)="deselectAll()"
+    [notes]="notes"></app-notes-list-selected-header>
   <div>
     <app-notes-list-searchbar (search)="onSearch($event)"></app-notes-list-searchbar>
     <div class="grid" [ngClass]="{'grid': viewMode === 'grid'}">

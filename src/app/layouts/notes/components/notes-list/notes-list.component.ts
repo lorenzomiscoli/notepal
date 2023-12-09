@@ -71,6 +71,11 @@ export class NotesListComponent implements OnInit {
     this.notes.forEach(note => note.isSelected = false);
   }
 
+  public selectedNotes(): Note[] {
+    var selectedNotes = this.notes.filter(note => note.isSelected === true);
+    return selectedNotes;
+  }
+
   public onViewChange(viewMode: ViewMode): void {
     this.viewMode = viewMode;
   }

@@ -3,5 +3,17 @@
     <ion-button (click)="cancel()">
       <ion-icon slot="icon-only" name="close-outline"></ion-icon>
     </ion-button>
+    <div class="notes-counter">{{getSelectedNotes().length}}</div>
+  </ion-buttons>
+  <ion-buttons>
+    <ion-button>
+      <ion-icon slot="icon-only" src="/assets/icons/select-all.svg"></ion-icon>
+    </ion-button>
+    <ion-button>
+      <ion-icon slot="icon-only" name="archive-outline"></ion-icon>
+    </ion-button>
+    <ion-button>
+      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
   </ion-buttons>
 </div>

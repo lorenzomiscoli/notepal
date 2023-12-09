@@ -2,8 +2,8 @@
   <span class="app-title">Notepal</span>
   <ion-buttons>
     <ion-button (click)="changeView()">
-      <ion-icon name="grid-outline" slot="icon-only" *ngIf="isGridView"></ion-icon>
-      <ion-icon name="list-outline" slot="icon-only" *ngIf="!isGridView"></ion-icon>
+      <ion-icon src="/assets/icons/column-outline.svg" slot="icon-only" *ngIf="isGridView"></ion-icon>
+      <ion-icon name="grid-outline" slot="icon-only" *ngIf="!isGridView"></ion-icon>
     </ion-button>
     <ion-button (click)="openSortModal(true)">
       <ion-icon name="filter-outline" slot="icon-only"></ion-icon>

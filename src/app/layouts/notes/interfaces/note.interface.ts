@@ -8,6 +8,12 @@ export interface Note {
   isSelected?: boolean;
 }
 
+export interface NoteSetting {
+  id: number,
+  viewMode: ViewMode;
+  sortMode: SortMode;
+}
+
 export interface NoteForm {
   title: FormControl<string | null>;
   value: FormControl<string | null>;

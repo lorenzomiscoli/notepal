@@ -1,9 +1,11 @@
 <div class="toolbar">
   <span class="app-title">Notepal</span>
   <ion-buttons>
-    <ion-button (click)="changeView()">
-      <ion-icon src="/assets/icons/column-outline.svg" slot="icon-only" *ngIf="isGridView"></ion-icon>
-      <ion-icon name="grid-outline" slot="icon-only" *ngIf="!isGridView"></ion-icon>
+    <ion-button (click)="changeView(viewModeType.LIST)" *ngIf="isGridView()">
+      <ion-icon src="/assets/icons/column-outline.svg" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button (click)="changeView(viewModeType.GRID)" *ngIf="!isGridView()">
+      <ion-icon name="grid-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="openSortModal(true)">
       <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
@@ -22,13 +24,14 @@
           <div class="grid-radio">
             <div class="sort-title">{{'sortBy' | translate}}</div>
             <div class="radio-div">
-              <ion-radio value="az" labelPlacement="end">{{'name' | translate}} A-Z</ion-radio>
+              <ion-radio [value]="sortModeType.AZ" labelPlacement="end">{{'name' | translate}} A-Z</ion-radio>
             </div>
             <div class="radio-div">
-              <ion-radio value="za" labelPlacement="end">{{'name' | translate}} Z-A</ion-radio>
+              <ion-radio [value]="sortModeType.ZA" labelPlacement="end">{{'name' | translate}} Z-A</ion-radio>
             </div>
             <div class="radio-div">
-              <ion-radio value="modifiedDate" labelPlacement="end">{{'modifiedDate' | translate}}</ion-radio>
+              <ion-radio [value]="sortModeType.MODIFIED_DATE" labelPlacement="end">{{'modifiedDate' |
+                translate}}</ion-radio>
             </div>
           </div>
         </ion-radio-group>

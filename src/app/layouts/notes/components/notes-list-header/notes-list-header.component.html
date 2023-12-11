@@ -1,17 +1,19 @@
 <div class="toolbar">
-  <span class="app-title">Notepal</span>
+  <ion-buttons>
+    <ion-button>
+      <ion-icon name="menu-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <span class="app-title">Notepal</span>
+  </ion-buttons>
   <ion-buttons>
     <ion-button (click)="changeView(viewModeType.LIST)" *ngIf="isGridView()">
-      <ion-icon src="/assets/icons/column-outline.svg" slot="icon-only"></ion-icon>
+      <ion-icon name="list-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="changeView(viewModeType.GRID)" *ngIf="!isGridView()">
       <ion-icon name="grid-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="openSortModal(true)">
-      <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button>
-      <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
+      <ion-icon name="funnel-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
 </div>

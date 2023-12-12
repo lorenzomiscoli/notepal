@@ -9,12 +9,7 @@ import {
 } from '@angular/core';
 
 import { GestureController } from '@ionic/angular';
-import {
-  Subject,
-  race,
-  switchMap,
-  timer,
-} from 'rxjs';
+import { Subject, race, take, takeUntil, timer } from 'rxjs';
 
 @Directive({
   selector: '[appLongPress]',
@@ -25,25 +20,13 @@ export class LongPressDirective implements AfterViewInit {
   @Output() press = new EventEmitter();
   @Input('delay') delay = 500;
 
-  private fingerDown = new Subject<void>();
   private fingerUp = new Subject<boolean>();
-
-  private positions = {
-    start: {
-      x: undefined! as number,
-      y: undefined! as number,
-    },
-    current: {
-      x: undefined! as number,
-      y: undefined! as number,
-    },
-  };
+  private fingerMove = new Subject<void>();
 
   constructor(private el: ElementRef, private gestureCtrl: GestureController, private zone: NgZone) { }
 
   ngAfterViewInit() {
     this.loadLongPressOnElement();
-    this.handleFingerBehaviour();
   }
 
   loadLongPressOnElement() {
@@ -51,35 +34,25 @@ export class LongPressDirective implements AfterViewInit {
       el: this.el.nativeElement,
       threshold: 0,
       gestureName: 'long-press',
-      onStart: (ev) => {
-        this.fingerDown.next();
+      onStart: () => this.handleFingerBehaviour(),
 
-        this.positions = {
-          start: { x: ev.startX, y: ev.startY },
-          current: { x: ev.currentX, y: ev.currentY },
-        };
-      },
-      onMove: (ev) => {
-        this.positions.current = { x: ev.currentX, y: ev.currentY };
-      },
+      onMove: () => this.fingerMove.next(),
       onEnd: () => this.fingerUp.next(true),
     });
     gesture.enable(true);
   }
 
   private handleFingerBehaviour(): void {
-    this.fingerDown
-      .pipe(
-        switchMap(() => race(this.fingerUp.asObservable(), timer(this.delay)))
-      )
+    race(this.fingerUp, timer(this.delay))
+      .pipe(takeUntil(this.fingerMove), take(1))
       .subscribe((res) => {
         this.zone.run(() => {
-        if (res) {
-          this.tap.emit();
-        } else {
-          this.press.emit();
-        }
-      });
+          if (res) {
+            this.tap.emit();
+          } else {
+            this.press.emit();
+          }
+        });
       });
   }
 }

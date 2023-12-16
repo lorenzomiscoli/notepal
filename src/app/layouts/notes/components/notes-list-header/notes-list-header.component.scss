@@ -1,15 +1,5 @@
 :host {
-  display: block;
-  --margin: 16px;
-  --margin--: calc(var(--margin) * -1);
-}
-
-.toolbar {
-  justify-content: space-between;
-  display: flex;
-  align-items: center;
-  margin-right: var(--margin--);
-  margin-left: var(--margin--);
+  background-color: var(--ion-color-light);
 }
 
 .app-title {
@@ -21,7 +11,7 @@ ion-modal {
   --height: auto;
 }
 
-.block {
+.sort-container {
   width: 100%;
   height: 215px;
   display: flex;
@@ -31,11 +21,11 @@ ion-modal {
 
 .sort-title {
   --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
-  padding-bottom: 20px;
   color: var(--color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
+  padding-bottom: 20px;
 }
 
-.grid-radio {
+.sort-content {
   height: 100%;
   display: grid;
   row-gap: 20px;

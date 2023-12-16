@@ -26,7 +26,6 @@ import { NotesListFooterComponent } from '../notes-list-footer/notes-list-footer
 import { NotesListHeaderComponent } from '../notes-list-header/notes-list-header.component';
 import { NotesListSelectedHeaderComponent } from '../notes-list-selected-header/notes-list-selected-header.component';
 import { SortNotesPipe } from './../../../../pipes/sort-property.pipe';
-import { NotesListSearchbarComponent } from '../notes-list-searchbar/notes-list-searchbar.component';
 
 export const NOTES_LIST_DEPS = [
   NgClass,
@@ -53,6 +52,5 @@ export const NOTES_LIST_DEPS = [
   NotesListFooterComponent,
   NotesListHeaderComponent,
   NotesListSelectedHeaderComponent,
-  NotesListSearchbarComponent,
   SortNotesPipe
 ]

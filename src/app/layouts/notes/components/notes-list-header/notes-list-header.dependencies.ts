@@ -1,11 +1,12 @@
 import { NgIf } from "@angular/common";
-import { FormsModule } from "@angular/forms";
 
 import {
   IonButton,
   IonButtons,
   IonContent,
   IonIcon,
+  IonMenu,
+  IonMenuToggle,
   IonModal,
   IonRadio,
   IonRadioGroup
@@ -14,13 +15,14 @@ import { TranslateModule } from "@ngx-translate/core";
 
 export const NOTES_LIST_HEADER_DEPS = [
   NgIf,
-  FormsModule,
   IonButton,
   IonButtons,
-  IonIcon,
-  IonModal,
-  TranslateModule,
   IonContent,
+  IonIcon,
+  IonMenu,
+  IonMenuToggle,
+  IonModal,
+  IonRadio,
   IonRadioGroup,
-  IonRadio
+  TranslateModule
 ];

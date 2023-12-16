@@ -1,11 +1,16 @@
-<div class="toolbar">
+<div class="toolbar" id="main-content">
   <ion-buttons>
-    <ion-button>
-      <ion-icon name="menu-outline" slot="icon-only"></ion-icon>
-    </ion-button>
+    <ion-menu-toggle>
+      <ion-button>
+        <ion-icon name="menu-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-menu-toggle>
     <span class="app-title">Notepal</span>
   </ion-buttons>
   <ion-buttons>
+    <ion-button>
+      <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+    </ion-button>
     <ion-button (click)="changeView(viewModeType.LIST)" *ngIf="isGridView()">
       <ion-icon name="list-outline" slot="icon-only"></ion-icon>
     </ion-button>
@@ -13,25 +18,25 @@
       <ion-icon name="grid-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="openSortModal(true)">
-      <ion-icon name="funnel-outline" slot="icon-only"></ion-icon>
+      <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
 </div>
 <ion-modal #sortModal [isOpen]="isSortModalOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
   (ionModalDidDismiss)="openSortModal(false)">
   <ng-template>
-    <div class="block">
+    <div class="sort-container">
       <ion-content class="ion-padding">
         <ion-radio-group [value]="sortMode" (ionChange)="changeSort($event)">
-          <div class="grid-radio">
+          <div class="sort-content">
             <div class="sort-title">{{'sortBy' | translate}}</div>
-            <div class="radio-div">
+            <div>
               <ion-radio [value]="sortModeType.AZ" labelPlacement="end">{{'name' | translate}} A-Z</ion-radio>
             </div>
-            <div class="radio-div">
+            <div>
               <ion-radio [value]="sortModeType.ZA" labelPlacement="end">{{'name' | translate}} Z-A</ion-radio>
             </div>
-            <div class="radio-div">
+            <div>
               <ion-radio [value]="sortModeType.MODIFIED_DATE" labelPlacement="end">{{'modifiedDate' |
                 translate}}</ion-radio>
             </div>
@@ -41,3 +46,5 @@
     </div>
   </ng-template>
 </ion-modal>
+<ion-menu contentId="main-content">
+</ion-menu>

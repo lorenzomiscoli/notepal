@@ -14,7 +14,6 @@ import { Platform } from "@ionic/angular";
 })
 export class NotesListComponent implements OnInit {
   public notes: Note[] = [];
-  public searchValue = '';
   public viewMode: ViewMode = ViewMode.GRID;
   public sortMode: SortMode = SortMode.MODIFIED_DATE;
 
@@ -61,10 +60,6 @@ export class NotesListComponent implements OnInit {
 
   public isSelectedMode(): boolean {
     return this.notes.find(note => note.isSelected) ? true : false;
-  }
-
-  public onSearch(filterValue: string): void {
-    this.searchValue = filterValue;
   }
 
   public deselectAll(): void {

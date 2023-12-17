@@ -22,4 +22,13 @@ export class NotesListSelectedHeaderComponent {
     return this.notes.filter(note => note.isSelected === true);
   }
 
+  public select(): void {
+    const selectedNotes = this.notes.filter(note => note.isSelected === true).length;
+    if (selectedNotes === this.notes.length) {
+      this.notes.forEach(note => note.isSelected = false);
+    } else {
+      this.notes.forEach(note => note.isSelected = true);
+    }
+  }
+
 }

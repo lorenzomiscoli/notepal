@@ -1,6 +1,6 @@
-<app-notes-list-header *ngIf="!isSelectedMode()" (viewChange)="onViewChange($event)"
+<app-notes-list-header *ngIf="!selectedMode" (viewChange)="onViewChange($event)"
   (sortChange)="onSortChange($event)"></app-notes-list-header>
-<app-notes-list-selected-header *ngIf="isSelectedMode()" (close)="deselectAll()"
+<app-notes-list-selected-header *ngIf="selectedMode" (close)="deselectAll()"
   [notes]="notes"></app-notes-list-selected-header>
 <ion-content class="ion-padding" color="light">
   <div class="grid" [ngClass]="{'grid': viewMode === 'grid'}">
@@ -12,4 +12,4 @@
     </div>
   </div>
 </ion-content>
-<app-notes-list-footer [selectedMode]="isSelectedMode()"></app-notes-list-footer>
+<app-notes-list-footer [selectedMode]="selectedMode"></app-notes-list-footer>

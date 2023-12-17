@@ -6,7 +6,7 @@
     <div class="notes-counter">{{getSelectedNotes().length}}</div>
   </ion-buttons>
   <ion-buttons>
-    <ion-button>
+    <ion-button (click)="select()">
       <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
     </ion-button>
     <ion-button>

@@ -1,8 +1,5 @@
-<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!selectedMode; else elseBlock">
-  <ion-fab-button size="small" routerLink="save">
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button routerLink="save">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-<ng-template #elseBlock>
-  <div></div>
-</ng-template>

@@ -12,4 +12,4 @@
     </div>
   </div>
 </ion-content>
-<app-notes-list-footer [selectedMode]="selectedMode"></app-notes-list-footer>
+<app-notes-list-footer *ngIf="!selectedMode"></app-notes-list-footer>

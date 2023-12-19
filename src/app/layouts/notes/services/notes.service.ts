@@ -40,8 +40,8 @@ export class NotesService {
   }
 
   public delete(ids: number[]): Observable<any> {
-    const sql = "DELETE FROM note WHERE id IN (?);";
-    return from(this.storageService.db.run(sql, ids)).pipe(tap(() => {
+    const sql = "DELETE FROM note WHERE id IN (" + ids.join() + ");";
+    return from(this.storageService.db.run(sql)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }

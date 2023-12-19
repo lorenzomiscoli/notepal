@@ -13,6 +13,7 @@ import { Note } from "../../interfaces/note.interface";
 export class NotesListSelectedHeaderComponent {
   @Output() public close = new EventEmitter<void>();
   @Input({ required: true }) notes!: Note[];
+  public isDeleteAlertOpen = false;
 
   public cancel(): void {
     this.close.emit();
@@ -22,6 +23,10 @@ export class NotesListSelectedHeaderComponent {
     return this.notes.filter(note => note.isSelected === true);
   }
 
+  public isSelected(): boolean {
+    return this.notes.find(note => note.isSelected === true) ? true : false;
+  }
+
   public select(): void {
     const selectedNotes = this.notes.filter(note => note.isSelected === true).length;
     if (selectedNotes === this.notes.length) {
@@ -29,6 +34,10 @@ export class NotesListSelectedHeaderComponent {
     } else {
       this.notes.forEach(note => note.isSelected = true);
     }
+  }
+
+  public toggleDeleteAlert(isOpen: boolean): void {
+    this.isDeleteAlertOpen = isOpen;
   }
 
 }

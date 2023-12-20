@@ -9,7 +9,7 @@
     <ion-button (click)="select()">
       <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
     </ion-button>
-    <ion-button [disabled]="!isSelected()">
+    <ion-button [disabled]="!isSelected()" (click)="archiveNotes()">
       <ion-icon slot="icon-only" name="archive-outline"></ion-icon>
     </ion-button>
     <ion-button [disabled]="!isSelected()" (click)="toggleDeleteAlert(true)">
@@ -19,3 +19,5 @@
 </div>
 <app-notes-delete-alert [isOpen]="isDeleteAlertOpen" (close)="toggleDeleteAlert(false)"
   [notes]="getSelectedNotes()"></app-notes-delete-alert>
+<ion-toast [duration]="3500" [isOpen]="isArchiveToastOpen" #archiveToast
+  (ionToastDidDismiss)="isArchiveToastOpen=false"></ion-toast>

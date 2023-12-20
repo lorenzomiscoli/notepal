@@ -1,7 +1,12 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
+
+import { IonToast } from "@ionic/angular/standalone";
+import { Subject, takeUntil } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_LIST_SELECTED_HEADER_DEPS } from "./notes-list-selected-header.dependencies";
 import { Note } from "../../interfaces/note.interface";
+import { NotesService } from "../../services/notes.service";
 
 @Component({
   selector: "app-notes-list-selected-header",
@@ -10,10 +15,20 @@ import { Note } from "../../interfaces/note.interface";
   standalone: true,
   imports: [NOTES_LIST_SELECTED_HEADER_DEPS]
 })
-export class NotesListSelectedHeaderComponent {
+export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
   @Output() public close = new EventEmitter<void>();
-  @Input({ required: true }) notes!: Note[];
+  @Input({ required: true }) public notes!: Note[];
   public isDeleteAlertOpen = false;
+  private archiveMessage!: { single: string, multi: string };
+  public isArchiveToastOpen = false;
+  @ViewChild("archiveToast") private archiveToast!: IonToast;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+
+  constructor(private notesService: NotesService, private translateService: TranslateService) { }
+
+  ngOnInit(): void {
+    this.createArchiveTranslations();
+  }
 
   public cancel(): void {
     this.close.emit();
@@ -38,6 +53,26 @@ export class NotesListSelectedHeaderComponent {
 
   public toggleDeleteAlert(isOpen: boolean): void {
     this.isDeleteAlertOpen = isOpen;
+  }
+
+  private createArchiveTranslations(): void {
+    this.archiveMessage = {
+      single: this.translateService.instant("noteArchived"),
+      multi: this.translateService.instant("notesArchived"),
+    }
+  }
+
+  public archiveNotes(): void {
+    let notes = this.getSelectedNotes().map(note => note.id);
+    this.archiveToast.message = notes.length > 1 ? this.archiveMessage.multi : this.archiveMessage.single;
+    this.notesService.archiveNotes(notes).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.isArchiveToastOpen = true;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
 }

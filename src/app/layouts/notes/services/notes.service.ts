@@ -15,7 +15,7 @@ export class NotesService {
   }
 
   public getAllNotes(): Observable<Note[]> {
-    return from(this.storageService.db.query("SELECT * FROM note")).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+    return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0")).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public getNoteById(id: number): Observable<Note | undefined> {
@@ -26,7 +26,7 @@ export class NotesService {
   }
 
   public addNote(note: Note): Observable<number> {
-    const sql = `INSERT INTO note (title, value, date) VALUES (?, ?, ?);`;
+    const sql = `INSERT INTO note (title, value, date, archived) VALUES (?, ?, ?, 0);`;
     return from(this.storageService.db.run(sql, [note.title, note.value, note.date], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }), map((value: capSQLiteChanges) => value.changes?.lastId as number));
@@ -41,7 +41,14 @@ export class NotesService {
 
   public delete(ids: number[]): Observable<any> {
     const sql = "DELETE FROM note WHERE id IN (" + ids.join() + ");";
-    return from(this.storageService.db.run(sql)).pipe(tap(() => {
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public archiveNotes(ids: number[]): Observable<any> {
+    const sql = "UPDATE note SET archived = 1 WHERE id IN (" + ids.join() + ");";
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }

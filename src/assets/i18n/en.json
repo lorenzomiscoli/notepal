@@ -7,6 +7,8 @@
   "deleteNote": "Delete note",
   "deleteThisNote": "Delete this note?",
   "deleteNotes": "Delete # notes?",
+  "noteArchived": "Note archived",
+  "notesArchived": "Notes archived",
   "cancel": "Cancel",
   "delete": "Delete",
   "sortBy": "Sort by",

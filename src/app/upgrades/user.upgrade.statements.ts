@@ -7,7 +7,8 @@ export class UserUpgradeStatements {
           id INTEGER PRIMARY KEY,
           title TEXT,
           value TEXT,
-          date TEXT
+          date TEXT,
+          archived INTEGER
           );`,
         `CREATE TABLE IF NOT EXISTS note_setting(
           id INTEGER PRIMARY KEY,

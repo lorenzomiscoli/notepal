@@ -19,5 +19,5 @@
 </div>
 <app-notes-delete-alert [isOpen]="isDeleteAlertOpen" (close)="toggleDeleteAlert(false)"
   [notes]="getSelectedNotes()"></app-notes-delete-alert>
-<ion-toast [duration]="3500" [isOpen]="isArchiveToastOpen" #archiveToast
-  (ionToastDidDismiss)="isArchiveToastOpen=false"></ion-toast>
+<ion-toast [duration]="2500" [isOpen]="isArchiveToastOpen" #archiveToast (ionToastDidDismiss)="isArchiveToastOpen=false"
+  [buttons]="archiveToastButtons"></ion-toast>

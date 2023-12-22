@@ -13,5 +13,6 @@
   "delete": "Delete",
   "sortBy": "Sort by",
   "name": "Name",
-  "modifiedDate": "Modified Date"
+  "modifiedDate": "Modified Date",
+  "undo": "Undo"
 }

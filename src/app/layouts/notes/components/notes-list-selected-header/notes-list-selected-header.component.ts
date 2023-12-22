@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 
-import { IonToast } from "@ionic/angular/standalone";
+import { IonToast, ToastButton } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -22,12 +22,15 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
   private archiveMessage!: { single: string, multi: string };
   public isArchiveToastOpen = false;
   @ViewChild("archiveToast") private archiveToast!: IonToast;
+  public archiveToastButtons!: ToastButton[];
+  private lastArchivedIds!: number[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private notesService: NotesService, private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.createArchiveTranslations();
+    this.createArchiveButtons();
   }
 
   public cancel(): void {
@@ -62,11 +65,28 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
+  private createArchiveButtons(): void {
+    this.archiveToastButtons = [
+      {
+        text: this.translateService.instant("undo"),
+        role: 'info',
+        handler: () => this.unarchiveNotes()
+      }
+    ];
+  }
+
+  public unarchiveNotes(): void {
+    this.notesService.unarchiveNotes(this.lastArchivedIds).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.lastArchivedIds = [];
+    });
+  }
+
   public archiveNotes(): void {
     let notes = this.getSelectedNotes().map(note => note.id);
     this.archiveToast.message = notes.length > 1 ? this.archiveMessage.multi : this.archiveMessage.single;
     this.notesService.archiveNotes(notes).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.isArchiveToastOpen = true;
+      this.lastArchivedIds = notes;
     });
   }
 

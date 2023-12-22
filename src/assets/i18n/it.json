@@ -13,5 +13,6 @@
   "delete": "Elimina",
   "sortBy": "Ordina per",
   "name": "Nome",
-  "modifiedDate": "Data di modifica"
+  "modifiedDate": "Data di modifica",
+  "undo": "Ripristina"
 }

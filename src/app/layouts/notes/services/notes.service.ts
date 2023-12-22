@@ -53,4 +53,11 @@ export class NotesService {
     }));
   }
 
+  public unarchiveNotes(ids: number[]): Observable<any> {
+    const sql = "UPDATE note SET archived = 0 WHERE id IN (" + ids.join() + ");";
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
 }

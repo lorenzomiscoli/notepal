@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
+import { Platform } from "@ionic/angular";
+
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
 import { NotesService } from "../../services/notes.service";
-import { Platform } from "@ionic/angular";
 
 @Component({
   templateUrl: "./notes-list.component.html",
@@ -43,7 +44,7 @@ export class NotesListComponent implements OnInit {
         note.isSelected = true;
       }
     } else {
-      this.router.navigate(["save"], { relativeTo: this.route, queryParams: { id: note.id } });
+      this.router.navigate(["../save"], { relativeTo: this.route, queryParams: { id: note.id } });
     }
   }
 

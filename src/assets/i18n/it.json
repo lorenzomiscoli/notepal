@@ -14,5 +14,9 @@
   "sortBy": "Ordina per",
   "name": "Nome",
   "modifiedDate": "Data di modifica",
-  "undo": "Ripristina"
+  "undo": "Ripristina",
+  "notes": "Note",
+  "search": "Cerca",
+  "calendar": "Calendario",
+  "more": "Altro"
 }

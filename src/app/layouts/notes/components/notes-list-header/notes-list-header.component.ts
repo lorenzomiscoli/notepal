@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 
 import { IonModal } from "@ionic/angular/standalone";
+import { Subject, takeUntil } from "rxjs";
 
 import { NOTES_LIST_HEADER_DEPS } from "./notes-list-header.dependencies";
-import { SortMode, ViewMode } from "../../interfaces/note.interface";
 import { NoteSetting } from './../../interfaces/note.interface';
 import { NotesSettingService } from "../../services/notes-setting.service";
-import { Subject, takeUntil } from "rxjs";
+import { SortMode, ViewMode } from "../../interfaces/note.interface";
 
 @Component({
   selector: "app-notes-list-header",
@@ -29,7 +29,8 @@ export class NotesListHeaderComponent implements OnInit, OnDestroy {
   constructor(private notesSettingService: NotesSettingService) { }
 
   ngOnInit(): void {
-    this.notesSettingService.getNoteSetting().subscribe((noteSetting) => this.updateData(noteSetting))
+    this.notesSettingService.getNoteSetting().pipe(takeUntil(this.destroy$))
+      .subscribe((noteSetting) => this.updateData(noteSetting));
   }
 
   public changeView(viewMode: ViewMode): void {

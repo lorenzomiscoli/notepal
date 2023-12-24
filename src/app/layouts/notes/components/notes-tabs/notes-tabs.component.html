@@ -1,0 +1,21 @@
+<ion-router-outlet></ion-router-outlet>
+<ion-tabs>
+  <ion-tab-bar slot="bottom" color="light">
+    <ion-tab-button tab="list">
+      <ion-icon name="document-outline"></ion-icon>
+      {{ 'notes' | translate }}
+    </ion-tab-button>
+    <ion-tab-button tab="search">
+      <ion-icon name="search-outline"></ion-icon>
+      {{ 'search' | translate }}
+    </ion-tab-button>
+    <ion-tab-button tab="calendar">
+      <ion-icon name="calendar-outline"></ion-icon>
+      {{ 'calendar' | translate }}
+    </ion-tab-button>
+    <ion-tab-button tab="favorites">
+      <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+      {{ 'more' | translate }}
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

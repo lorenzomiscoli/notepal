@@ -14,5 +14,9 @@
   "sortBy": "Sort by",
   "name": "Name",
   "modifiedDate": "Modified Date",
-  "undo": "Undo"
+  "undo": "Undo",
+  "notes":"Notes",
+  "search": "Search",
+  "calendar": "Calendar",
+  "more": "More"
 }

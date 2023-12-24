@@ -1,24 +1,17 @@
-<div class="toolbar" id="main-content">
-  <ion-buttons>
-    <ion-menu-toggle>
-      <ion-button>
-        <ion-icon name="menu-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-menu-toggle>
-    <span class="app-title">Notepal</span>
-  </ion-buttons>
+<div class="toolbar">
+  <span class="app-title">Notepal</span>
   <ion-buttons>
     <ion-button>
-      <ion-icon name="search-outline" slot="icon-only"></ion-icon>
+      <ion-icon name="folder-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+    <ion-button (click)="openSortModal(true)">
+      <ion-icon name="swap-vertical-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="changeView(viewModeType.LIST)" *ngIf="isGridView()">
       <ion-icon name="list-outline" slot="icon-only"></ion-icon>
     </ion-button>
     <ion-button (click)="changeView(viewModeType.GRID)" *ngIf="!isGridView()">
       <ion-icon name="grid-outline" slot="icon-only"></ion-icon>
-    </ion-button>
-    <ion-button (click)="openSortModal(true)">
-      <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
 </div>
@@ -46,5 +39,3 @@
     </div>
   </ng-template>
 </ion-modal>
-<ion-menu contentId="main-content">
-</ion-menu>

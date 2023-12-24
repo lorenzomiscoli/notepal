@@ -1,0 +1,12 @@
+ion-tab-bar {
+  border-top: 0;
+}
+
+ion-tab-button {
+  --color-selected: var(--ion-color-primary);
+  color: var(--ion-color-light-contrast);
+}
+
+ion-tab-button.tab-selected {
+  color: var(--ion-color-primary);
+}

@@ -1,8 +1,17 @@
-ion-fab-button {
-  width: 52px;
-  height: 52px;
+:host {
+  background-color: var(--ion-color-light);
+}
 
-  ion-icon {
-    font-size: 32px;
+ion-fab {
+  margin-bottom: calc(var(--ion-safe-area-bottom, 0) + 10px);
+  right: var(--content-margin);
+
+  ion-fab-button {
+    width: 52px;
+    height: 52px;
+
+    ion-icon {
+      font-size: 32px;
+    }
   }
 }

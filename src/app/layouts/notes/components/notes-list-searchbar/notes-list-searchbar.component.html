@@ -1,6 +1,0 @@
-<div class="searchbar">
-  <ion-icon name="search-outline"></ion-icon>
-  <input type="text" placeholder="{{'search-notes' | translate}}" (keyup)="onSearch(searchInput.value)"
-    [(ngModel)]="filterValue" #searchInput>
-  <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onSearch('')"></ion-icon>
-</div>

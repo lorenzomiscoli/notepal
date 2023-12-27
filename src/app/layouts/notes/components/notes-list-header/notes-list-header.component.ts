@@ -7,6 +7,7 @@ import { NOTES_LIST_HEADER_DEPS } from "./notes-list-header.dependencies";
 import { NoteSetting } from './../../interfaces/note.interface';
 import { NotesSettingService } from "../../services/notes-setting.service";
 import { SortMode, ViewMode } from "../../interfaces/note.interface";
+import { environment } from './../../../../../environments/environment';
 
 @Component({
   selector: "app-notes-list-header",
@@ -18,8 +19,8 @@ import { SortMode, ViewMode } from "../../interfaces/note.interface";
 export class NotesListHeaderComponent implements OnInit, OnDestroy {
   @Output() public viewChange = new EventEmitter<ViewMode>();
   @Output() public sortChange = new EventEmitter<SortMode>();
-  public viewMode = ViewMode.GRID;
-  public sortMode = SortMode.MODIFIED_DATE;
+  public viewMode = environment.viewMode;
+  public sortMode = environment.sortMode;
   public isSortModalOpen = false;
   @ViewChild(IonModal) sortModal!: IonModal;
   public viewModeType: typeof ViewMode = ViewMode;

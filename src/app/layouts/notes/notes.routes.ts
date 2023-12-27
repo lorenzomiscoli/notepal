@@ -10,6 +10,9 @@ export const NOTES_ROUTES: Routes = [
       {
         path: "list", loadComponent: () => import('./components/notes-list/notes-list.component').then(m => m.NotesListComponent)
       },
+      {
+        path: "search", loadComponent: () => import('./components/notes-search/notes-search.component').then(m => m.NotesSearchComponent)
+      },
     ]
   },
   {

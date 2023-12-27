@@ -1,0 +1,15 @@
+<div class="content">
+  <div class="searchbar">
+    <ion-icon name="search-outline"></ion-icon>
+    <input type="text" placeholder="{{'search-notes' | translate}}" (keyup)="onSearch(searchInput.value)"
+      [(ngModel)]="filterValue" #searchInput>
+    <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onSearch('')"></ion-icon>
+  </div>
+  <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
+    <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"></app-notes-card>
+  </div>
+  <div class="empty-content-container" *ngIf="notes.length === 0 && isSearch">
+    <img src="assets/images/not-found.svg" alt="Not found" width="200" height="200">
+    <p>{{'noNotesFound' | translate}}</p>
+  </div>
+</div>

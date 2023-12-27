@@ -1,12 +1,13 @@
 .searchbar {
-  background-color: #fff;
+  --background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
+  background-color: var(--background);
   border-radius: 200px;
   display: flex;
   align-items: center;
   padding-left: 15px;
   padding-right: 15px;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 10px;
-  margin: 30px 0 20px 0;
+  margin-bottom: 20px;
 
   input {
     border: 0;

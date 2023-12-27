@@ -18,5 +18,7 @@
   "notes": "Note",
   "search": "Cerca",
   "calendar": "Calendario",
-  "more": "Altro"
+  "more": "Altro",
+  "emptyNotes":"Inizia ad organizzare le tue note",
+  "noNotesFound":"Nessuna nota corrispondente"
 }

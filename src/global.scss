@@ -26,8 +26,26 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 :root {
+  --ion-padding: 16px;
   --content-margin: 16px;
   --content-margin--: calc(var(--content-margin) * -1);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--ion-padding);
+  background-color: var(--ion-color-light);
+  overflow: auto;
+}
+
+.empty-content-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 }
 
 .toolbar {
@@ -42,4 +60,10 @@ html[mode="ios"] .toolbar {
 
 html[mode="md"] .toolbar {
   padding: 4px;
+}
+
+.card-grid {
+  column-count: 2;
+  width: 100%;
+  column-gap: 20px
 }

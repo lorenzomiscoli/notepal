@@ -60,4 +60,9 @@ export class NotesService {
     }));
   }
 
+  public searchNotes(search: string): Observable<Note[]> {
+    return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0 AND title LIKE '%"+search+"%'"))
+      .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
 }

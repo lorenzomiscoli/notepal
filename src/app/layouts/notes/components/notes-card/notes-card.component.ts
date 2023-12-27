@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { NOTES_CARD_DEPS } from "./noets-card.dependencies";
+import { NOTES_CARD_DEPS } from "./notes-card.dependencies";
 import { Note } from "../../interfaces/note.interface";
 
 @Component({
@@ -11,5 +11,4 @@ import { Note } from "../../interfaces/note.interface";
 })
 export class NotesCardComponent {
   @Input({ required: true }) note!: Note;
-
 }

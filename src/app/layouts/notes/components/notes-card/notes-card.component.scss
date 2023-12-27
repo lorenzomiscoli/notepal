@@ -3,6 +3,7 @@
   --card-title-color: var(--ion-color-step-850, #262626);
   --card-background: var(--ion-card-background, var(--ion-item-background, var(--ion-background-color, #fff)));
   --card-margin: 20px;
+  display: block;
 }
 
 .card {
@@ -35,4 +36,8 @@
 .ripple-parent {
   position: relative;
   overflow: hidden;
+}
+
+.activated {
+  border: 2px solid var(--ion-color-primary);
 }

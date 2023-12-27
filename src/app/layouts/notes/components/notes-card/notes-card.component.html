@@ -1,4 +1,4 @@
-<div class="card ion-activatable ripple-parent">
+<div class="card ion-activatable ripple-parent" [ngClass]="{'activated':note.isSelected}">
   <ion-ripple-effect></ion-ripple-effect>
   <div class="card-title">{{note.title}}</div>
   <div class="card-content">{{note.value}}</div>

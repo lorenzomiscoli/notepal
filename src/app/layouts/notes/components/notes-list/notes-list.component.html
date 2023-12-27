@@ -2,13 +2,9 @@
 <app-notes-list-selected-header *ngIf="selectedMode" (close)="deselectAll()"
   [notes]="notes"></app-notes-list-selected-header>
 <div class="content">
-  <div class="grid" [ngClass]="{'grid': viewMode === 'grid'}">
-    <div class="card ion-activatable ripple-parent" *ngFor="let note of notes | appSortNotes:sortMode" appLongPress
-      (tap)="tap(note)" (press)="press(note)" [ngClass]="{'activated':note.isSelected}">
-      <ion-ripple-effect></ion-ripple-effect>
-      <div class="card-title">{{note.title}}</div>
-      <div class="card-content">{{note.value | appLineClamp}}</div>
-    </div>
+  <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
+    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode" appLongPress (tap)="tap(note)"
+      (press)="press(note)" [note]="note"></app-notes-card>
   </div>
   <div class="empty-content-container" *ngIf="notes.length === 0">
     <img src="assets/images/add-note.svg" alt="Add note" width="200" height="200">

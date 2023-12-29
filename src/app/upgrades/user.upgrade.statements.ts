@@ -8,12 +8,18 @@ export class UserUpgradeStatements {
           title TEXT,
           value TEXT,
           date TEXT,
-          archived INTEGER
+          archived INTEGER,
+          category_id INTEGER,
+          FOREIGN KEY (category_id) REFERENCES note_category(id) ON DELETE SET NULL
           );`,
         `CREATE TABLE IF NOT EXISTS note_setting(
           id INTEGER PRIMARY KEY,
           view_mode TEXT,
           sort_mode TEXT
+          );`,
+        `CREATE TABLE IF NOT EXISTS note_category(
+          id INTEGER PRIMARY KEY,
+          name TEXT NOT NULL UNIQUE
           );`
       ],
     },

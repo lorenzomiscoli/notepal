@@ -20,5 +20,8 @@
   "calendar": "Calendar",
   "more": "More",
   "emptyNotes":"Start organizing your notes",
-  "noNotesFound":"No matching notes"
+  "noNotesFound":"No matching notes",
+  "categories": "Categories",
+  "manage": "Manage",
+  "all":"All"
 }

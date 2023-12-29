@@ -8,6 +8,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 import { Note, NoteForm } from "../../interfaces/note.interface";
 import { NotesService } from "../../services/notes.service";
+import { NotesCategoryService } from "../../services/notes-category.service";
 
 @Component({
   templateUrl: "./notes-save.component.html",
@@ -25,7 +26,11 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   @ViewChild("textArea") textArea!: IonTextarea;
   public deleteAlertBtns!: AlertButton[];
 
-  constructor(private notesService: NotesService, private translateService: TranslateService, private router: Router) {
+  constructor(
+    private notesService: NotesService,
+    private notesCategoryService: NotesCategoryService,
+    private translateService: TranslateService,
+    private router: Router) {
     this.date = new Date().toISOString();
     this.locale = translateService.currentLang;
     this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -61,6 +66,7 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   public saveNote(): void {
     let note: Note = this.form.value;
     note.date = new Date().toISOString();
+    note.categoryId = this.notesCategoryService.selectedCategory$.value;
     if (this.checkEmptyNote()) return;
     if (this.id) {
       if (this.isDirty) {

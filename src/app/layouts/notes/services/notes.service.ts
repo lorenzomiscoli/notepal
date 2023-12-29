@@ -18,6 +18,11 @@ export class NotesService {
     return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0")).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
+  public getNotesByCategoryId(id: number): Observable<Note[]> {
+    return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0 AND category_id = ?", [id]))
+      .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
   public getNoteById(id: number): Observable<Note | undefined> {
     return from(this.storageService.db.query("SELECT * FROM note WHERE id = ?", [id])).pipe(map((value: DBSQLiteValues) => {
       const notes = value.values as Note[];
@@ -26,8 +31,8 @@ export class NotesService {
   }
 
   public addNote(note: Note): Observable<number> {
-    const sql = `INSERT INTO note (title, value, date, archived) VALUES (?, ?, ?, 0);`;
-    return from(this.storageService.db.run(sql, [note.title, note.value, note.date], true)).pipe(tap(() => {
+    const sql = `INSERT INTO note (title, value, date, archived, category_id) VALUES (?, ?, ?, 0, ?);`;
+    return from(this.storageService.db.run(sql, [note.title, note.value, note.date, note.categoryId], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }), map((value: capSQLiteChanges) => value.changes?.lastId as number));
   }
@@ -61,8 +66,13 @@ export class NotesService {
   }
 
   public searchNotes(search: string): Observable<Note[]> {
-    return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0 AND title LIKE '%"+search+"%'"))
+    return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0 AND title LIKE '%" + search + "%'"))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
+  public countNotes(): Observable<{ totalNotes: number }> {
+    return from(this.storageService.db.query("SELECT COUNT(n.id) as totalNotes FROM note n WHERE n.archived = 0"))
+      .pipe(map((value: DBSQLiteValues) => value.values![0] as { totalNotes: number }));
   }
 
 }

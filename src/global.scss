@@ -67,3 +67,8 @@ html[mode="md"] .toolbar {
   width: 100%;
   column-gap: 20px
 }
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}

@@ -1,12 +1,10 @@
 import { NgIf } from "@angular/common";
+import { RouterLink } from "@angular/router";
 
 import {
   IonButton,
   IonButtons,
-  IonContent,
   IonIcon,
-  IonMenu,
-  IonMenuToggle,
   IonModal,
   IonRadio,
   IonRadioGroup
@@ -15,12 +13,10 @@ import { TranslateModule } from "@ngx-translate/core";
 
 export const NOTES_LIST_HEADER_DEPS = [
   NgIf,
+  RouterLink,
   IonButton,
   IonButtons,
-  IonContent,
   IonIcon,
-  IonMenu,
-  IonMenuToggle,
   IonModal,
   IonRadio,
   IonRadioGroup,

@@ -12,11 +12,13 @@ export const NOTES_ROUTES: Routes = [
       },
       {
         path: "search", loadComponent: () => import('./components/notes-search/notes-search.component').then(m => m.NotesSearchComponent)
-      },
+      }
     ]
   },
   {
     path: "save", loadComponent: () => import('./components/notes-save/notes-save.component').then(m => m.NotesSaveComponent)
   },
-
+  {
+    path: "categories", loadComponent: () => import('./components/notes-categories/notes-categories.component').then(m => m.NotesCategories)
+  }
 ];

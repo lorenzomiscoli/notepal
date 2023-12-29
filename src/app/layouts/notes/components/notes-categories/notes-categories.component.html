@@ -1,0 +1,58 @@
+<div class="toolbar" *ngIf="!selectedMode; else elseBlock">
+  <ion-buttons>
+    <ion-back-button defaultHref="/notes/list" text=""></ion-back-button>
+    <div class="title">{{'categories'|translate}}</div>
+  </ion-buttons>
+</div>
+<ng-template #elseBlock>
+  <div class="toolbar">
+    <ion-buttons>
+      <ion-button (click)="deselectAll()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+      <div class="notes-counter">{{getSelectedCategories().length}}</div>
+    </ion-buttons>
+    <ion-buttons>
+      <ion-button (click)="toggleSelect()">
+        <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
+      </ion-button>
+      <ion-button [disabled]="getSelectedCategories().length !== 1">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+      <ion-button>
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+</ng-template>
+<div class="content">
+  <ul class="categories">
+    <li class="category-item ion-activatable ripple-parent" *ngFor="let category of categories" appLongPress
+      (tap)="onTap(category)" (press)="onPress(category)">
+      <ion-ripple-effect></ion-ripple-effect>
+      <div class="category-item-details">
+        <ion-icon name="checkmark-sharp" [ngStyle]="{'visibility': category.isDefault ? 'visible' : 'hidden' }"
+          class="category-icon category-item-icon"></ion-icon>
+        <p>{{category.name}}</p>
+      </div>
+      <div *ngIf="category.isSystem; else elseBlock">
+        <p class="category-item-note">{{totalNotes}}</p>
+      </div>
+      <ng-template #elseBlock>
+        <div *ngIf="selectedMode" class="category-item-check-container">
+          <ion-icon name="ellipse-outline" *ngIf="!category.isSelected" class="category-icon"></ion-icon>
+          <ion-icon name="checkmark-circle" *ngIf="category.isSelected"
+            class="category-icon category-item-icon-check"></ion-icon>
+        </div>
+        <div *ngIf="!selectedMode">
+          <p class="category-item-note">{{category.notesCount}}</p>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <div class="add-category ion-activatable ripple-parent" *ngIf="!selectedMode">
+    <ion-ripple-effect></ion-ripple-effect>
+    <ion-icon name="add-circle"></ion-icon>
+    <span>Add category</span>
+  </div>
+</div>

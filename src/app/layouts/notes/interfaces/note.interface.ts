@@ -5,6 +5,7 @@ export interface Note {
   title: string;
   value: string;
   date: string;
+  categoryId: number | undefined;
   isSelected?: boolean;
 }
 
@@ -12,6 +13,15 @@ export interface NoteSetting {
   id: number,
   viewMode: ViewMode;
   sortMode: SortMode;
+}
+
+export interface NoteCategory {
+  id: number,
+  name: string,
+  notesCount?: number;
+  isSelected?: boolean;
+  isDefault?: boolean;
+  isSystem?: boolean;
 }
 
 export interface NoteForm {

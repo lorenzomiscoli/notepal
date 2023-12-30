@@ -12,6 +12,7 @@ import {
 import { TranslateModule } from "@ngx-translate/core";
 
 import { LongPressDirective } from './../../../../directives/long-press.directive';
+import { NotesCategoriesSelectedHeader } from "../notes-categories-selected-header/notes-categories-selected-header.component";
 
 export const NOTES_CATEGORIES_DEPS = [
   NgFor,
@@ -25,5 +26,6 @@ export const NOTES_CATEGORIES_DEPS = [
   IonAlert,
   IonRippleEffect,
   TranslateModule,
-  LongPressDirective
+  LongPressDirective,
+  NotesCategoriesSelectedHeader
 ];

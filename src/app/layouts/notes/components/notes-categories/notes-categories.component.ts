@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 
-import { Subject, finalize, from, map, of, switchMap, take, takeUntil } from "rxjs";
-import { TranslateService } from "@ngx-translate/core";
 import { AlertButton, AlertInput, Platform } from "@ionic/angular";
+import { ToastController } from "@ionic/angular/standalone";
+import { Subject, finalize, from, map, switchMap, takeUntil } from "rxjs";
+import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_CATEGORIES_DEPS } from "./notes-categories.dependencies";
 import { NoteCategory } from "../../interfaces/note.interface";
 import { NotesCategoryService } from "../../services/notes-category.service";
 import { NotesService } from "../../services/notes.service";
-import { Toast } from "@capacitor/toast";
-import { ToastController } from "@ionic/angular/standalone";
 
 @Component({
   templateUrl: "./notes-categories.component.html",
@@ -23,17 +22,10 @@ export class NotesCategories implements OnInit, OnDestroy {
   public totalNotes: number = 0;
   public selectedMode = false;
   public isInsertAlertOpen = false;
-  public isUpdateAlertOpen = false;
-  public isDeleteAlertOpen = false;
-  private destroy$: Subject<boolean> = new Subject<boolean>();
   public alertButtons: AlertButton[] = [];
   public alertInputs: AlertInput[] = [];
-  public alertUpdateButtons: AlertButton[] = [];
-  public alertUpdateInputs: AlertInput[] = [];
-  public alertDeleteButtons: AlertButton[] = [];
-  public isAlreadyExistsToastOpen = false;
   public isLoading = false;
-  public toastTranslations!: { categoryAlreadyExists: string, categoryCannotBeEmpty: string };
+  private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private notesService: NotesService,
@@ -45,11 +37,8 @@ export class NotesCategories implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getAllCategories();
-    this.handleBackButton();
     this.createAlertContent();
-    this.createUpdateAlertContent();
-    this.createDeleteAlertContent();
-    this.createToastTranslations();
+    this.handleBackButton();
   }
 
   ngOnDestroy(): void {
@@ -88,10 +77,6 @@ export class NotesCategories implements OnInit, OnDestroy {
     })
     categories.unshift({ name: this.translateService.instant("all"), isDefault: !selected, isSystem: true } as NoteCategory);
     return categories;
-  }
-
-  public getSelectedCategories(): NoteCategory[] {
-    return this.categories.filter(category => category.isSelected);
   }
 
   public onTap(category: NoteCategory): void {
@@ -135,23 +120,9 @@ export class NotesCategories implements OnInit, OnDestroy {
 
   public deselectAll(): void {
     this.selectedMode = false;
-    this.categories.forEach(category => this.changeSelection(category, false));
-  }
-
-  public toggleSelect(): void {
-    const selectedCategories = this.categories.filter(category => category.isSelected === true && !category.isSystem).length;
-    const categories = this.categories.filter(category => !category.isSystem);
-    if (selectedCategories === categories.length) {
-      this.categories.forEach(category => this.changeSelection(category, false));
-    } else {
-      this.categories.forEach(category => this.changeSelection(category, true));
-    }
-  }
-
-  private changeSelection(category: NoteCategory, isSelected: boolean): void {
-    if (!category.isSystem) {
-      category.isSelected = isSelected;
-    }
+    this.categories.forEach(category => {
+      if (!category.isSystem) category.isSelected = false
+    });
   }
 
   private createAlertContent(): void {
@@ -165,7 +136,7 @@ export class NotesCategories implements OnInit, OnDestroy {
     {
       text: insertText,
       role: 'confirm',
-      handler: (value) => this.saveCategory(value)
+      handler: (value) => this.insertCategory(value)
     }];
     this.alertInputs = [
       {
@@ -177,56 +148,9 @@ export class NotesCategories implements OnInit, OnDestroy {
     ]
   }
 
-  private createUpdateAlertContent(): void {
-    const cancelText = this.translateService.instant("cancel");
-    const updateText = this.translateService.instant("update");
-    const categoryNameText = this.translateService.instant("categoryName");
-    this.alertUpdateButtons = [{
-      text: cancelText,
-      role: 'cancel',
-    },
-    {
-      text: updateText,
-      role: 'confirm',
-      handler: (value) => this.updateCategory(value)
-    }];
-    this.alertUpdateInputs = [
-      {
-        type: "text",
-        name: "nameUpdate",
-        id: 'nameUpdate',
-        placeholder: categoryNameText
-      }
-    ]
-  }
-
-  private createDeleteAlertContent(): void {
-    const cancelText = this.translateService.instant("cancel");
-    const deleteText = this.translateService.instant("delete");
-    this.alertDeleteButtons = [
-      {
-        text: cancelText,
-        role: 'cancel',
-      },
-      {
-        cssClass: "cancel-btn",
-        text: deleteText,
-        role: 'confirm',
-        handler: () => this.deleteCategory()
-      },
-    ];
-  }
-
-  private createToastTranslations(): void {
-    this.toastTranslations = {
-      categoryAlreadyExists: this.translateService.instant("categoryAlreadyExists"),
-      categoryCannotBeEmpty: this.translateService.instant("categoryCannotBeEmpty")
-    }
-  }
-
-  private saveCategory(value: { nameInsert: string }): boolean | void {
+  private insertCategory(value: { nameInsert: string }): boolean | void {
     if (!value.nameInsert) {
-      this.showError(this.toastTranslations.categoryCannotBeEmpty);
+      this.showError(this.translateService.instant("categoryCannotBeEmpty"));
       return false;
     }
     this.notesCategoryService.existsCategoryByName(value.nameInsert).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
@@ -241,66 +165,23 @@ export class NotesCategories implements OnInit, OnDestroy {
       },
       error: (err) => {
         if (err.isPresent) {
-          this.showError(this.toastTranslations.categoryAlreadyExists);
+          this.showError(this.translateService.instant("categoryAlreadyExists"));
         }
       }
     }));
-
-  }
-
-  private updateCategory(value: { nameUpdate: string }): boolean | void {
-    if (!value.nameUpdate) {
-      this.showError(this.toastTranslations.categoryCannotBeEmpty);
-      return false;
-    }
-    const id = this.getSelectedCategories()[0].id;
-    this.notesCategoryService.existsCategoryByIdAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
-      if (isPresent) {
-        throw { isPresent: true };
-      } else {
-        return this.notesCategoryService.updateNoteCategory(id, value.nameUpdate)
-      }
-    })).subscribe({
-      next: () => {
-        this.getSelectedCategories()[0].name = value.nameUpdate;
-      },
-      error: (err) => {
-        if (err.isPresent) {
-          this.showError(this.toastTranslations.categoryAlreadyExists);
-        }
-      }
-    });
-  }
-
-  private deleteCategory(): void {
-    let ids = this.getSelectedCategories().map(category => category.id);
-    this.notesCategoryService.deleteCategories(ids).subscribe(() => {
-      if (this.getSelectedCategories().some(category => category.isDefault)) {
-        let systemCategory = this.categories[0];
-        systemCategory.isDefault = true;
-        this.notesCategoryService.selectedCategory$.next(systemCategory.id);
-      }
-      this.categories = this.categories.filter(category => !ids.includes(category.id));
-    });
   }
 
   public openInsertAlert(): void {
     let input: HTMLInputElement | null = document.querySelector("#nameInsert");
-    if (input) input.value = "";
+    if (input) {
+      input.value = "";
+      input.dispatchEvent(new KeyboardEvent('input')); // Emit event to notify alert there's been a change
+    }
     this.isInsertAlertOpen = true;
   }
 
-  public openUpdateAlert(): void {
-    let input: HTMLInputElement | null = document.querySelector("#nameUpdate");
-    if (input) {
-      input.value = this.getSelectedCategories()[0].name;
-      input.dispatchEvent(new KeyboardEvent('input')); // Emit event to notify alert there's been a change
-    }
-    this.isUpdateAlertOpen = true;
-  }
-
-  public focusAlertInput(elementId: string): void {
-    let input: HTMLElement | null = document.querySelector(`#${elementId}`);
+  public focusAlertInput(): void {
+    let input: HTMLElement | null = document.querySelector(`#nameInsert`);
     if (input) input!.focus();
   }
 
@@ -311,6 +192,5 @@ export class NotesCategories implements OnInit, OnDestroy {
       position: "bottom",
     })).pipe(takeUntil(this.destroy$)).subscribe((value) => value.present());
   }
-
 }
 

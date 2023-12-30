@@ -1,0 +1,25 @@
+<div class="toolbar">
+  <ion-buttons>
+    <ion-button (click)="deselectAll()">
+      <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+    </ion-button>
+    <div class="notes-counter">{{getSelectedCategories().length}}</div>
+  </ion-buttons>
+  <ion-buttons>
+    <ion-button (click)="toggleSelect()">
+      <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
+    </ion-button>
+    <ion-button [disabled]="getSelectedCategories().length !== 1" (click)="openUpdateAlert()">
+      <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button (click)="isDeleteAlertOpen = true">
+      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</div>
+<ion-alert [isOpen]="isUpdateAlertOpen" header="{{'renameCategory'| translate}}" [buttons]="alertUpdateButtons"
+  [inputs]="alertUpdateInputs" (ionAlertDidDismiss)="isUpdateAlertOpen = false"
+  (ionAlertDidPresent)="focusAlertInput()"></ion-alert>
+<ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteCategory'| translate}}"
+  message="{{'deleteCategoryMsg' | translate}}" [buttons]="alertDeleteButtons"
+  (ionAlertDidDismiss)="isDeleteAlertOpen = false"></ion-alert>

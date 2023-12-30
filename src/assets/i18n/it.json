@@ -9,7 +9,7 @@
   "deleteNotes": "Eliminare # note?",
   "noteArchived": "Nota archiviata",
   "notesArchived": "Note archiviate",
-  "cancel": "Cancella",
+  "cancel": "Annulla",
   "delete": "Elimina",
   "sortBy": "Ordina per",
   "name": "Nome",
@@ -22,6 +22,17 @@
   "emptyNotes": "Inizia ad organizzare le tue note",
   "noNotesFound": "Nessuna nota corrispondente",
   "categories": "Categorie",
+  "category": "Categoria",
+  "categoryName": "Nome della categoria",
   "manage": "Gestisci",
-  "all":"Tutto"
+  "all": "Tutto",
+  "newCategory": "Nuova categoria",
+  "renameCategory": "Rinomina categoria",
+  "deleteCategory": "Elimina categoria",
+  "deleteCategoryMsg": "Le note associate verranno spostate in \"Senza categoria\" senza essere eliminate",
+  "categoryAlreadyExists": "Esiste già una categoria con lo stesso nome",
+  "categoryCannotBeEmpty": "La categoria non può essere vuota",
+  "update": "Aggiorna",
+  "insert": "Inserisci",
+  "add": "Aggiungi"
 }

@@ -16,16 +16,16 @@
       <ion-button (click)="toggleSelect()">
         <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
       </ion-button>
-      <ion-button [disabled]="getSelectedCategories().length !== 1">
+      <ion-button [disabled]="getSelectedCategories().length !== 1" (click)="openUpdateAlert()">
         <ion-icon slot="icon-only" name="create-outline"></ion-icon>
       </ion-button>
-      <ion-button>
+      <ion-button (click)="isDeleteAlertOpen = true">
         <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </div>
 </ng-template>
-<div class="content">
+<div class="content" *ngIf="!isLoading">
   <ul class="categories">
     <li class="category-item ion-activatable ripple-parent" *ngFor="let category of categories" appLongPress
       (tap)="onTap(category)" (press)="onPress(category)">
@@ -50,9 +50,19 @@
       </ng-template>
     </li>
   </ul>
-  <div class="add-category ion-activatable ripple-parent" *ngIf="!selectedMode">
-    <ion-ripple-effect></ion-ripple-effect>
-    <ion-icon name="add-circle"></ion-icon>
-    <span>Add category</span>
+  <div class="add-category-container" *ngIf="!selectedMode">
+    <ion-button expand="block" (click)="openInsertAlert()">
+      <ion-icon slot="start" name="add-circle"></ion-icon>
+      {{'add'|translate}} {{'category'|translate}}
+    </ion-button>
   </div>
 </div>
+<ion-alert [isOpen]="isInsertAlertOpen" header="{{'newCategory'| translate}}" [buttons]="alertButtons"
+  [inputs]="alertInputs" (ionAlertDidDismiss)="isInsertAlertOpen = false"
+  (ionAlertDidPresent)="focusAlertInput('nameInsert')"></ion-alert>
+<ion-alert [isOpen]="isUpdateAlertOpen" header="{{'renameCategory'| translate}}" [buttons]="alertUpdateButtons"
+  [inputs]="alertUpdateInputs" (ionAlertDidDismiss)="isUpdateAlertOpen = false"
+  (ionAlertDidPresent)="focusAlertInput('nameUpdate')"></ion-alert>
+<ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteCategory'| translate}}"
+  message="{{'deleteCategoryMsg' | translate}}" [buttons]="alertDeleteButtons"
+  (ionAlertDidDismiss)="isDeleteAlertOpen = false"></ion-alert>

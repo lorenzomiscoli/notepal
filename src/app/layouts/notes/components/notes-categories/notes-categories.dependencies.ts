@@ -2,6 +2,7 @@ import { NgFor, NgIf, NgStyle } from "@angular/common";
 import { RouterLink } from "@angular/router";
 
 import {
+  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -21,6 +22,7 @@ export const NOTES_CATEGORIES_DEPS = [
   IonButton,
   IonButtons,
   IonIcon,
+  IonAlert,
   IonRippleEffect,
   TranslateModule,
   LongPressDirective

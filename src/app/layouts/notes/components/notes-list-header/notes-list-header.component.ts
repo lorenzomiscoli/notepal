@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 
 import { IonModal } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
@@ -17,6 +17,8 @@ import { environment } from './../../../../../environments/environment';
   imports: [NOTES_LIST_HEADER_DEPS]
 })
 export class NotesListHeaderComponent implements OnInit, OnDestroy {
+  @Output() viewChange = new EventEmitter<ViewMode>();
+  @Output() sortChange = new EventEmitter<SortMode>();
   public viewMode = environment.viewMode;
   public sortMode = environment.sortMode;
   public isSortModalOpen = false;
@@ -38,11 +40,13 @@ export class NotesListHeaderComponent implements OnInit, OnDestroy {
 
   public changeView(viewMode: ViewMode): void {
     this.viewMode = viewMode;
+    this.viewChange.emit(this.viewMode);
     this.saveNoteSetting();
   }
 
   public changeSort(event: CustomEvent): void {
     this.sortMode = event.detail.value;
+    this.sortChange.emit(this.sortMode);
     this.sortModal.dismiss();
     this.saveNoteSetting();
   }

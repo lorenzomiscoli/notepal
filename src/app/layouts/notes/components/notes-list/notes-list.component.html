@@ -1,4 +1,5 @@
-<app-notes-list-header *ngIf="!selectedMode"></app-notes-list-header>
+<app-notes-list-header *ngIf="!selectedMode" (viewChange)="viewMode = $event"
+  (sortChange)="sortMode = $event"></app-notes-list-header>
 <app-notes-list-selected-header *ngIf="selectedMode" (close)="deselectAll()"
   [notes]="notes"></app-notes-list-selected-header>
 <div class="content">

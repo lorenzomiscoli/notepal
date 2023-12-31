@@ -59,11 +59,10 @@ export class NotesListComponent implements OnInit, OnDestroy {
   }
 
   private getNotesSettings(): void {
-    this.notesSettingService.notesSettingsUpdated$.pipe(takeUntil(this.destroy$),
-      switchMap(() => this.notesSettingService.getNoteSetting())).subscribe(({ viewMode, sortMode }) => {
-        this.viewMode = viewMode;
-        this.sortMode = sortMode;
-      })
+    this.notesSettingService.getNoteSetting().pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode }) => {
+      this.viewMode = viewMode;
+      this.sortMode = sortMode;
+    })
   }
 
   private getNotesCategories(): void {

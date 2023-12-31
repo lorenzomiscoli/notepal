@@ -8,8 +8,8 @@
   <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"></app-notes-card>
   </div>
-  <div class="empty-content-container" *ngIf="notes.length === 0 && isSearch">
-    <img src="assets/images/not-found.svg" alt="Not found" width="200" height="200">
+  <div class="empty-content-container" [ngClass]="{'ion-hide': !isSearch || notes.length > 0}">
+    <img ngSrc="assets/images/not-found.svg" alt="Not found" width="200" height="200" priority>
     <p>{{'noNotesFound' | translate}}</p>
   </div>
 </div>

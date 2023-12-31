@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
-import { ViewDidEnter, ViewDidLeave } from "@ionic/angular";
+import { ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
 import { Subject, debounceTime, switchMap, takeUntil } from "rxjs";
 
 import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
@@ -16,7 +16,7 @@ import { environment } from './../../../../../environments/environment';
   standalone: true,
   imports: [NOTES_SEARCH_DEPS]
 })
-export class NotesSearchComponent implements OnInit, OnDestroy, ViewDidEnter, ViewDidLeave {
+export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewDidEnter {
   public filterValue = '';
   @ViewChild("searchInput") public searchInput!: ElementRef;
   public notes: Note[] = [];
@@ -32,29 +32,38 @@ export class NotesSearchComponent implements OnInit, OnDestroy, ViewDidEnter, Vi
     private route: ActivatedRoute) {
   }
 
-  ngOnInit(): void {
-    this.search$.pipe(takeUntil(this.destroy$), debounceTime(250), switchMap((value) => {
-      return this.notesService.searchNotes(value);
-    })).subscribe((value) => {
-      this.notes = value;
-      this.isSearch = true
-    })
-    this.notesSettingsService.notesSettingsUpdated$.pipe(takeUntil(this.destroy$),
-      switchMap(() => this.notesSettingsService.getNoteSetting())).subscribe((noteSetting) => {
-        this.viewMode = noteSetting.viewMode;
-      });
+  ionViewWillEnter(): void {
+    this.destroy$ = new Subject<boolean>();
+    this.getNotesSettings();
+    this.search();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+  ionViewWillLeave(): void {
+    this.cleanup();
   }
 
   ionViewDidEnter(): void {
     this.searchInput.nativeElement.focus();
   }
 
-  ionViewDidLeave(): void {
+  public search(): void {
+    this.search$.pipe(takeUntil(this.destroy$), debounceTime(250), switchMap((value) => {
+      return this.notesService.searchNotes(value);
+    })).subscribe((value) => {
+      this.notes = value;
+      this.isSearch = true
+    })
+  }
+
+  public getNotesSettings(): void {
+    this.notesSettingsService.getNoteSetting().pipe(takeUntil(this.destroy$)).subscribe((noteSetting) => {
+      this.viewMode = noteSetting.viewMode;
+    });
+  }
+
+  private cleanup(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
     this.filterValue = '';
     this.isSearch = false;
     this.notes = [];

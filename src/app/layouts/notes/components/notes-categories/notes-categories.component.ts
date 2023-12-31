@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from '@angular/router';
 
 import { AlertButton, AlertInput, Platform } from "@ionic/angular";
-import { ToastController } from "@ionic/angular/standalone";
-import { Subject, finalize, from, map, switchMap, takeUntil } from "rxjs";
+import { ToastController, ViewWillEnter, ViewWillLeave } from "@ionic/angular/standalone";
+import { Subject, Subscription, finalize, from, map, switchMap, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_CATEGORIES_DEPS } from "./notes-categories.dependencies";
@@ -17,7 +17,7 @@ import { NotesService } from "../../services/notes.service";
   standalone: true,
   imports: [NOTES_CATEGORIES_DEPS]
 })
-export class NotesCategories implements OnInit, OnDestroy {
+export class NotesCategories implements OnInit, OnDestroy, ViewWillEnter, ViewWillLeave {
   public categories: NoteCategory[] = [];
   public totalNotes: number = 0;
   public selectedMode = false;
@@ -25,6 +25,7 @@ export class NotesCategories implements OnInit, OnDestroy {
   public alertButtons: AlertButton[] = [];
   public alertInputs: AlertInput[] = [];
   public isLoading = false;
+  private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -36,12 +37,22 @@ export class NotesCategories implements OnInit, OnDestroy {
     private toastController: ToastController) { }
 
   ngOnInit(): void {
-    this.getAllCategories();
     this.createAlertContent();
     this.handleBackButton();
   }
 
   ngOnDestroy(): void {
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
+  }
+
+  ionViewWillEnter(): void {
+    this.destroy$ = new Subject<boolean>();
+    this.getAllCategories();
+  }
+
+  ionViewWillLeave(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
@@ -56,7 +67,7 @@ export class NotesCategories implements OnInit, OnDestroy {
   }
 
   private handleBackButton(): void {
-    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
       if (this.selectedMode) {
         this.deselectAll();
       }
@@ -192,5 +203,6 @@ export class NotesCategories implements OnInit, OnDestroy {
       position: "bottom",
     })).pipe(takeUntil(this.destroy$)).subscribe((value) => value.present());
   }
+
 }
 

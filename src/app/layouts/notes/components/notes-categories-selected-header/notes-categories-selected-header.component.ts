@@ -1,4 +1,3 @@
-import { NotesCategoryService } from './../../services/notes-category.service';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 
 import { AlertButton, AlertInput, ToastController } from "@ionic/angular/standalone";
@@ -7,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { NOTES_CATEGORIES_SELECTED_HEADER_DEPS } from "./notes-categories-selected-header.dependencies";
 import { NoteCategory } from "../../interfaces/note.interface";
+import { NotesCategoryService } from './../../services/notes-category.service';
 
 @Component({
   selector: "app-notes-categories-selected-header",
@@ -144,7 +144,7 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
 
   private deleteCategory(): void {
     let ids = this.getSelectedCategories().map(category => category.id);
-    this.notesCategoryService.deleteCategories(ids).subscribe(() => {
+    this.notesCategoryService.deleteCategories(ids).pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.getSelectedCategories().some(category => category.isDefault)) {
         let systemCategory = this.categories[0];
         systemCategory.isDefault = true;

@@ -12,7 +12,7 @@
     <ion-button [disabled]="getSelectedCategories().length !== 1" (click)="openUpdateAlert()">
       <ion-icon slot="icon-only" name="create-outline"></ion-icon>
     </ion-button>
-    <ion-button (click)="isDeleteAlertOpen = true">
+    <ion-button (click)="isDeleteAlertOpen = true" [disabled]="getSelectedCategories().length < 1">
       <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
     </ion-button>
   </ion-buttons>

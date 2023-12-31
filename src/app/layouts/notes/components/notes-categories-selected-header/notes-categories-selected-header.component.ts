@@ -124,7 +124,7 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
       return false;
     }
     const id = this.getSelectedCategories()[0].id;
-    this.notesCategoryService.existsCategoryByIdAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
+    this.notesCategoryService.existsCategoryByIdNotAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
       if (isPresent) {
         throw { isPresent: true };
       } else {

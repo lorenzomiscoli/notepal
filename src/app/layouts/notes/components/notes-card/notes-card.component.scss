@@ -13,10 +13,16 @@
   box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 10px;
   cursor: pointer;
   background: var(--card-background);
+  -webkit-column-break-inside: avoid;
+  -o-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  break-inside: avoid;
+  backface-visibility: hidden;
 }
 
 .card-title {
-  padding-inline: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   padding-top: 20px;
   padding-bottom: 16px;
   color: var(--card-title-color);

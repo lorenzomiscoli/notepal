@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Router } from '@angular/router';
 
 import { AlertButton, AlertInput, Platform } from "@ionic/angular";
-import { ToastController, ViewWillEnter, ViewWillLeave } from "@ionic/angular/standalone";
+import { NavController, ToastController } from "@ionic/angular/standalone";
 import { Subject, Subscription, finalize, from, map, switchMap, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -17,7 +16,7 @@ import { NotesService } from "../../services/notes.service";
   standalone: true,
   imports: [NOTES_CATEGORIES_DEPS]
 })
-export class NotesCategories implements OnInit, OnDestroy, ViewWillEnter, ViewWillLeave {
+export class NotesCategories implements OnInit, OnDestroy {
   public categories: NoteCategory[] = [];
   public totalNotes: number = 0;
   public selectedMode = false;
@@ -31,30 +30,23 @@ export class NotesCategories implements OnInit, OnDestroy, ViewWillEnter, ViewWi
   constructor(
     private notesService: NotesService,
     private notesCategoryService: NotesCategoryService,
-    private router: Router,
     private translateService: TranslateService,
     private platform: Platform,
-    private toastController: ToastController) { }
+    private toastController: ToastController,
+    private navController: NavController) { }
 
   ngOnInit(): void {
     this.createAlertContent();
+    this.getAllCategories();
     this.handleBackButton();
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
     if (this.backButtonSubscription) {
       this.backButtonSubscription.unsubscribe();
     }
-  }
-
-  ionViewWillEnter(): void {
-    this.destroy$ = new Subject<boolean>();
-    this.getAllCategories();
-  }
-
-  ionViewWillLeave(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
   }
 
   private getAllCategories(): void {
@@ -72,7 +64,7 @@ export class NotesCategories implements OnInit, OnDestroy, ViewWillEnter, ViewWi
         this.deselectAll();
       }
       else {
-        processNextHandler();
+        this.navController.pop();
       }
     });
   }
@@ -111,7 +103,7 @@ export class NotesCategories implements OnInit, OnDestroy, ViewWillEnter, ViewWi
       })
       category.isDefault = true;
       this.notesCategoryService.selectedCategory$.next(category.id);
-      this.router.navigate(["notes"])
+      this.navController.pop();
     }
   }
 

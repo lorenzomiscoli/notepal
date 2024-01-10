@@ -1,18 +1,16 @@
 import { Injectable } from "@angular/core";
 
 import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
-import { Observable, ReplaySubject, from, map, tap } from 'rxjs';
+import { Observable, Subject, from, map, tap } from 'rxjs';
 
 import { Note } from '../interfaces/note.interface';
 import { StorageService } from '../../../services/storage.service';
 
 @Injectable()
 export class NotesService {
-  public notesUpdated$ = new ReplaySubject<void>(1);
+  public notesUpdated$ = new Subject<void>();
 
-  constructor(private storageService: StorageService) {
-    this.notesUpdated$.next();
-  }
+  constructor(private storageService: StorageService) { }
 
   public getAllNotes(): Observable<Note[]> {
     return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0")).pipe(map((value: DBSQLiteValues) => value.values as Note[]));

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
@@ -18,7 +18,7 @@ import { environment } from './../../../../../environments/environment';
   standalone: true,
   imports: [NOTES_SEARCH_DEPS]
 })
-export class NotesSearchComponent implements OnInit, OnDestroy, ViewWillEnter, ViewWillLeave, ViewDidEnter {
+export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewDidEnter {
   @ViewChild("searchInput") public searchInput!: ElementRef;
   public filterValue = '';
   public notes: Note[] = [];
@@ -40,21 +40,12 @@ export class NotesSearchComponent implements OnInit, OnDestroy, ViewWillEnter, V
     private platform: Platform) {
   }
 
-  ngOnInit(): void {
-    this.handleBackButton();
-  }
-
-  ngOnDestroy(): void {
-    if (this.backButtonSubscription) {
-      this.backButtonSubscription.unsubscribe();
-    }
-  }
-
   ionViewWillEnter(): void {
     this.destroy$ = new Subject<boolean>();
     this.getNotesSettings();
     this.getNotesCategories();
     this.search();
+    this.handleBackButton();
   }
 
   ionViewWillLeave(): void {
@@ -118,6 +109,9 @@ export class NotesSearchComponent implements OnInit, OnDestroy, ViewWillEnter, V
   private cleanup(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
     this.filterValue = '';
     this.isSearch = false;
     this.filterMode = false;

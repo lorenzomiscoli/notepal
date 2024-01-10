@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
-import { Platform } from "@ionic/angular";
-import { Subject, switchMap, takeUntil } from "rxjs";
+import { Platform, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
+import { App } from "@capacitor/app";
+import { Subject, Subscription, merge, switchMap, take, takeUntil } from "rxjs";
 
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
@@ -11,18 +12,20 @@ import { NotesService } from "../../services/notes.service";
 import { NotesSettingService } from "../../services/notes-setting.service";
 import { environment } from './../../../../../environments/environment';
 
+
 @Component({
   templateUrl: "./notes-list.component.html",
   styleUrls: ["./notes-list.component.scss"],
   standalone: true,
   imports: [NOTES_LIST_DEPS]
 })
-export class NotesListComponent implements OnInit, OnDestroy {
+export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave {
   public notes: Note[] = [];
   public viewMode: ViewMode = environment.viewMode;
   public sortMode: SortMode = environment.sortMode;
   public selectedMode = false;
   private categoryId: number | undefined;
+  private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -30,54 +33,54 @@ export class NotesListComponent implements OnInit, OnDestroy {
     private notesSettingService: NotesSettingService,
     private notesCategoryService: NotesCategoryService,
     private router: Router,
-    private route: ActivatedRoute,
     private platform: Platform) { }
 
   ngOnInit(): void {
-    this.getNotes();
     this.getNotesSettings();
-    this.getNotesCategories();
+  }
+
+  ionViewWillEnter(): void {
+    this.destroy$ = new Subject<boolean>();
+    this.getNotes();
     this.handleBackButton();
   }
 
-  ngOnDestroy(): void {
+  ionViewWillLeave(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
-  }
-
-  private getNotes(): void {
-    this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$),
-      switchMap(() => {
-        if (this.categoryId) {
-          return this.notesService.getNotesByCategoryId(this.categoryId!);
-        } else {
-          return this.notesService.getAllNotes();
-        }
-      })).subscribe((value) => {
-        this.notes = value;
-      })
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
+    this.deselectAll();
   }
 
   private getNotesSettings(): void {
-    this.notesSettingService.getNoteSetting().pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode }) => {
+    this.notesSettingService.getNoteSetting().pipe(take(1)).subscribe(({ viewMode, sortMode }) => {
       this.viewMode = viewMode;
       this.sortMode = sortMode;
     })
   }
 
-  private getNotesCategories(): void {
-    this.notesCategoryService.selectedCategory$.subscribe((categoryId) => {
-      this.categoryId = categoryId
-      this.notesService.notesUpdated$.next();
-    });
+  private getNotes(): void {
+    merge(this.notesCategoryService.selectedCategory$, this.notesService.notesUpdated$)
+      .pipe(takeUntil(this.destroy$), switchMap((categoryId) => {
+        this.categoryId = categoryId as number | undefined;
+        if (this.categoryId) {
+          return this.notesService.getNotesByCategoryId(this.categoryId);
+        } else {
+          return this.notesService.getAllNotes();
+        }
+      })).subscribe(notes => this.notes = notes);
   }
 
   private handleBackButton(): void {
-    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
       if (this.selectedMode) {
         this.deselectAll();
       }
-      processNextHandler();
+      else {
+        App.exitApp();
+      }
     });
   }
 
@@ -90,7 +93,7 @@ export class NotesListComponent implements OnInit, OnDestroy {
         note.isSelected = true;
       }
     } else {
-      this.router.navigate(["../save"], { relativeTo: this.route, queryParams: { id: note.id } });
+      this.router.navigate(["/notes/save"], { queryParams: { id: note.id } });
     }
   }
 

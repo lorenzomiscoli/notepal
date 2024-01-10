@@ -70,6 +70,16 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
+
+  public searchNotesByCategoryId(categoryId: number, search: string): Observable<Note[]> {
+    if (search) {
+      return from(this.storageService.db.query("SELECT * FROM note WHERE archived = 0 AND category_id = ? AND title LIKE '%" + search + "%'", [categoryId]))
+        .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+    } else {
+      return this.getNotesByCategoryId(categoryId);
+    }
+  }
+
   public countNotes(): Observable<{ totalNotes: number }> {
     return from(this.storageService.db.query("SELECT COUNT(n.id) as totalNotes FROM note n WHERE n.archived = 0"))
       .pipe(map((value: DBSQLiteValues) => value.values![0] as { totalNotes: number }));

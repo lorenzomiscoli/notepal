@@ -1,5 +1,4 @@
 {
-  "search-notes": "Search notes",
   "back": "Back",
   "title": "Title",
   "dateFormat": "MMM d, y, h:mm a",
@@ -34,5 +33,7 @@
   "categoryCannotBeEmpty": "Category cannot be empty",
   "update": "Update",
   "insert": "Insert",
-  "add": "Add"
+  "add": "Add",
+  "searchNotes": "Search notes",
+  "searchIn":"Search in"
 }

@@ -1,13 +1,30 @@
-<div class="content">
-  <div class="searchbar">
-    <ion-icon name="search-outline"></ion-icon>
-    <input type="text" placeholder="{{'search-notes' | translate}}" (keyup)="onSearch(searchInput.value)"
-      [(ngModel)]="filterValue" #searchInput>
-    <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onSearch('')"></ion-icon>
+<div class="toolbar" [ngClass]="{'empty':!filterMode}">
+  <ion-buttons *ngIf="filterMode">
+    <ion-button (click)="resetBackButton()">
+      <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <div class="searchbar-container">
+    <div class="searchbar">
+      <ion-icon name="search-outline"></ion-icon>
+      <input type="text" placeholder="{{getSearchMessage()}}" (keyup)="onSearch(searchInput.value)"
+        [(ngModel)]="filterValue" #searchInput>
+      <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onSearch('')"></ion-icon>
+    </div>
   </div>
+</div>
+<div class="content">
   <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"></app-notes-card>
   </div>
+  <ng-container *ngIf="!filterMode && !isSearch">
+    <div class="categories">
+      <h3 class="categories-title">Categories</h3>
+      <ion-chip *ngFor="let category of categories" (click)="selectCategory(category)">
+        {{category.name}}
+      </ion-chip>
+    </div>
+  </ng-container>
   <div class="empty-content-container" [ngClass]="{'ion-hide': !isSearch || notes.length > 0}">
     <img ngSrc="assets/images/not-found.svg" alt="Not found" width="200" height="200" priority>
     <p>{{'noNotesFound' | translate}}</p>

@@ -7,7 +7,8 @@ export class UserUpgradeStatements {
           id INTEGER PRIMARY KEY,
           title TEXT,
           value TEXT,
-          date TEXT,
+          creation_date TEXT,
+          last_modified_date TEXT,
           archived INTEGER,
           category_id INTEGER,
           FOREIGN KEY (category_id) REFERENCES note_category(id) ON DELETE SET NULL

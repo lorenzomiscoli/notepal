@@ -59,13 +59,12 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   }
 
   private updateForm(note: Note): void {
-    this.date = note.date;
+    this.date = note.lastModifiedDate;
     this.form.patchValue(note, { emitEvent: false });
   }
 
   public saveNote(): void {
     let note: Note = this.form.value;
-    note.date = new Date().toISOString();
     note.categoryId = this.notesCategoryService.selectedCategory$.value;
     if (this.checkEmptyNote()) return;
     if (this.id) {
@@ -86,10 +85,13 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   }
 
   private insert(note: Note): void {
+    note.creationDate = new Date().toISOString();
+    note.lastModifiedDate = new Date().toISOString();
     this.notesService.addNote(note).subscribe((id) => this.id = id);
   }
 
   private update(note: Note): void {
+    note.lastModifiedDate = new Date().toISOString();
     this.notesService.updateNote(this.id, note).subscribe();
   }
 

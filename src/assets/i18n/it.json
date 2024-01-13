@@ -35,5 +35,6 @@
   "insert": "Inserisci",
   "add": "Aggiungi",
   "searchNotes": "Cerca note",
-  "searchIn":"Cerca in"
+  "searchIn":"Cerca in",
+  "noNotesHere":"Nessuna nota qui"
 }

@@ -12,6 +12,9 @@ export const NOTES_ROUTES: Routes = [
       },
       {
         path: "search", loadComponent: () => import('./components/notes-search/notes-search.component').then(m => m.NotesSearchComponent)
+      },
+      {
+        path: "calendar", loadComponent: () => import('./components/notes-calendar/notes-calendar.component').then(m => m.NotesCalendarComponent)
       }
     ]
   },

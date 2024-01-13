@@ -4,7 +4,8 @@ export interface Note {
   id: number,
   title: string;
   value: string;
-  date: string;
+  creationDate: string;
+  lastModifiedDate: string;
   categoryId: number | undefined;
   isSelected?: boolean;
 }

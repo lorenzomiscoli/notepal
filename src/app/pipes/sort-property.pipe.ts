@@ -50,7 +50,7 @@ export class SortNotesPipe implements PipeTransform {
   }
 
   private sortByModifiedDate(a: Note, b: Note): number {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
+    return new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime();
   }
 
 }

@@ -19,7 +19,7 @@
   </div>
   <ng-container *ngIf="!filterMode && !isSearch">
     <div class="categories">
-      <h3 class="categories-title">Categories</h3>
+      <h3 class="categories-title">{{'categories'|translate}}</h3>
       <ion-chip *ngFor="let category of categories" (click)="selectCategory(category)">
         {{category.name}}
       </ion-chip>

@@ -35,6 +35,10 @@
   "insert": "Insert",
   "add": "Add",
   "searchNotes": "Search notes",
-  "searchIn":"Search in",
-  "noNotesHere":"No notes here"
+  "searchIn": "Search in",
+  "noNotesHere": "No notes here",
+  "archive": "Archive",
+  "favorites": "Favorites",
+  "reminder": "Reminder",
+  "settings": "Settings"
 }

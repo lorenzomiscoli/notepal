@@ -1,14 +1,14 @@
-import { Component, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
 
-import { AlertButton, IonTextarea, ViewDidEnter } from "@ionic/angular/standalone";
+import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
+import { Subscription } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 import { Note, NoteForm } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
 import { NotesCategoryService } from "../../services/notes-category.service";
+import { NotesService } from "../../services/notes.service";
 
 @Component({
   templateUrl: "./notes-save.component.html",
@@ -16,7 +16,7 @@ import { NotesCategoryService } from "../../services/notes-category.service";
   standalone: true,
   imports: [NOTES_SAVE_DEPS]
 })
-export class NotesSaveComponent implements OnInit, ViewDidEnter {
+export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public form!: FormGroup;
   private isDirty = false;
   @Input() id!: number;
@@ -25,12 +25,14 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   public timezone: string;
   @ViewChild("textArea") textArea!: IonTextarea;
   public deleteAlertBtns!: AlertButton[];
+  private backButtonSubscription!: Subscription;
 
   constructor(
     private notesService: NotesService,
     private notesCategoryService: NotesCategoryService,
     private translateService: TranslateService,
-    private router: Router) {
+    private ionRouterOutlet: IonRouterOutlet,
+    private platform: Platform) {
     this.date = new Date().toISOString();
     this.locale = translateService.currentLang;
     this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -49,6 +51,19 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
       this.getNoteById(this.id);
     }
     this.createDeleteAlertBtns();
+    this.handleBackButton();
+  }
+
+  ngOnDestroy(): void {
+    if (this.backButtonSubscription) {
+      this.backButtonSubscription.unsubscribe();
+    }
+  }
+
+  private handleBackButton(): void {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
+      this.ionRouterOutlet.pop();
+    });
   }
 
   private initForm(): void {
@@ -100,7 +115,7 @@ export class NotesSaveComponent implements OnInit, ViewDidEnter {
   }
 
   private delete(): void {
-    this.notesService.delete([this.id]).subscribe(() => this.router.navigate(["/"]));
+    this.notesService.delete([this.id]).subscribe(() => this.ionRouterOutlet.pop());
   }
 
   private createDeleteAlertBtns(): void {

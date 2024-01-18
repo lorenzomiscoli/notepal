@@ -23,7 +23,12 @@ export class SortNotesPipe implements PipeTransform {
         break;
       };
     }
+    notes = notes.sort((a: Note, b: Note) => this.sortByPinned(a, b));
     return notes;
+  }
+
+  private sortByPinned(a: Note, b: Note): number {
+    return b.pinned - a.pinned;
   }
 
   private sortByName(a: Note, b: Note, isAscOrder: boolean): number {

@@ -19,7 +19,7 @@ export class NotesService {
       value,
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
-      archived,
+      pinned,
       category_id as categoryId
     FROM
       note
@@ -35,7 +35,7 @@ export class NotesService {
     value,
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
-    archived,
+    pinned,
     category_id as categoryId
   FROM
     note
@@ -52,7 +52,7 @@ export class NotesService {
     value,
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
-    archived,
+    pinned,
     category_id as categoryId
   FROM
     note
@@ -92,6 +92,20 @@ export class NotesService {
     }));
   }
 
+  public pinNotes(ids: number[]): Observable<any> {
+    const sql = `UPDATE note SET pinned = 1 WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public unpinNotes(ids: number[]): Observable<any> {
+    const sql = `UPDATE note SET pinned = 0 WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
   public unarchiveNotes(ids: number[]): Observable<any> {
     const sql = `UPDATE note SET archived = 0 WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
@@ -106,7 +120,7 @@ export class NotesService {
     value,
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
-    archived,
+    pinned,
     category_id as categoryId
   FROM
     note
@@ -125,7 +139,7 @@ export class NotesService {
       value,
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
-      archived,
+      pinned,
       category_id as categoryId
     FROM
       note
@@ -156,7 +170,7 @@ export class NotesService {
     value,
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
-    archived,
+    pinned,
     category_id as categoryId
   FROM
     note

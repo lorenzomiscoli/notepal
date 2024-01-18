@@ -42,3 +42,23 @@
 .activated {
   border: 2px solid var(--ion-color-primary);
 }
+
+.pinned {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  ion-icon {
+    font-size: 1.375rem;
+  }
+}
+
+.selected {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+
+  ion-icon {
+    font-size: 1.375rem;
+  }
+}

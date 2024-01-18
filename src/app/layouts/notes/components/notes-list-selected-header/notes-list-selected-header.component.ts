@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild
+} from "@angular/core";
 
 import { IonToast, ToastButton } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
@@ -41,11 +49,15 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
     return this.notes.filter(note => note.isSelected === true);
   }
 
+  public getSelectedPinnedNotesLength(): number {
+    return this.notes.filter(note => note.pinned === 1 && note.isSelected).length;
+  }
+
   public isSelected(): boolean {
     return this.notes.find(note => note.isSelected === true) ? true : false;
   }
 
-  public select(): void {
+  public checkSelection(): void {
     const selectedNotes = this.notes.filter(note => note.isSelected === true).length;
     if (selectedNotes === this.notes.length) {
       this.notes.forEach(note => note.isSelected = false);
@@ -88,6 +100,15 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
       this.isArchiveToastOpen = true;
       this.lastArchivedIds = notes;
     });
+  }
+
+  public checkPinned(): void {
+    let ids: number[] = this.getSelectedNotes().map(note => note.id);
+    if (this.getSelectedPinnedNotesLength() === this.getSelectedNotes().length) {
+      this.notesService.unpinNotes(ids).pipe(takeUntil(this.destroy$)).subscribe();
+    } else {
+      this.notesService.pinNotes(ids).pipe(takeUntil(this.destroy$)).subscribe();
+    }
   }
 
   ngOnDestroy(): void {

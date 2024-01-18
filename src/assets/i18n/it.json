@@ -37,8 +37,11 @@
   "searchNotes": "Cerca note",
   "searchIn": "Cerca in",
   "noNotesHere": "Nessuna nota qui",
-  "archive": "Archivio",
-  "favorites": "Preferiti",
+  "archivePage": "Archivio",
+  "trash": "Cestino",
   "reminder": "Promemoria",
-  "settings": "Impostazioni"
+  "settings": "Impostazioni",
+  "move": "Sposta",
+  "share": "Condividi",
+  "archive": "Archivia"
 }

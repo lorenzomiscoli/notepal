@@ -6,18 +6,39 @@
     <div class="notes-counter">{{getSelectedNotes().length}}</div>
   </ion-buttons>
   <ion-buttons>
-    <ion-button (click)="select()">
+    <ion-button (click)="checkSelection()">
       <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
     </ion-button>
-    <ion-button [disabled]="!isSelected()" (click)="archiveNotes()">
-      <ion-icon slot="icon-only" name="archive-outline"></ion-icon>
+    <ion-button [disabled]="!isSelected()" (click)="checkPinned()">
+      <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
     </ion-button>
-    <ion-button [disabled]="!isSelected()" (click)="toggleDeleteAlert(true)">
-      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+    <ion-button [disabled]="!isSelected()">
+      <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
+    </ion-button>
+    <ion-button [disabled]="!isSelected()" id="more-options-trigger">
+      <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
     </ion-button>
   </ion-buttons>
 </div>
-<app-notes-delete-alert [isOpen]="isDeleteAlertOpen" (close)="toggleDeleteAlert(false)"
+<app-notes-delete-alert [isOpen]="isDeleteAlertOpen" (close)="isDeleteAlertOpen = false"
   [notes]="getSelectedNotes()"></app-notes-delete-alert>
 <ion-toast [duration]="2500" [isOpen]="isArchiveToastOpen" #archiveToast (ionToastDidDismiss)="isArchiveToastOpen=false"
   [buttons]="archiveToastButtons"></ion-toast>
+<ion-popover trigger="more-options-trigger" triggerAction="click" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-list>
+      <ion-item [button]="true" lines="none">
+        <ion-label>{{'move'|translate}}</ion-label>
+      </ion-item>
+      <ion-item [button]="true" lines="none" (click)="archiveNotes()">
+        <ion-label>{{'archive'|translate}}</ion-label>
+      </ion-item>
+      <ion-item [button]="true" lines="none" (click)="isDeleteAlertOpen = true">
+        <ion-label>{{'delete'|translate}}</ion-label>
+      </ion-item>
+      <ion-item [button]="true" lines="none">
+        <ion-label>{{'share'|translate}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>

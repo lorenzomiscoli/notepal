@@ -37,8 +37,11 @@
   "searchNotes": "Search notes",
   "searchIn": "Search in",
   "noNotesHere": "No notes here",
-  "archive": "Archive",
-  "favorites": "Favorites",
+  "archivePage": "Archive",
+  "trash": "Trash",
   "reminder": "Reminder",
-  "settings": "Settings"
+  "settings": "Settings",
+  "move": "Move",
+  "share": "Share",
+  "archive": "Archive"
 }

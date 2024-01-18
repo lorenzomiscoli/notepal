@@ -6,6 +6,7 @@ export interface Note {
   value: string;
   creationDate: string;
   lastModifiedDate: string;
+  pinned: number;
   categoryId: number | undefined;
   isSelected?: boolean;
 }

@@ -1,5 +1,11 @@
-<div class="card ion-activatable ripple-parent" [ngClass]="{'activated':note.isSelected}">
+<div class="card ion-activatable ripple-parent">
+  <span class="pinned" *ngIf="note.pinned">
+    <ion-icon color="primary" src="assets/icons/push-pin.svg"></ion-icon>
+  </span>
   <ion-ripple-effect></ion-ripple-effect>
   <div class="card-title">{{note.title}}</div>
   <div class="card-content">{{note.value}}</div>
+  <span class="selected" *ngIf="note.isSelected">
+    <ion-icon color="primary" name="checkmark-circle"></ion-icon>
+  </span>
 </div>

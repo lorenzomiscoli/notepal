@@ -3,8 +3,8 @@ import { Injectable } from "@angular/core";
 import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, Subject, from, map, tap } from 'rxjs';
 
-import { Note } from '../interfaces/note.interface';
 import { StorageService } from '../../../services/storage.service';
+import { Color, Note } from '../interfaces/note.interface';
 
 @Injectable()
 export class NotesService {
@@ -20,6 +20,7 @@ export class NotesService {
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
       pinned,
+      color,
       category_id as categoryId
     FROM
       note
@@ -36,6 +37,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
+    color,
     category_id as categoryId
   FROM
     note
@@ -53,6 +55,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
+    color,
     category_id as categoryId
   FROM
     note
@@ -92,6 +95,13 @@ export class NotesService {
     }));
   }
 
+  public unarchiveNotes(ids: number[]): Observable<any> {
+    const sql = `UPDATE note SET archived = 0 WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
   public pinNotes(ids: number[]): Observable<any> {
     const sql = `UPDATE note SET pinned = 1 WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
@@ -106,9 +116,9 @@ export class NotesService {
     }));
   }
 
-  public unarchiveNotes(ids: number[]): Observable<any> {
-    const sql = `UPDATE note SET archived = 0 WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+  public changeNotesColor(ids: number[], color: Color | undefined): Observable<any> {
+    const sql = `UPDATE note SET color = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [color], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }
@@ -121,6 +131,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
+    color,
     category_id as categoryId
   FROM
     note
@@ -140,6 +151,7 @@ export class NotesService {
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
       pinned,
+      color,
       category_id as categoryId
     FROM
       note
@@ -171,6 +183,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
+    color,
     category_id as categoryId
   FROM
     note

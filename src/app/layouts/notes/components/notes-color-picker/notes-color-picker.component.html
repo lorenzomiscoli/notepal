@@ -1,0 +1,20 @@
+<ion-modal [isOpen]="isOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
+  (ionModalDidDismiss)="onClose()">
+  <ng-template>
+    <div class="modal">
+      <div class=" modal-header modal-title">{{'changeColor' | translate}}</div>
+      <div class="modal-content">
+        <div class="color-container">
+          <span class="color" [ngClass]="{'activated':isSelected(null)}" (click)="changeColor(undefined)">
+            <ion-icon src="assets/icons/reset-color-outline.svg" *ngIf="!isSelected(null)"></ion-icon>
+            <ion-icon color="primary" name="checkmark-outline" *ngIf="isSelected(null)"></ion-icon>
+          </span>
+          <span class="color" [ngStyle]="{'background-color':color}" [ngClass]="{'activated':isSelected(color)}"
+            *ngFor="let color of colors" (click)="changeColor(color)">
+            <ion-icon color="primary" name="checkmark-outline" *ngIf="isSelected(color)"></ion-icon>
+          </span>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>

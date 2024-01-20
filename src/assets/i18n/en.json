@@ -43,5 +43,6 @@
   "settings": "Settings",
   "move": "Move",
   "share": "Share",
-  "archive": "Archive"
+  "archive": "Archive",
+  "changeColor":"Change color"
 }

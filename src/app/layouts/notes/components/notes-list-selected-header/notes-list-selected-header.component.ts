@@ -9,12 +9,12 @@ import {
 } from "@angular/core";
 
 import { IonToast, ToastButton } from "@ionic/angular/standalone";
-import { Subject, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
+import { Subject, takeUntil } from "rxjs";
 
-import { NOTES_LIST_SELECTED_HEADER_DEPS } from "./notes-list-selected-header.dependencies";
 import { Note } from "../../interfaces/note.interface";
 import { NotesService } from "../../services/notes.service";
+import { NOTES_LIST_SELECTED_HEADER_DEPS } from "./notes-list-selected-header.dependencies";
 
 @Component({
   selector: "app-notes-list-selected-header",
@@ -33,6 +33,7 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
   public archiveToastButtons!: ToastButton[];
   private lastArchivedIds!: number[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
+  public isColorPickerOpen = false;
 
   constructor(private notesService: NotesService, private translateService: TranslateService) { }
 

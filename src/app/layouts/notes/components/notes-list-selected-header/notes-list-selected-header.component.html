@@ -12,7 +12,7 @@
     <ion-button [disabled]="!isSelected()" (click)="checkPinned()">
       <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
     </ion-button>
-    <ion-button [disabled]="!isSelected()">
+    <ion-button [disabled]="!isSelected()" (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
     <ion-button [disabled]="!isSelected()" id="more-options-trigger">
@@ -42,3 +42,5 @@
     </ion-list>
   </ng-template>
 </ion-popover>
+<app-notes-color-picker [isOpen]="isColorPickerOpen" (close)="isColorPickerOpen = false"
+  [selectedNotes]="getSelectedNotes()"></app-notes-color-picker>

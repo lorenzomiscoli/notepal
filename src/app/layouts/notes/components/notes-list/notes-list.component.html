@@ -1,12 +1,12 @@
-<app-notes-list-header *ngIf="!selectedMode" (viewChange)="viewMode = $event"
-  (sortChange)="sortMode = $event"></app-notes-list-header>
+<app-notes-list-header *ngIf="!selectedMode" (viewChange)="changeView($event)"
+  (sortChange)="changeSort($event)"></app-notes-list-header>
 <app-notes-list-selected-header *ngIf="selectedMode" (close)="deselectAll()"
   [notes]="notes"></app-notes-list-selected-header>
 <div class="content">
-  <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
+  <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode" appLongPress (tap)="tap(note)"
-      (press)="press(note)" [note]="note"></app-notes-card>
-  </div>
+      (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
+  </ngx-masonry>
   <div class="empty-content-container" *ngIf="notes.length === 0">
     <img src="assets/images/add-note.svg" alt="Add note" width="200" height="200">
     <p>{{'emptyNotes' | translate}}</p>

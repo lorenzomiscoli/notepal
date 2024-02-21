@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { Platform, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
 import { App } from "@capacitor/app";
-import { Observable, Subject, Subscription, merge, switchMap, take, takeUntil } from "rxjs";
+import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
+import { Observable, Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
@@ -26,6 +27,8 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
   private categoryId: number | undefined;
   private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
+  @ViewChild(NgxMasonryComponent) private masonry!: NgxMasonryComponent;
+  public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
 
   constructor(
     private notesService: NotesService,
@@ -122,6 +125,17 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
   public deselectAll(): void {
     this.selectedMode = false;
     this.notes.forEach(note => note.isSelected = false);
+  }
+
+  public changeView(viewMode: ViewMode): void {
+    this.viewMode = viewMode;
+    this.masonry.layout();
+  }
+
+  public changeSort(sortMode: SortMode): void {
+    this.sortMode = sortMode;
+    this.masonry.reloadItems();
+    this.masonry.layout();
   }
 
 }

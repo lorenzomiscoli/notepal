@@ -1,4 +1,3 @@
-
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -17,6 +16,7 @@ import {
   IonSearchbar,
   IonToolbar
 } from '@ionic/angular/standalone';
+import { NgxMasonryModule } from 'ngx-masonry';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { FilterPropertyPipe } from '../../../../pipes/filter-property.pipe';
@@ -46,6 +46,7 @@ export const NOTES_LIST_DEPS = [
   IonRow,
   IonSearchbar,
   IonToolbar,
+  NgxMasonryModule,
   TranslateModule,
   FilterPropertyPipe,
   LineClampPipe,

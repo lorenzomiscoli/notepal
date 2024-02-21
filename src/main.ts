@@ -2,7 +2,7 @@ import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/c
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Capacitor } from '@capacitor/core';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { defineCustomElements as pwaElements } from '@ionic/pwa-elements/loader';
@@ -59,6 +59,7 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     provideIonicAngular(),
     importProvidersFrom(
+      BrowserAnimationsModule,
       TranslateModule.forRoot({
         defaultLanguage: "en",
         loader: {

@@ -11,7 +11,7 @@ export class UserUpgradeStatements {
           last_modified_date TEXT,
           archived INTEGER,
           pinned INTEGER,
-          color TEXT,
+          background TEXT,
           category_id INTEGER,
           FOREIGN KEY (category_id) REFERENCES note_category(id) ON DELETE SET NULL
           );`,

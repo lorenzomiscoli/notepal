@@ -3,10 +3,9 @@ import { Router } from "@angular/router";
 
 import { Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
 import { Subject, Subscription, debounceTime, switchMap, takeUntil } from "rxjs";
-import { TranslateService } from '@ngx-translate/core';
 
 import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
-import { Note, NoteCategory, ViewMode } from "../../interfaces/note.interface";
+import { Note, NoteBackground, NoteCategory, NoteSearchFilter, ViewMode } from "../../interfaces/note.interface";
 import { NotesCategoryService } from "../../services/notes-category.service";
 import { NotesService } from "../../services/notes.service";
 import { NotesSettingService } from "../../services/notes-setting.service";
@@ -27,7 +26,8 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
   public isSearch = false;
   public viewMode: ViewMode = environment.viewMode;
   public filterMode = false;
-  private filter!: { id: number, name: string, type: string };
+  private filter!: { id: number | string, type: NoteSearchFilter };
+  public backgrounds: string[] = Object.values(NoteBackground);
   private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -36,7 +36,6 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     private notesSettingsService: NotesSettingService,
     private notesCategoryService: NotesCategoryService,
     private router: Router,
-    private translateService: TranslateService,
     private platform: Platform) {
   }
 
@@ -73,18 +72,15 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     this.isSearch = false;
   }
 
-  public getSearchMessage(): string {
-    if (this.filterMode) {
-      return this.translateService.instant("searchIn") + " " + this.filter.name;
-    } else {
-      return this.translateService.instant("searchNotes");
-    }
-  }
-
   public search(): void {
     this.search$.pipe(takeUntil(this.destroy$), debounceTime(250), switchMap((value) => {
       if (this.filterMode) {
-        return this.notesService.searchNotesByCategoryId(this.filter.id, value);
+        if (this.filter.type === NoteSearchFilter.CATEGORY) {
+          return this.notesService.searchNotesByCategoryId(this.filter.id as number, value);
+        }
+        else {
+          return this.notesService.searchNotesByBackground(this.filter.id as string, value);
+        }
       } else {
         return this.notesService.searchNotes(value);
       }
@@ -121,12 +117,20 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
 
   public onSearch(value: string): void {
     this.filterValue = value;
-    if (this.filterValue) {
+    if (this.filterMode) {
+      this.search$.next(this.filterValue);
+    }
+    else if (this.filterValue) {
       this.search$.next(this.filterValue);
     } else {
       this.isSearch = false;
       this.notes = [];
     }
+  }
+
+  public onCancel(value: string): void {
+    this.searchInput.nativeElement.focus();
+    this.onSearch(value);
   }
 
   public onTap(note: Note): void {
@@ -135,7 +139,13 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
 
   public selectCategory(category: NoteCategory): void {
     this.filterMode = true;
-    this.filter = { id: category.id, name: category.name, type: "category" };
+    this.filter = { id: category.id, type: NoteSearchFilter.CATEGORY };
+    this.search$.next("");
+  }
+
+  public selectColor(background: string): void {
+    this.filterMode = true;
+    this.filter = { id: background, type: NoteSearchFilter.BACKGROUND };
     this.search$.next("");
   }
 

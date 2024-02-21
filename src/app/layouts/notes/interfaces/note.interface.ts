@@ -7,7 +7,7 @@ export interface Note {
   creationDate: string;
   lastModifiedDate: string;
   pinned: number;
-  color: string | undefined;
+  background: string | undefined;
   categoryId: number | undefined;
   isSelected?: boolean;
 }
@@ -43,7 +43,7 @@ export enum SortMode {
   MODIFIED_DATE = 'modifiedDate'
 }
 
-export enum Color {
+export enum NoteBackground {
   BLUSH = 'var(--color-blush)',
   APRICOT = 'var(--color-apricot)',
   NAVAJO_WHITE = 'var(--color-navajo-white)',
@@ -55,4 +55,8 @@ export enum Color {
   COSMOS = 'var(--color-cosmos)',
   SORRELL_BROWN = 'var(--color-sorrell-brown)',
   PEARL_BUSH = 'var(--color-pearl-bush)'
+}
+
+export enum NoteSearchFilter {
+  CATEGORY, BACKGROUND
 }

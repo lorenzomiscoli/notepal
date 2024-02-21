@@ -9,9 +9,9 @@
             <ion-icon src="assets/icons/reset-color-outline.svg" *ngIf="!isSelected(null)"></ion-icon>
             <ion-icon color="primary" name="checkmark-outline" *ngIf="isSelected(null)"></ion-icon>
           </span>
-          <span class="color" [ngStyle]="{'background-color':color}" [ngClass]="{'activated':isSelected(color)}"
-            *ngFor="let color of colors" (click)="changeColor(color)">
-            <ion-icon color="primary" name="checkmark-outline" *ngIf="isSelected(color)"></ion-icon>
+          <span class="color" [ngStyle]="{'background-color':background}" [ngClass]="{'activated':isSelected(background)}"
+            *ngFor="let background of backgrounds" (click)="changeColor(background)">
+            <ion-icon color="primary" name="checkmark-outline" *ngIf="isSelected(background)"></ion-icon>
           </span>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, Subject, from, map, tap } from 'rxjs';
 
 import { StorageService } from '../../../services/storage.service';
-import { Color, Note } from '../interfaces/note.interface';
+import { Note, NoteBackground } from '../interfaces/note.interface';
 
 @Injectable()
 export class NotesService {
@@ -20,7 +20,7 @@ export class NotesService {
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
       pinned,
-      color,
+      background,
       category_id as categoryId
     FROM
       note
@@ -37,13 +37,31 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
-    color,
+    background,
     category_id as categoryId
   FROM
     note
   WHERE
     archived = 0
     AND category_id = ?`, [id]))
+      .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
+  public getNotesByBackground(background: string): Observable<Note[]> {
+    return from(this.storageService.db.query(`SELECT
+    id,
+    title,
+    value,
+    creation_date as creationDate,
+    last_modified_date as lastModifiedDate,
+    pinned,
+    background,
+    category_id as categoryId
+  FROM
+    note
+  WHERE
+    archived = 0
+    AND background = ?`, [background]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
@@ -55,7 +73,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
-    color,
+    background,
     category_id as categoryId
   FROM
     note
@@ -116,9 +134,9 @@ export class NotesService {
     }));
   }
 
-  public changeNotesColor(ids: number[], color: Color | undefined): Observable<any> {
-    const sql = `UPDATE note SET color = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [color], true)).pipe(tap(() => {
+  public changeNotesBackground(ids: number[], background: NoteBackground | undefined): Observable<any> {
+    const sql = `UPDATE note SET background = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [background], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }
@@ -131,7 +149,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
-    color,
+    background,
     category_id as categoryId
   FROM
     note
@@ -151,7 +169,7 @@ export class NotesService {
       creation_date as creationDate,
       last_modified_date as lastModifiedDate,
       pinned,
-      color,
+      background,
       category_id as categoryId
     FROM
       note
@@ -162,6 +180,29 @@ export class NotesService {
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {
       return this.getNotesByCategoryId(categoryId);
+    }
+  }
+
+  public searchNotesByBackground(background: string, search: string): Observable<Note[]> {
+    if (search) {
+      return from(this.storageService.db.query(`SELECT
+      id,
+      title,
+      value,
+      creation_date as creationDate,
+      last_modified_date as lastModifiedDate,
+      pinned,
+      background,
+      category_id as categoryId
+    FROM
+      note
+    WHERE
+      archived = 0
+      AND background = ?
+      AND title LIKE '%${search}%'`, [background]))
+        .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+    } else {
+      return this.getNotesByBackground(background);
     }
   }
 
@@ -183,7 +224,7 @@ export class NotesService {
     creation_date as creationDate,
     last_modified_date as lastModifiedDate,
     pinned,
-    color,
+    background,
     category_id as categoryId
   FROM
     note

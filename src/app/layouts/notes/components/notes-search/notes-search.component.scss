@@ -59,7 +59,17 @@ ion-buttons {
 
 }
 
-.categories-title {
+.filter-title {
   margin: 0 0 var(--ion-padding) 0;
   font-size: 1.25rem;
+}
+
+.categories-container {
+  margin-bottom: 25px;
+}
+
+.colors-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }

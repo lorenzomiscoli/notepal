@@ -7,9 +7,9 @@
   <div class="searchbar-container">
     <div class="searchbar">
       <ion-icon name="search-outline"></ion-icon>
-      <input type="text" placeholder="{{getSearchMessage()}}" (keyup)="onSearch(searchInput.value)"
+      <input type="text" placeholder="{{'searchNotes'|translate}}" (keyup)="onSearch(searchInput.value)"
         [(ngModel)]="filterValue" #searchInput>
-      <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onSearch('')"></ion-icon>
+      <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onCancel('')"></ion-icon>
     </div>
   </div>
 </div>
@@ -18,11 +18,20 @@
     <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"></app-notes-card>
   </div>
   <ng-container *ngIf="!filterMode && !isSearch">
-    <div class="categories">
-      <h3 class="categories-title">{{'categories'|translate}}</h3>
+    <div class="categories-container">
+      <h3 class="filter-title">{{'categories'|translate}}</h3>
       <ion-chip *ngFor="let category of categories" (click)="selectCategory(category)">
         {{category.name}}
       </ion-chip>
+      <span *ngIf="!categories.length">{{'noCategories'|translate}}</span>
+    </div>
+    <div>
+      <h3 class="filter-title">{{'colors'|translate}}</h3>
+      <div class="colors-container">
+        <span class="color" [ngStyle]="{'background-color':background}" *ngFor="let background of backgrounds"
+          (click)="selectColor(background)">
+        </span>
+      </div>
     </div>
   </ng-container>
   <div class="empty-content-container" [ngClass]="{'ion-hide': !isSearch || notes.length > 0}">

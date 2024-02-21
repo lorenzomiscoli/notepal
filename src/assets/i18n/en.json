@@ -25,6 +25,7 @@
   "categoryName": "Name of the category",
   "manage": "Manage",
   "all": "All",
+  "noCategories":"No categories",
   "newCategory": "New category",
   "renameCategory": "Rename category",
   "deleteCategory": "Delete category",
@@ -35,7 +36,6 @@
   "insert": "Insert",
   "add": "Add",
   "searchNotes": "Search notes",
-  "searchIn": "Search in",
   "noNotesHere": "No notes here",
   "archivePage": "Archive",
   "trash": "Trash",
@@ -44,5 +44,6 @@
   "move": "Move",
   "share": "Share",
   "archive": "Archive",
-  "changeColor":"Change color"
+  "changeColor": "Change color",
+  "colors": "Colors"
 }

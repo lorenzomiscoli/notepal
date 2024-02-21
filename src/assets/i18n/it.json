@@ -25,6 +25,7 @@
   "categoryName": "Nome della categoria",
   "manage": "Gestisci",
   "all": "Tutto",
+  "noCategories":"Nessuna categoria",
   "newCategory": "Nuova categoria",
   "renameCategory": "Rinomina categoria",
   "deleteCategory": "Elimina categoria",
@@ -44,5 +45,6 @@
   "move": "Sposta",
   "share": "Condividi",
   "archive": "Archivia",
-  "changeColor": "Cambia colore"
+  "changeColor": "Cambia colore",
+  "colors": "Colori"
 }

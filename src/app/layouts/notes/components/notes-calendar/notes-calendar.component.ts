@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { IonDatetime, Platform, ViewWillEnter, ViewWillLeave } from "@ionic/angular/standalone";
+import { IonDatetime, Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular/standalone";
+import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
 import { TranslateService } from "@ngx-translate/core";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil, tap } from "rxjs";
 
@@ -18,7 +19,7 @@ import { environment } from "../../../../../environments/environment";
   standalone: true,
   imports: [NOTES_CALENDAR_DEPS]
 })
-export class NotesCalendarComponent implements OnInit, AfterViewInit, ViewWillEnter, ViewWillLeave {
+export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLeave, ViewDidEnter {
   public notes!: Note[];
   public highlightedDates: { date: string, textColor: string, backgroundColor: string }[] = [];
   @ViewChild(IonDatetime) calendar!: IonDatetime;
@@ -27,6 +28,8 @@ export class NotesCalendarComponent implements OnInit, AfterViewInit, ViewWillEn
   public isEmpty = false;
   public selectedDate!: string;
   public locale!: string;
+  @ViewChild(NgxMasonryComponent) private masonry!: NgxMasonryComponent;
+  public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
   private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -42,10 +45,14 @@ export class NotesCalendarComponent implements OnInit, AfterViewInit, ViewWillEn
     this.locale = this.translateService.currentLang;
   }
 
-  ngAfterViewInit(): void {
-    let today = dateToIsoString(new Date());
-    this.calendar.value = today;
-    this.showNotes(today);
+  ionViewDidEnter(): void {
+    if (this.selectedDate) {
+      this.showNotes(this.selectedDate)
+    } else {
+      let today = dateToIsoString(new Date());
+      this.calendar.value = today;
+      this.showNotes(today)
+    }
   }
 
   ionViewWillEnter(): void {
@@ -53,7 +60,6 @@ export class NotesCalendarComponent implements OnInit, AfterViewInit, ViewWillEn
     this.getNotesSettings();
     this.getDatesOnNoteUpdate();
     this.handleBackButton();
-    this.notesService.notesUpdated$.next();
   }
 
   ionViewWillLeave(): void {
@@ -75,6 +81,7 @@ export class NotesCalendarComponent implements OnInit, AfterViewInit, ViewWillEn
       .pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode }) => {
         this.viewMode = viewMode;
         this.sortMode = sortMode;
+        this.masonry.layout();
       });
   }
 

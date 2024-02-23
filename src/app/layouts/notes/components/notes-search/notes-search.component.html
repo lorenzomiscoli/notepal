@@ -14,9 +14,10 @@
   </div>
 </div>
 <div class="content">
-  <div class="card-grid" [ngClass]="{'card-grid': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"></app-notes-card>
-  </div>
+  <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
+    <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"
+      ngxMasonryItem></app-notes-card>
+  </ngx-masonry>
   <ng-container *ngIf="!filterMode && !isSearch">
     <div class="categories-container">
       <h3 class="filter-title">{{'categories'|translate}}</h3>

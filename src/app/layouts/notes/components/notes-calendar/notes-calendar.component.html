@@ -1,10 +1,9 @@
 <ion-datetime presentation="date" [highlightedDates]="highlightedDates" (ionChange)="showNotes($event)"
   [locale]="locale"></ion-datetime>
 <div class="content">
-  <div [ngClass]="{'card-grid': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode" [note]="note" routerLink="/notes/save"
-      [queryParams]="{id: note.id}"></app-notes-card>
-  </div>
+  <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
+    <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode" [note]="note" ngxMasonryItem></app-notes-card>
+  </ngx-masonry>
   <div class="empty-content-container" *ngIf="isEmpty">
     <p>{{'noNotesHere' | translate}}</p>
   </div>

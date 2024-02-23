@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
+import { NgxMasonryOptions } from "ngx-masonry";
 import { Subject, Subscription, debounceTime, switchMap, takeUntil } from "rxjs";
 
 import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
@@ -28,6 +29,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
   public filterMode = false;
   private filter!: { id: number | string, type: NoteSearchFilter };
   public backgrounds: string[] = Object.values(NoteBackground);
+  public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
   private backButtonSubscription!: Subscription;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 

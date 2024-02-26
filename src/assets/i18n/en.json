@@ -45,5 +45,6 @@
   "share": "Share",
   "archive": "Archive",
   "changeColor": "Change color",
-  "colors": "Colors"
+  "colors": "Colors",
+  "selectCategory":"Select a category"
 }

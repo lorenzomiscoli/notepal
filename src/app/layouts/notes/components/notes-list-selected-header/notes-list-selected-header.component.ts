@@ -34,6 +34,7 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
   private lastArchivedIds!: number[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
   public isColorPickerOpen = false;
+  public isMoveOpen = false;
 
   constructor(private notesService: NotesService, private translateService: TranslateService) { }
 

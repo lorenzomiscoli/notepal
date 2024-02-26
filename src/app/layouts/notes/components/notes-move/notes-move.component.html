@@ -1,0 +1,20 @@
+<ion-modal [isOpen]="isOpen" (ionModalDidDismiss)="onClose()" [initialBreakpoint]="1" [breakpoints]="[1]"
+  handle="false">
+  <ng-template>
+    <div class="modal">
+      <div class=" modal-header modal-title">{{'selectCategory' | translate}}</div>
+      <ng-container *ngIf="categories$ | async as categories">
+        <ion-radio-group [value]="defaultValue" (ionChange)="moveNote($event)" #radioGroup>
+          <div class="sort-modal-content">
+            <div>
+              <ion-radio [value]="0" labelPlacement="end">{{'all' | translate}}</ion-radio>
+            </div>
+            <div *ngFor="let category of categories">
+              <ion-radio [value]="category.id" labelPlacement="end">{{category.name}}</ion-radio>
+            </div>
+          </div>
+        </ion-radio-group>
+      </ng-container>
+    </div>
+  </ng-template>
+</ion-modal>

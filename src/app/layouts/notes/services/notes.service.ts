@@ -234,4 +234,11 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
+  public moveCategoryNotes(ids: number[], targetId: number): Observable<any> {
+    const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [targetId], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
 }

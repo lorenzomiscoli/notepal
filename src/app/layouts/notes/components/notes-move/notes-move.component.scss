@@ -1,0 +1,28 @@
+ion-modal {
+  --height: auto;
+}
+
+.modal {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--ion-padding);
+  overflow: auto;
+  max-height: 90vh;
+}
+
+.modal-header {
+  padding-bottom: var(--ion-padding);
+  margin-bottom: 10px;
+}
+
+.modal-title {
+  --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
+  color: var(--color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
+}
+
+.sort-modal-content {
+  height: 100%;
+  display: grid;
+  row-gap: var(--ion-padding);
+}

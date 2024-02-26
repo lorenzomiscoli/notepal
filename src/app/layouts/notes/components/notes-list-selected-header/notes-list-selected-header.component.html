@@ -27,7 +27,7 @@
 <ion-popover trigger="more-options-trigger" triggerAction="click" [dismissOnSelect]="true">
   <ng-template>
     <ion-list>
-      <ion-item [button]="true" lines="none">
+      <ion-item [button]="true" lines="none" (click)="isMoveOpen = true">
         <ion-label>{{'move'|translate}}</ion-label>
       </ion-item>
       <ion-item [button]="true" lines="none" (click)="archiveNotes()">
@@ -44,3 +44,5 @@
 </ion-popover>
 <app-notes-color-picker [isOpen]="isColorPickerOpen" (close)="isColorPickerOpen = false"
   [selectedNotes]="getSelectedNotes()"></app-notes-color-picker>
+<app-notes-move [isOpen]="isMoveOpen" (close)="isMoveOpen = false"
+  [selectedNotes]="getSelectedNotes()"></app-notes-move>

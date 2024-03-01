@@ -18,7 +18,8 @@ export class UserUpgradeStatements {
         `CREATE TABLE IF NOT EXISTS note_setting(
           id INTEGER PRIMARY KEY,
           view_mode TEXT,
-          sort_mode TEXT
+          sort_mode TEXT,
+          sort_direction TEXT
           );`,
         `CREATE TABLE IF NOT EXISTS note_category(
           id INTEGER PRIMARY KEY,
@@ -29,7 +30,7 @@ export class UserUpgradeStatements {
     {
       toVersion: 2,
       statements: [
-        `INSERT INTO note_setting (view_mode, sort_mode) VALUES('grid', 'modifiedDate');`
+        `INSERT INTO note_setting (view_mode, sort_mode, sort_direction) VALUES('grid', 'modifiedDate', 'ascending');`
       ]
     }
   ]

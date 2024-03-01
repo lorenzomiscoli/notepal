@@ -25,7 +25,7 @@
   "categoryName": "Name of the category",
   "manage": "Manage",
   "all": "All",
-  "noCategories":"No categories",
+  "noCategories": "No categories",
   "newCategory": "New category",
   "renameCategory": "Rename category",
   "deleteCategory": "Delete category",
@@ -46,5 +46,9 @@
   "archive": "Archive",
   "changeColor": "Change color",
   "colors": "Colors",
-  "selectCategory":"Select a category"
+  "selectCategory": "Select a category",
+  "filters": "Filters",
+  "range": "Range",
+  "ascending": "Ascending",
+  "descending": "Descending"
 }

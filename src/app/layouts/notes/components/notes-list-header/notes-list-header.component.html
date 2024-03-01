@@ -15,25 +15,43 @@
     </ion-button>
   </ion-buttons>
 </div>
-<ion-modal #sortModal [isOpen]="isSortModalOpen" [initialBreakpoint]="1" [breakpoints]="[1]" handle="false"
-  (ionModalDidDismiss)="isSortModalOpen = false">
+<ion-modal [isOpen]="isSortModalOpen" handle="false" (ionModalDidDismiss)="isSortModalOpen = false">
   <ng-template>
     <div class="modal">
-      <div class=" modal-header modal-title">{{'sortBy' | translate}}</div>
-      <ion-radio-group [value]="sortMode" (ionChange)="changeSort($event)">
-        <div class="sort-modal-content">
-          <div>
-            <ion-radio [value]="sortModeType.AZ" labelPlacement="end">{{'name' | translate}} A-Z</ion-radio>
+      <h2 class="modal-header">{{'filters' | translate}}</h2>
+      <div class="modal-section">
+        <div class="modal-section-title">{{'sortBy' | translate}}</div>
+        <ion-radio-group [(ngModel)]="sortMode">
+          <div class="radio-group-row">
+            <span>
+              <ion-radio [value]="sortModeType.MODIFIED_DATE" labelPlacement="end">{{'modifiedDate' |
+                translate}}</ion-radio>
+            </span>
+            <span>
+              <ion-radio [value]="sortModeType.NAME" labelPlacement="end">{{'name' | translate}}</ion-radio>
+            </span>
           </div>
-          <div>
-            <ion-radio [value]="sortModeType.ZA" labelPlacement="end">{{'name' | translate}} Z-A</ion-radio>
+        </ion-radio-group>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">{{'range' | translate}}</div>
+        <ion-radio-group [(ngModel)]="sortDirection">
+          <div class="radio-group-row">
+            <span>
+              <ion-radio [value]="sortDirectionType.ASCENDING" labelPlacement="end">{{'ascending' |
+                translate}}</ion-radio>
+            </span>
+            <span>
+              <ion-radio [value]="sortDirectionType.DESCENDING" labelPlacement="end">{{'descending' |
+                translate}}</ion-radio>
+            </span>
           </div>
-          <div>
-            <ion-radio [value]="sortModeType.MODIFIED_DATE" labelPlacement="end">{{'modifiedDate' |
-              translate}}</ion-radio>
-          </div>
-        </div>
-      </ion-radio-group>
+        </ion-radio-group>
+      </div>
+      <div class="modal-footer">
+        <ion-button fill="clear" (click)="sortModal.dismiss()">{{'cancel' | translate}}</ion-button>
+        <ion-button fill="clear" (click)="changeSort()">{{'update' | translate}}</ion-button>
+      </div>
     </div>
   </ng-template>
 </ion-modal>

@@ -2,7 +2,8 @@
   [locale]="locale"></ion-datetime>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode" [note]="note" ngxMasonryItem></app-notes-card>
+    <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode:sortDirection" [note]="note"
+      ngxMasonryItem></app-notes-card>
   </ngx-masonry>
   <div class="empty-content-container" *ngIf="isEmpty">
     <p>{{'noNotesHere' | translate}}</p>

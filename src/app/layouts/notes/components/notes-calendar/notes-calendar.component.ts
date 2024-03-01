@@ -7,7 +7,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil, tap } from "rxjs";
 
 import { NOTES_CALENDAR_DEPS } from "./notes-calendar.dependencies";
-import { Note, SortMode, ViewMode } from "../../interfaces/note.interface";
+import { Note, SortDirection, SortMode, ViewMode } from "../../interfaces/note.interface";
 import { NotesService } from "../../services/notes.service";
 import { NotesSettingService } from "../../services/notes-setting.service";
 import { dateToIsoString, datetimeToDateString } from "../../../../../app/utils/date-utils";
@@ -25,6 +25,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   @ViewChild(IonDatetime) calendar!: IonDatetime;
   public viewMode: ViewMode = environment.viewMode;
   public sortMode: SortMode = environment.sortMode;
+  public sortDirection: SortDirection = environment.sortDirection;
   public isEmpty = false;
   public selectedDate!: string;
   public locale!: string;
@@ -78,9 +79,10 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
 
   public getNotesSettings(): void {
     this.notesSettingsService.getNoteSetting()
-      .pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode }) => {
+      .pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode, sortDirection }) => {
         this.viewMode = viewMode;
         this.sortMode = sortMode;
+        this.sortDirection = sortDirection;
         this.masonry.layout();
       });
   }

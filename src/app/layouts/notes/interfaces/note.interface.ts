@@ -16,6 +16,7 @@ export interface NoteSetting {
   id: number,
   viewMode: ViewMode;
   sortMode: SortMode;
+  sortDirection: SortDirection;
 }
 
 export interface NoteCategory {
@@ -38,9 +39,13 @@ export enum ViewMode {
 }
 
 export enum SortMode {
-  AZ = 'az',
-  ZA = 'za',
-  MODIFIED_DATE = 'modifiedDate'
+  MODIFIED_DATE = 'modifiedDate',
+  NAME = 'name'
+}
+
+export enum SortDirection {
+  ASCENDING = 'ascending',
+  DESCENDING = 'descending'
 }
 
 export enum NoteBackground {

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Note, SortMode } from "../layouts/notes/interfaces/note.interface";
+import { Note, SortDirection, SortMode } from "../layouts/notes/interfaces/note.interface";
 
 @Pipe({
   name: "appSortNotes",
@@ -7,19 +7,15 @@ import { Note, SortMode } from "../layouts/notes/interfaces/note.interface";
 })
 export class SortNotesPipe implements PipeTransform {
 
-  transform(notes: Note[], sortMode: SortMode) {
+  transform(notes: Note[], sortMode: SortMode, sortDirection: SortDirection) {
     if (!notes) return notes;
     switch (sortMode) {
-      case SortMode.AZ: {
-        notes = notes.sort((a: Note, b: Note) => this.sortByName(a, b, true));
-        break;
-      };
-      case SortMode.ZA: {
-        notes = notes.sort((a: Note, b: Note) => this.sortByName(a, b, false));
+      case SortMode.NAME: {
+        notes = notes.sort((a: Note, b: Note) => this.sortByName(a, b, sortDirection));
         break;
       };
       case SortMode.MODIFIED_DATE: {
-        notes = notes.sort((a: Note, b: Note) => this.sortByModifiedDate(a, b));
+        notes = notes.sort((a: Note, b: Note) => this.sortByModifiedDate(a, b, sortDirection));
         break;
       };
     }
@@ -31,14 +27,14 @@ export class SortNotesPipe implements PipeTransform {
     return b.pinned - a.pinned;
   }
 
-  private sortByName(a: Note, b: Note, isAscOrder: boolean): number {
+  private sortByName(a: Note, b: Note, sortDirection: SortDirection): number {
     if (a.title === null)
       return 1;
     if (b.title === null)
       return -1;
     var nameA = a.title.toLowerCase();
     var nameB = b.title.toLowerCase();
-    if (isAscOrder) {
+    if (sortDirection === SortDirection.ASCENDING) {
       if (nameA < nameB)
         return -1;
       if (nameA > nameB)
@@ -54,8 +50,12 @@ export class SortNotesPipe implements PipeTransform {
     }
   }
 
-  private sortByModifiedDate(a: Note, b: Note): number {
-    return new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime();
+  private sortByModifiedDate(a: Note, b: Note, sortDirection: SortDirection): number {
+    if (sortDirection === SortDirection.ASCENDING) {
+      return new Date(b.lastModifiedDate).getTime() - new Date(a.lastModifiedDate).getTime();
+    } else {
+      return new Date(a.lastModifiedDate).getTime() - new Date(b.lastModifiedDate).getTime();
+    }
   }
 
 }

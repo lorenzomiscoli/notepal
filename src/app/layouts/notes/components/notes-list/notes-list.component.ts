@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
@@ -11,6 +12,7 @@ import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
 import { NotesCategoryService } from './../../services/notes-category.service';
 import { NotesService } from "../../services/notes.service";
 import { NotesSettingService } from "../../services/notes-setting.service";
+import { SortDirection } from './../../interfaces/note.interface';
 import { environment } from './../../../../../environments/environment';
 
 @Component({
@@ -23,6 +25,7 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
   public notes: Note[] = [];
   public viewMode: ViewMode = environment.viewMode;
   public sortMode: SortMode = environment.sortMode;
+  public sortDirection: SortDirection = environment.sortDirection;
   public selectedMode = false;
   private categoryId: number | undefined;
   private backButtonSubscription!: Subscription;
@@ -58,9 +61,10 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
   }
 
   private getNotesSettings(): void {
-    this.notesSettingService.getNoteSetting().pipe(take(1)).subscribe(({ viewMode, sortMode }) => {
+    this.notesSettingService.getNoteSetting().pipe(take(1)).subscribe(({ viewMode, sortMode, sortDirection }) => {
       this.viewMode = viewMode;
       this.sortMode = sortMode;
+      this.sortDirection = sortDirection;
     })
   }
 
@@ -132,8 +136,9 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
     this.masonry.layout();
   }
 
-  public changeSort(sortMode: SortMode): void {
+  public changeSort({ sortMode, sortDirection }: { sortMode: SortMode, sortDirection: SortDirection }): void {
     this.sortMode = sortMode;
+    this.sortDirection = sortDirection;
     this.masonry.reloadItems();
     this.masonry.layout();
   }

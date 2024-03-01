@@ -9,7 +9,11 @@
 }
 
 ion-modal {
-  --height: auto;
+  --width: fit-content;
+  --min-width: 250px;
+  --height: fit-content;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 
 .modal {
@@ -19,20 +23,33 @@ ion-modal {
   padding: var(--ion-padding);
   overflow: auto;
   max-height: 90vh;
+  max-width: 90vw;
 }
 
 .modal-header {
+  color: var(--ion-text-color, #000);
+  font-size: 1.25rem;
+  font-weight: 500;
   padding-bottom: var(--ion-padding);
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
-.modal-title {
+.modal-section {
+  margin-bottom: 20px;
+}
+
+.modal-section-title {
   --color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54);
   color: var(--color, rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.54));
+  margin-bottom: 12px;
 }
 
-.sort-modal-content {
-  height: 100%;
-  display: grid;
-  row-gap: var(--ion-padding);
+.radio-group-row > span:first-of-type{
+    width: 160px;
+    display: inline-block;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: end;
 }

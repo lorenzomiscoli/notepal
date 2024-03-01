@@ -4,7 +4,7 @@
   [notes]="notes"></app-notes-list-selected-header>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode" appLongPress (tap)="tap(note)"
+    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" appLongPress (tap)="tap(note)"
       (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
   </ngx-masonry>
   <div class="empty-content-container" *ngIf="notes.length === 0">

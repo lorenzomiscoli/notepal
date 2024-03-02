@@ -27,7 +27,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
   public isSearch = false;
   public viewMode: ViewMode = environment.viewMode;
   public filterMode = false;
-  private filter!: { id: number | string, type: NoteSearchFilter };
+  private filter!: { id: number | string | null, type: NoteSearchFilter };
   public backgrounds: string[] = Object.values(NoteBackground);
   public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
   private backButtonSubscription!: Subscription;
@@ -145,7 +145,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     this.search$.next("");
   }
 
-  public selectColor(background: string): void {
+  public selectColor(background: string | null): void {
     this.filterMode = true;
     this.filter = { id: background, type: NoteSearchFilter.BACKGROUND };
     this.search$.next("");

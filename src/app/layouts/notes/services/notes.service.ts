@@ -48,6 +48,10 @@ export class NotesService {
   }
 
   public getNotesByBackground(background: string): Observable<Note[]> {
+    let backgroundCheck = "background = ?";
+    if (!background) {
+      backgroundCheck = "background IS ?"
+    }
     return from(this.storageService.db.query(`SELECT
     id,
     title,
@@ -61,7 +65,7 @@ export class NotesService {
     note
   WHERE
     archived = 0
-    AND background = ?`, [background]))
+    AND ${backgroundCheck}`, [background]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
@@ -184,7 +188,11 @@ export class NotesService {
   }
 
   public searchNotesByBackground(background: string, search: string): Observable<Note[]> {
+    let backgroundCheck = "background = ?";
     if (search) {
+      if (!background) {
+        backgroundCheck = "background IS ?"
+      }
       return from(this.storageService.db.query(`SELECT
       id,
       title,
@@ -198,7 +206,7 @@ export class NotesService {
       note
     WHERE
       archived = 0
-      AND background = ?
+      AND ${backgroundCheck}
       AND title LIKE '%${search}%'`, [background]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {

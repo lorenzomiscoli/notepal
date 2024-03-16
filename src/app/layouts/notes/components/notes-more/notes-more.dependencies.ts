@@ -1,3 +1,5 @@
+import { RouterLink } from "@angular/router";
+
 import {
   IonContent,
   IonIcon,
@@ -9,6 +11,7 @@ import {
 import { TranslateModule } from "@ngx-translate/core";
 
 export const NOTES_MORE_DEPS = [
+  RouterLink,
   IonContent,
   IonIcon,
   IonItem,

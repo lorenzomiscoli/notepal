@@ -50,5 +50,7 @@
   "filters": "Filters",
   "range": "Range",
   "ascending": "Ascending",
-  "descending": "Descending"
+  "descending": "Descending",
+  "notesRestored": "Notes restored",
+  "noteRestored": "Note restored"
 }

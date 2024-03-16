@@ -13,7 +13,7 @@
   "sortBy": "Ordina per",
   "name": "Nome",
   "modifiedDate": "Data di modifica",
-  "undo": "Ripristina",
+  "undo": "Annulla",
   "notes": "Note",
   "search": "Cerca",
   "calendar": "Calendario",
@@ -51,5 +51,7 @@
   "filters": "Filtri",
   "range": "Intervallo",
   "ascending": "Ascendente",
-  "descending": "Discendente"
+  "descending": "Discendente",
+  "notesRestored": "Note ripristinate",
+  "noteRestored": "Nota ripristinata"
 }

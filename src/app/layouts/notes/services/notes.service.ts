@@ -242,6 +242,23 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
+  public getArchivedNotes(): Observable<Note[]> {
+    return from(this.storageService.db.query(`SELECT
+      id,
+      title,
+      value,
+      creation_date as creationDate,
+      last_modified_date as lastModifiedDate,
+      pinned,
+      background,
+      category_id as categoryId
+    FROM
+      note
+    WHERE
+      archived = 1
+  `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
   public moveCategoryNotes(ids: number[], targetId: number): Observable<any> {
     const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [targetId], true)).pipe(tap(() => {

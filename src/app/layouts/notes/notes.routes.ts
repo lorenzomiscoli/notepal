@@ -26,5 +26,8 @@ export const NOTES_ROUTES: Routes = [
   },
   {
     path: "categories", loadComponent: () => import('./components/notes-categories/notes-categories.component').then(m => m.NotesCategories)
+  },
+  {
+    path: "archive", loadComponent: () => import('./components/notes-archive/notes-archive.component').then(m => m.NotesArchiveComponent)
   }
 ];

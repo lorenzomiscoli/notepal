@@ -53,5 +53,7 @@
   "ascending": "Ascendente",
   "descending": "Discendente",
   "notesRestored": "Note ripristinate",
-  "noteRestored": "Nota ripristinata"
+  "noteRestored": "Nota ripristinata",
+  "notesToBin": "Note spostate nel cestino",
+  "noteToBin": "Nota spostata nel cestino"
 }

@@ -52,5 +52,7 @@
   "ascending": "Ascending",
   "descending": "Descending",
   "notesRestored": "Notes restored",
-  "noteRestored": "Note restored"
+  "noteRestored": "Note restored",
+  "notesToBin": "Notes moved to bin",
+  "noteToBin": "Note moved to bin"
 }

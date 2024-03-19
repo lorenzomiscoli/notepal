@@ -22,6 +22,7 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   public toastButtons!: ToastButton[];
   @ViewChild(IonToast) private toast!: IonToast;
   private lastArchivedIds: number[] = [];
+  private lastDeletedIds: number[] = [];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private notesService: NotesService, private translateService: TranslateService) { }
@@ -41,7 +42,7 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   }
 
   public getSelectedNotes(): Note[] {
-    return this.notes.filter(note => note.isSelected === true);
+    return this.notes.filter(note => note.isSelected);
   }
 
   public cancel(): void {
@@ -59,8 +60,19 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
     this.toast.message = multi ? this.translateService.instant("notesRestored") : this.translateService.instant("noteRestored");
   }
 
+  public setUndeleteToast(multi: boolean): void {
+    this.toast.buttons = [
+      {
+        text: this.translateService.instant("undo"),
+        role: 'info',
+        handler: () => this.undeleteNotes()
+      }
+    ];
+    this.toast.message = multi ? this.translateService.instant("notesToBin") : this.translateService.instant("noteToBin");
+  }
+
   public unarchiveNotes(): void {
-    const ids: number[] = this.notes.filter(note => note.isSelected).map(note => note.id);
+    const ids: number[] = this.getSelectedNotes().map(note => note.id);
     this.setUnarchiveToast(ids.length > 1);
     this.notesService.unarchiveNotes(ids).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.isToastOpen = true
@@ -71,6 +83,20 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   private archiveNotes(): void {
     this.notesService.archiveNotes(this.lastArchivedIds)
       .pipe(takeUntil(this.destroy$)).subscribe(() => this.lastArchivedIds = []);
+  }
+
+  public deleteNotes(): void {
+    const ids: number[] = this.getSelectedNotes().map(note => note.id);
+    this.setUndeleteToast(ids.length > 1);
+    this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.isToastOpen = true
+      this.lastDeletedIds = ids;
+    });
+  }
+
+  private undeleteNotes(): void {
+    this.notesService.delete(this.lastDeletedIds, false)
+      .pipe(takeUntil(this.destroy$)).subscribe(() => this.lastDeletedIds = []);
   }
 
 }

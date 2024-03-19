@@ -115,7 +115,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   private delete(): void {
-    this.notesService.delete([this.id]).subscribe(() => this.ionRouterOutlet.pop());
+    this.notesService.deleteForever([this.id]).subscribe(() => this.ionRouterOutlet.pop());
   }
 
   private createDeleteAlertBtns(): void {

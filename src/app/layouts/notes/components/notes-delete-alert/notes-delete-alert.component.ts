@@ -64,7 +64,7 @@ export class NotesDeleteAlertComponent implements OnInit {
 
   private delete(): void {
     let ids = this.notes.map(note => note.id);
-    this.notesService.delete(ids).pipe(takeUntil(this.destroy$)).subscribe();
+    this.notesService.deleteForever(ids).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   public onClose(): void {

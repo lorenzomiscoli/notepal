@@ -12,7 +12,7 @@
     <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchiveNotes()">
       <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
     </ion-button>
-    <ion-button [disabled]="getSelectedNotes().length < 1">
+    <ion-button [disabled]="getSelectedNotes().length < 1" (click)="deleteNotes()">
       <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
     </ion-button>
   </ion-buttons>

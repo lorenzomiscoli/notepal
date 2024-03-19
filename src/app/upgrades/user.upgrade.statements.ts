@@ -10,6 +10,7 @@ export class UserUpgradeStatements {
           creation_date TEXT,
           last_modified_date TEXT,
           archived INTEGER,
+          deleted INTEGER,
           pinned INTEGER,
           background TEXT,
           category_id INTEGER,

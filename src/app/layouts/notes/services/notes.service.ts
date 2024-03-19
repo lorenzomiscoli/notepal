@@ -26,6 +26,7 @@ export class NotesService {
       note
     WHERE
       archived = 0
+    AND deleted = 0
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
@@ -89,7 +90,7 @@ export class NotesService {
   }
 
   public addNote(note: Note): Observable<number> {
-    const sql = `INSERT INTO note (title, value, creation_date, last_modified_date, archived, category_id) VALUES (?, ?, ?, ?, 0, ?);`;
+    const sql = `INSERT INTO note (title, value, creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, ?, ?, 0, 0, ?);`;
     return from(this.storageService.db.run(sql, [note.title, note.value, note.creationDate, note.lastModifiedDate, note.categoryId], true))
       .pipe(tap(() => {
         this.notesUpdated$.next();
@@ -103,9 +104,17 @@ export class NotesService {
     }));
   }
 
-  public delete(ids: number[]): Observable<any> {
+  public deleteForever(ids: number[]): Observable<any> {
     const sql = `DELETE FROM note WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public delete(ids: number[], deleted: boolean): Observable<any> {
+    const value = deleted ? 1 : 0;
+    const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }
@@ -159,7 +168,8 @@ export class NotesService {
     note
   WHERE
     archived = 0
-    AND title LIKE '%${search}%'`))
+  AND deleted = 0
+  AND title LIKE '%${search}%'`))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
@@ -179,6 +189,7 @@ export class NotesService {
       note
     WHERE
       archived = 0
+      AND deleted = 0
       AND category_id = ?
       AND title LIKE '%${search}%'`, [categoryId]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
@@ -206,6 +217,7 @@ export class NotesService {
       note
     WHERE
       archived = 0
+      AND deleted = 0
       AND ${backgroundCheck}
       AND title LIKE '%${search}%'`, [background]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
@@ -215,12 +227,12 @@ export class NotesService {
   }
 
   public countNotes(): Observable<{ totalNotes: number }> {
-    return from(this.storageService.db.query(`SELECT COUNT(n.id) as totalNotes FROM note n WHERE n.archived = 0`))
+    return from(this.storageService.db.query(`SELECT COUNT(n.id) as totalNotes FROM note n WHERE n.archived = 0 AND deleted = 0`))
       .pipe(map((value: DBSQLiteValues) => value.values![0] as { totalNotes: number }));
   }
 
   public getNotesCreationDates(): Observable<{ creationDate: string }[]> {
-    return from(this.storageService.db.query(`SELECT DISTINCT DATE(creation_date) as creationDate FROM note WHERE archived = 0`))
+    return from(this.storageService.db.query(`SELECT DISTINCT DATE(creation_date) as creationDate FROM note WHERE archived = 0 AND deleted = 0`))
       .pipe(map((value: DBSQLiteValues) => value.values as { creationDate: string }[]));
   }
 
@@ -238,6 +250,7 @@ export class NotesService {
     note
   WHERE
     archived = 0
+    AND deleted = 0
     AND DATE(creation_date) = ?`, [creationDate]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
@@ -256,6 +269,7 @@ export class NotesService {
       note
     WHERE
       archived = 1
+      AND deleted = 0
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 

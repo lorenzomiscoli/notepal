@@ -6,7 +6,7 @@ import { NgxMasonryModule } from 'ngx-masonry';
 import { TranslateModule } from "@ngx-translate/core";
 
 import { LongPressDirective } from "../../../../../app/directives/long-press.directive";
-import { NotesCardComponent } from "../notes-card/notes-card.component";
+import { NotesCardComponent } from "../../../../components/notes-card/notes-card.component";
 
 export const NOTES_SEARCH_DEPS = [
   NgClass,

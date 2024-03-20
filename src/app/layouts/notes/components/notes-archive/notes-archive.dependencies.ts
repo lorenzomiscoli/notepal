@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { LongPressDirective } from '../../../../directives/long-press.directive';
 import { SortNotesPipe } from './../../../../pipes/sort-property.pipe';
-import { NotesCardComponent } from '../notes-card/notes-card.component';
+import { NotesCardComponent } from '../../../../components/notes-card/notes-card.component';
 import { NotesArchiveSelectedHeaderComponent } from '../notes-archive-selected-header/notes-archive-selected-header.component';
 
 export const NOTES_ARCHIVE_DEPS = [

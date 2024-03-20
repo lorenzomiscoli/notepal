@@ -1,6 +1,7 @@
 import { Component, Input } from "@angular/core";
+
 import { NOTES_CARD_DEPS } from "./notes-card.dependencies";
-import { Note } from "../../interfaces/note.interface";
+import { Note } from "../../layouts/notes/interfaces/note.interface";
 
 @Component({
   selector: "app-notes-card",

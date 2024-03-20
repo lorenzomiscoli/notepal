@@ -1,0 +1,13 @@
+ion-fab {
+  margin-bottom: calc(var(--ion-safe-area-bottom, 0) + 10px);
+  right: var(--content-margin);
+
+  ion-fab-button {
+    width: 52px;
+    height: 52px;
+
+    ion-icon {
+      font-size: 32px;
+    }
+  }
+}

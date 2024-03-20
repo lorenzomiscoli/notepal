@@ -12,4 +12,8 @@
     <p>{{'emptyNotes' | translate}}</p>
   </div>
 </div>
-<app-notes-list-footer *ngIf="!selectedMode"></app-notes-list-footer>
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!selectedMode">
+  <ion-fab-button routerLink="../save">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

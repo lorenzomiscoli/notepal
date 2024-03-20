@@ -3,8 +3,8 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from "@a
 import { IonModal } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
 
-import { Note, NoteBackground } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
+import { Note, NoteBackground } from "../../layouts/notes/interfaces/note.interface";
+import { NotesService } from "../../layouts/notes/services/notes.service";
 import { NOTES_COLOR_PICKER_DEPS } from "./notes-color-picker.dependencies";
 
 @Component({

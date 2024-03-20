@@ -5,7 +5,7 @@ import { IonDatetime, IonFab, IonFabButton, IonIcon } from "@ionic/angular/stand
 import { NgxMasonryModule } from 'ngx-masonry';
 import { TranslateModule } from "@ngx-translate/core";
 
-import { NotesCardComponent } from "../notes-card/notes-card.component";
+import { NotesCardComponent } from "../../../../components/notes-card/notes-card.component";
 import { SortNotesPipe } from "../../../../../app/pipes/sort-property.pipe";
 
 export const NOTES_CALENDAR_DEPS = [

@@ -4,10 +4,9 @@ import { IonModal } from "@ionic/angular/standalone";
 import { Observable, Subject, takeUntil, tap } from "rxjs";
 
 import { NOTES_MOVE_DEPS } from "./notes-move.dependencies";
-import { Note, NoteCategory } from "../../interfaces/note.interface";
-import { NotesCategoryService } from "../../services/notes-category.service";
-import { NotesService } from "../../services/notes.service";
-
+import { Note, NoteCategory } from "../../layouts/notes/interfaces/note.interface";
+import { NotesCategoryService } from "../../layouts/notes/services/notes-category.service";
+import { NotesService } from "../../layouts/notes/services/notes.service";
 
 @Component({
   selector: "app-notes-move",

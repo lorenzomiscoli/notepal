@@ -11,7 +11,6 @@ import { NotesService } from "../../services/notes.service";
 @Component({
   selector: "app-notes-archive-selected-header",
   templateUrl: "./notes-archive-selected-header.component.html",
-  styleUrls: ["./notes-archive-selected-header.component.scss"],
   standalone: true,
   imports: [NOTES_ARCHIVE_SELECTED_HEADER_DEPS]
 })

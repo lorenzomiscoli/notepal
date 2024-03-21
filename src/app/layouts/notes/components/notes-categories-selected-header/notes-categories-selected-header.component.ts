@@ -11,7 +11,6 @@ import { NotesCategoryService } from './../../services/notes-category.service';
 @Component({
   selector: "app-notes-categories-selected-header",
   templateUrl: "./notes-categories-selected-header.component.html",
-  styleUrls: ["./notes-categories-selected-header.component.scss"],
   standalone: true,
   imports: [NOTES_CATEGORIES_SELECTED_HEADER_DEPS]
 })

@@ -11,7 +11,6 @@ import { NOTES_TRASH_SELECTED_HEADER_DEPS } from "./notes-trash-selected-header.
 @Component({
   selector: "app-notes-trash-selected-header",
   templateUrl: "./notes-trash-selected-header.component.html",
-  styleUrls: ["./notes-trash-selected-header.component.scss"],
   standalone: true,
   imports: [NOTES_TRASH_SELECTED_HEADER_DEPS]
 })

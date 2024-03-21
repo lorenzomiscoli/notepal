@@ -48,20 +48,6 @@
   justify-content: center;
 }
 
-.toolbar {
-  justify-content: space-between;
-  display: flex;
-  align-items: center;
-}
-
-html[mode="ios"] .toolbar {
-  padding: 8px 11px 8px 11px;
-}
-
-html[mode="md"] .toolbar {
-  padding: 4px;
-}
-
 .card-grid {
   column-count: 2;
   width: 100%;
@@ -119,6 +105,26 @@ ngx-masonry {
 }
 
 /* Pages */
+.toolbar {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+
+  .toolbar-title {
+    font-weight: 500;
+    font-size: 1.25rem;
+    margin-left: 5px;
+  }
+}
+
+html[mode="ios"] .toolbar {
+  padding: 8px 11px 8px 11px;
+}
+
+html[mode="md"] .toolbar {
+  padding: 4px;
+}
+
 .notes-counter {
   color: var(--ion-color-step-850, #262626);
   font-weight: 500;

@@ -13,7 +13,7 @@ import { NotesSettingService } from "../../services/notes-setting.service";
 @Component({
   templateUrl: "./notes-archive.component.html",
   standalone: true,
-  styleUrls: ["./notes-archive.component.scss"],
+  styles: [`:host {  background-color: var(--ion-color-light);  }`],
   imports: [NOTES_ARCHIVE_DEPS]
 })
 export class NotesArchiveComponent implements OnInit, OnDestroy {

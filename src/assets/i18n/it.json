@@ -55,5 +55,7 @@
   "notesRestored": "Note ripristinate",
   "noteRestored": "Nota ripristinata",
   "notesToBin": "Note spostate nel cestino",
-  "noteToBin": "Nota spostata nel cestino"
+  "noteToBin": "Nota spostata nel cestino",
+  "deleteNoteForever": "Cancellare nota per sempre?",
+  "deleteNotesForever": "Cancellare note per sempre?"
 }

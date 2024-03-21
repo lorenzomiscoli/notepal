@@ -29,5 +29,8 @@ export const NOTES_ROUTES: Routes = [
   },
   {
     path: "archive", loadComponent: () => import('./components/notes-archive/notes-archive.component').then(m => m.NotesArchiveComponent)
+  },
+  {
+    path: "trash", loadComponent: () => import('./components/notes-trash/notes-trash.component').then(m => m.NotesTrashComponent)
   }
 ];

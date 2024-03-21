@@ -54,5 +54,7 @@
   "notesRestored": "Notes restored",
   "noteRestored": "Note restored",
   "notesToBin": "Notes moved to bin",
-  "noteToBin": "Note moved to bin"
+  "noteToBin": "Note moved to bin",
+  "deleteNoteForever": "Delete note forever?",
+  "deleteNotesForever": "Delete notes forever?"
 }

@@ -173,7 +173,6 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-
   public searchNotesByCategoryId(categoryId: number, search: string): Observable<Note[]> {
     if (search) {
       return from(this.storageService.db.query(`SELECT
@@ -270,6 +269,23 @@ export class NotesService {
     WHERE
       archived = 1
       AND deleted = 0
+  `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
+  public getDeletedNotes(): Observable<Note[]> {
+    return from(this.storageService.db.query(`SELECT
+      id,
+      title,
+      value,
+      creation_date as creationDate,
+      last_modified_date as lastModifiedDate,
+      pinned,
+      background,
+      category_id as categoryId
+    FROM
+      note
+    WHERE
+      deleted = 1
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 

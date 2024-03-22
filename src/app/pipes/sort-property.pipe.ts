@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
-import { Note, SortDirection, SortMode } from "../layouts/notes/interfaces/note.interface";
+import { Note, SortDirection, SortMode } from "../interfaces/note.interface";
 
 @Pipe({
   name: "appSortNotes",

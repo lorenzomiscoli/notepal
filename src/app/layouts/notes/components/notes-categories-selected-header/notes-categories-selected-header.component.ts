@@ -5,8 +5,8 @@ import { Subject, from, switchMap, takeUntil } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 import { NOTES_CATEGORIES_SELECTED_HEADER_DEPS } from "./notes-categories-selected-header.dependencies";
-import { NoteCategory } from "../../interfaces/note.interface";
-import { NotesCategoryService } from './../../services/notes-category.service';
+import { NoteCategory } from "../../../../interfaces/note.interface";
+import { NotesCategoryService } from '../../../../services/notes-category.service';
 
 @Component({
   selector: "app-notes-categories-selected-header",

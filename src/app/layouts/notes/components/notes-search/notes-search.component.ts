@@ -6,10 +6,10 @@ import { NgxMasonryOptions } from "ngx-masonry";
 import { Subject, Subscription, debounceTime, switchMap, takeUntil } from "rxjs";
 
 import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
-import { Note, NoteBackground, NoteCategory, NoteSearchFilter, ViewMode } from "../../interfaces/note.interface";
-import { NotesCategoryService } from "../../services/notes-category.service";
-import { NotesService } from "../../services/notes.service";
-import { NotesSettingService } from "../../services/notes-setting.service";
+import { Note, NoteBackground, NoteCategory, NoteSearchFilter, ViewMode } from "../../../../interfaces/note.interface";
+import { NotesCategoryService } from "../../../../services/notes-category.service";
+import { NotesService } from "../../../../services/notes.service";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
 import { environment } from './../../../../../environments/environment';
 
 @Component({

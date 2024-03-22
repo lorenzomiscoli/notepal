@@ -3,10 +3,12 @@ import { Injectable } from "@angular/core";
 import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, Subject, from, map, tap } from 'rxjs';
 
-import { StorageService } from '../../../services/storage.service';
+import { StorageService } from './storage.service';
 import { Note, NoteBackground } from '../interfaces/note.interface';
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class NotesService {
   public notesUpdated$ = new Subject<void>();
 

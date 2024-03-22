@@ -1,7 +1,6 @@
 {
   "back": "Indietro",
   "title": "Titolo",
-  "dateFormat": "d MMMM y, HH:mm",
   "note": "Nota",
   "deleteNote": "Elimina nota",
   "deleteThisNote": "Eliminare questa nota?",

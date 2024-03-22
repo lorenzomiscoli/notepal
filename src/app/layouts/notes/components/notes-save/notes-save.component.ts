@@ -6,9 +6,9 @@ import { Subscription } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
-import { Note, NoteForm } from "../../interfaces/note.interface";
-import { NotesCategoryService } from "../../services/notes-category.service";
-import { NotesService } from "../../services/notes.service";
+import { Note, NoteForm } from "../../../../interfaces/note.interface";
+import { NotesCategoryService } from "../../../../services/notes-category.service";
+import { NotesService } from "../../../../services/notes.service";
 
 @Component({
   templateUrl: "./notes-save.component.html",

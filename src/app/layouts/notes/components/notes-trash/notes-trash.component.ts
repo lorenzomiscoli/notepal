@@ -5,9 +5,9 @@ import { NgxMasonryOptions } from "ngx-masonry";
 import { Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 
 import { environment } from "../../../../../environments/environment";
-import { Note, SortDirection, SortMode, ViewMode } from "../../interfaces/note.interface";
-import { NotesSettingService } from "../../services/notes-setting.service";
-import { NotesService } from "../../services/notes.service";
+import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { NotesService } from "../../../../services/notes.service";
 import { NOTES_TRASH_DEPS } from "./notes-trash.dependencies";
 
 @Component({

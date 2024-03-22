@@ -6,9 +6,9 @@ import { Subject, Subscription, finalize, from, map, switchMap, takeUntil } from
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_CATEGORIES_DEPS } from "./notes-categories.dependencies";
-import { NoteCategory } from "../../interfaces/note.interface";
-import { NotesCategoryService } from "../../services/notes-category.service";
-import { NotesService } from "../../services/notes.service";
+import { NoteCategory } from "../../../../interfaces/note.interface";
+import { NotesCategoryService } from "../../../../services/notes-category.service";
+import { NotesService } from "../../../../services/notes.service";
 
 @Component({
   templateUrl: "./notes-categories.component.html",

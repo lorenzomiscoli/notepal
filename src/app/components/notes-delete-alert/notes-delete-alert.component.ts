@@ -5,8 +5,8 @@ import { Subject, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_DELETE_ALERT_DEPS } from "./notes-delete-alert.dependencies";
-import { NotesService } from "../../layouts/notes/services/notes.service";
-import { Note } from "../../layouts/notes/interfaces/note.interface";
+import { NotesService } from "../../services/notes.service";
+import { Note } from "../../interfaces/note.interface";
 
 @Component({
   selector: "app-notes-delete-alert",

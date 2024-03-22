@@ -12,8 +12,8 @@ import { IonToast, ToastButton } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, takeUntil } from "rxjs";
 
-import { Note } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
+import { Note } from "../../../../interfaces/note.interface";
+import { NotesService } from "../../../../services/notes.service";
 import { NOTES_LIST_SELECTED_HEADER_DEPS } from "./notes-list-selected-header.dependencies";
 
 @Component({

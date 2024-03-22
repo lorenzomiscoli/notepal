@@ -5,8 +5,8 @@ import { Subject, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
 
 import { NOTES_ARCHIVE_SELECTED_HEADER_DEPS } from "./notes-archive-selected-header.dependencies";
-import { Note } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
+import { Note } from "../../../../interfaces/note.interface";
+import { NotesService } from "../../../../services/notes.service";
 
 @Component({
   selector: "app-notes-archive-selected-header",

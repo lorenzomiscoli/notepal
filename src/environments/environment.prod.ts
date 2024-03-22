@@ -1,4 +1,4 @@
-import { SortDirection, SortMode, ViewMode } from './../app/layouts/notes/interfaces/note.interface';
+import { SortDirection, SortMode, ViewMode } from '../app/interfaces/note.interface';
 
 export const environment = {
   production: true,

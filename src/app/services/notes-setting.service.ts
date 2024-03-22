@@ -4,9 +4,11 @@ import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, from, map, } from 'rxjs';
 
 import { NoteSetting, SortDirection, SortMode, ViewMode } from '../interfaces/note.interface';
-import { StorageService } from '../../../services/storage.service';
+import { StorageService } from './storage.service';
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class NotesSettingService {
 
   constructor(private storageService: StorageService) { }

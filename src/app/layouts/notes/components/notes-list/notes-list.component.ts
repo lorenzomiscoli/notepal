@@ -8,16 +8,15 @@ import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 
 import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
-import { Note, SortMode, ViewMode } from '../../interfaces/note.interface';
-import { NotesCategoryService } from './../../services/notes-category.service';
-import { NotesService } from "../../services/notes.service";
-import { NotesSettingService } from "../../services/notes-setting.service";
-import { SortDirection } from './../../interfaces/note.interface';
+import { Note, SortMode, ViewMode } from '../../../../interfaces/note.interface';
+import { NotesCategoryService } from '../../../../services/notes-category.service';
+import { NotesService } from "../../../../services/notes.service";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { SortDirection } from '../../../../interfaces/note.interface';
 import { environment } from './../../../../../environments/environment';
 
 @Component({
   templateUrl: "./notes-list.component.html",
-  styleUrls: ["./notes-list.component.scss"],
   standalone: true,
   imports: [NOTES_LIST_DEPS]
 })

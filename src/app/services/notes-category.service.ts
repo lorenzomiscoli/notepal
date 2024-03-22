@@ -4,9 +4,11 @@ import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 import { NoteCategory } from '../interfaces/note.interface';
-import { StorageService } from '../../../services/storage.service';
+import { StorageService } from './storage.service';
 
-@Injectable()
+@Injectable({
+  providedIn: "root"
+})
 export class NotesCategoryService {
   public selectedCategory$ = new BehaviorSubject<number | undefined>(undefined);
 

@@ -7,9 +7,9 @@ import { TranslateService } from "@ngx-translate/core";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil, tap } from "rxjs";
 
 import { NOTES_CALENDAR_DEPS } from "./notes-calendar.dependencies";
-import { Note, SortDirection, SortMode, ViewMode } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
-import { NotesSettingService } from "../../services/notes-setting.service";
+import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
+import { NotesService } from "../../../../services/notes.service";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
 import { dateToIsoString, datetimeToDateString } from "../../../../../app/utils/date-utils";
 import { environment } from "../../../../../environments/environment";
 

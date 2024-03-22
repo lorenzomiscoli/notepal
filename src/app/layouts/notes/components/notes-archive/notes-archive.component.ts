@@ -6,9 +6,9 @@ import { NavController, Platform } from "@ionic/angular/standalone";
 
 import { NOTES_ARCHIVE_DEPS } from "./notes-archive.dependencies";
 import { environment } from "../../../../../environments/environment";
-import { Note, SortDirection, SortMode, ViewMode } from "../../interfaces/note.interface";
-import { NotesService } from "../../services/notes.service";
-import { NotesSettingService } from "../../services/notes-setting.service";
+import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
+import { NotesService } from "../../../../services/notes.service";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
 
 @Component({
   templateUrl: "./notes-archive.component.html",

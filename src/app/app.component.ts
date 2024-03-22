@@ -1,16 +1,16 @@
 import { LocaleService } from './services/locale.service';
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { APP_DEPS } from './app.dependencies';
+
 import * as icons from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ["./app.component.scss"],
   standalone: true,
-  imports: [APP_DEPS],
+  imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent implements OnInit {
 

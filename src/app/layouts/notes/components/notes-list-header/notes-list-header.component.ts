@@ -4,9 +4,9 @@ import { IonModal } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
 
 import { NOTES_LIST_HEADER_DEPS } from "./notes-list-header.dependencies";
-import { NoteSetting, SortDirection } from './../../interfaces/note.interface';
-import { NotesSettingService } from "../../services/notes-setting.service";
-import { SortMode, ViewMode } from "../../interfaces/note.interface";
+import { NoteSetting, SortDirection } from '../../../../interfaces/note.interface';
+import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { SortMode, ViewMode } from "../../../../interfaces/note.interface";
 import { environment } from './../../../../../environments/environment';
 
 @Component({

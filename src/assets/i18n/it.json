@@ -54,8 +54,9 @@
   "descending": "Discendente",
   "notesRestored": "Note ripristinate",
   "noteRestored": "Nota ripristinata",
-  "notesToBin": "Note spostate nel cestino",
-  "noteToBin": "Nota spostata nel cestino",
-  "deleteNoteForever": "Cancellare nota per sempre?",
-  "deleteNotesForever": "Cancellare note per sempre?"
+  "notesToTrash": "Note spostate nel cestino",
+  "noteToTrash": "Nota spostata nel cestino",
+  "deleteNoteForever": "Eliminare nota per sempre?",
+  "deleteNotesForever": "Eliminare note per sempre?",
+  "trashWarning": "Le note nel Cestino vengono eliminate dopo 7 giorni"
 }

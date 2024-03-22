@@ -8,6 +8,7 @@
   <app-notes-trash-selected-header [notes]="notes" (close)="deselectAll()"></app-notes-trash-selected-header>
 </ng-template>
 <div class="content">
+  <span class="warning" *ngIf="notes.length > 0">{{'trashWarning'|translate}}</span>
   <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" appLongPress (tap)="tap(note)"
       (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>

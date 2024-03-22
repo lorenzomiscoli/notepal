@@ -53,8 +53,9 @@
   "descending": "Descending",
   "notesRestored": "Notes restored",
   "noteRestored": "Note restored",
-  "notesToBin": "Notes moved to bin",
-  "noteToBin": "Note moved to bin",
+  "notesToTrash": "Notes moved to trash",
+  "noteToTrash": "Note moved to trash",
   "deleteNoteForever": "Delete note forever?",
-  "deleteNotesForever": "Delete notes forever?"
+  "deleteNotesForever": "Delete notes forever?",
+  "trashWarning": "Notes in Trash are deleted after 7 days"
 }

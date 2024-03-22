@@ -67,7 +67,7 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
         handler: () => this.undeleteNotes()
       }
     ];
-    this.toast.message = multi ? this.translateService.instant("notesToBin") : this.translateService.instant("noteToBin");
+    this.toast.message = multi ? this.translateService.instant("notesToTrash") : this.translateService.instant("noteToTrash");
   }
 
   public unarchiveNotes(): void {

@@ -12,7 +12,7 @@ import { NOTES_TRASH_DEPS } from "./notes-trash.dependencies";
 
 @Component({
   templateUrl: "./notes-trash.component.html",
-  styles: [`:host {  background-color: var(--ion-color-light);  }`],
+  styleUrls: ["./notes-trash.component.scss"],
   standalone: true,
   imports: [NOTES_TRASH_DEPS]
 })

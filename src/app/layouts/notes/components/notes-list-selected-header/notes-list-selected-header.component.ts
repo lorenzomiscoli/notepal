@@ -3,13 +3,9 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
   Output,
-  ViewChild
 } from "@angular/core";
 
-import { IonToast, ToastButton } from "@ionic/angular/standalone";
-import { TranslateService } from "@ngx-translate/core";
 import { Subject, takeUntil } from "rxjs";
 
 import { Note } from "../../../../interfaces/note.interface";
@@ -19,28 +15,21 @@ import { NOTES_LIST_SELECTED_HEADER_DEPS } from "./notes-list-selected-header.de
 @Component({
   selector: "app-notes-list-selected-header",
   templateUrl: "./notes-list-selected-header.component.html",
-  styleUrls: ["./notes-list-selected-header.component.scss"],
   standalone: true,
   imports: [NOTES_LIST_SELECTED_HEADER_DEPS]
 })
-export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
-  @Output() public close = new EventEmitter<void>();
+export class NotesListSelectedHeaderComponent implements OnDestroy {
   @Input({ required: true }) public notes!: Note[];
-  public isDeleteAlertOpen = false;
-  private archiveMessage!: { single: string, multi: string };
-  public isArchiveToastOpen = false;
-  @ViewChild("archiveToast") private archiveToast!: IonToast;
-  public archiveToastButtons!: ToastButton[];
-  private lastArchivedIds!: number[];
-  private destroy$: Subject<boolean> = new Subject<boolean>();
+  @Output() public close = new EventEmitter<void>();
+  public isMenuOpen = false;
   public isColorPickerOpen = false;
-  public isMoveOpen = false;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService, private translateService: TranslateService) { }
+  constructor(private notesService: NotesService) { }
 
-  ngOnInit(): void {
-    this.createArchiveTranslations();
-    this.createArchiveButtons();
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   public cancel(): void {
@@ -68,42 +57,6 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  public toggleDeleteAlert(isOpen: boolean): void {
-    this.isDeleteAlertOpen = isOpen;
-  }
-
-  private createArchiveTranslations(): void {
-    this.archiveMessage = {
-      single: this.translateService.instant("noteArchived"),
-      multi: this.translateService.instant("notesArchived"),
-    }
-  }
-
-  private createArchiveButtons(): void {
-    this.archiveToastButtons = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.unarchiveNotes()
-      }
-    ];
-  }
-
-  public unarchiveNotes(): void {
-    this.notesService.unarchiveNotes(this.lastArchivedIds).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.lastArchivedIds = [];
-    });
-  }
-
-  public archiveNotes(): void {
-    let notes = this.getSelectedNotes().map(note => note.id);
-    this.archiveToast.message = notes.length > 1 ? this.archiveMessage.multi : this.archiveMessage.single;
-    this.notesService.archiveNotes(notes).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.isArchiveToastOpen = true;
-      this.lastArchivedIds = notes;
-    });
-  }
-
   public checkPinned(): void {
     let ids: number[] = this.getSelectedNotes().map(note => note.id);
     if (this.getSelectedPinnedNotesLength() === this.getSelectedNotes().length) {
@@ -113,9 +66,6 @@ export class NotesListSelectedHeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
-  }
+
 
 }

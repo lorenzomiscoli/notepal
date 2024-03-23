@@ -17,6 +17,7 @@ import { environment } from './../../../../../environments/environment';
 
 @Component({
   templateUrl: "./notes-list.component.html",
+  styles: [`:host { background-color: var(--ion-color-light)}`],
   standalone: true,
   imports: [NOTES_LIST_DEPS]
 })

@@ -1,0 +1,24 @@
+<ion-button id="more-options-trigger" [disabled]="selectedNotes.length < 1">
+  <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+</ion-button>
+<ion-popover trigger="more-options-trigger" triggerAction="click" [dismissOnSelect]="true">
+  <ng-template>
+    <ion-list>
+      <ion-item [button]="true" lines="none" (click)="isMoveModalOpen = true">
+        <ion-label>{{'move'|translate}}</ion-label>
+      </ion-item>
+      <ion-item [button]="true" lines="none" (click)="archive()">
+        <ion-label>{{'archive'|translate}}</ion-label>
+      </ion-item>
+      <ion-item [button]="true" lines="none" (click)="delete()">
+        <ion-label>{{'delete'|translate}}</ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+</ion-popover>
+<ion-toast [duration]="2500" [isOpen]="isArchiveToastOpen" (ionToastDidDismiss)="isArchiveToastOpen = false"
+  [message]="getArchiveMessage()" [buttons]="archiveToastButtons"></ion-toast>
+<ion-toast [duration]="2500" [isOpen]="isDeleteToastOpen" (ionToastDidDismiss)="isDeleteToastOpen = false"
+  [message]="getDeleteMessage()" [buttons]="deleteToastButtons"></ion-toast>
+<app-notes-move [selectedNotes]="selectedNotes" [isOpen]="isMoveModalOpen"
+  (close)="isMoveModalOpen = false"></app-notes-move>

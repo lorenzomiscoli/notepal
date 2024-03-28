@@ -36,15 +36,6 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public checkSelection(): void {
-    const selectedNotes = this.getSelectedNotes().length;
-    if (selectedNotes === this.notes.length) {
-      this.notes.forEach(note => note.isSelected = false);
-    } else {
-      this.notes.forEach(note => note.isSelected = true);
-    }
-  }
-
   public getSelectedNotes(): Note[] {
     return this.notes.filter(note => note.isSelected);
   }

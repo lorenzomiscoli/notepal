@@ -1,20 +1,9 @@
-<div class="toolbar">
-  <ion-buttons>
-    <ion-button (click)="cancel()">
-      <ion-icon slot="icon-only" name="close-outline"></ion-icon>
-    </ion-button>
-    <div class="notes-counter">{{getSelectedNotes().length}}</div>
-  </ion-buttons>
-  <ion-buttons>
-    <ion-button (click)="checkSelection()">
-      <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
-    </ion-button>
-    <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchiveNotes()">
-      <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
-    </ion-button>
-    <ion-button [disabled]="getSelectedNotes().length < 1" (click)="deleteNotes()">
-      <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</div>
+<app-notes-selected-header [notes]="notes" [isCustomLayout]="true" (close)="cancel()">
+  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchiveNotes()">
+    <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
+  </ion-button>
+  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="deleteNotes()">
+    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+  </ion-button>
+</app-notes-selected-header>
 <ion-toast [duration]="2500" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"></ion-toast>

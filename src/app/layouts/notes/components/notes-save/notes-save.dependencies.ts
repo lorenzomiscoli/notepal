@@ -1,41 +1,29 @@
-import { NgIf, DatePipe } from "@angular/common";
+import { DatePipe, NgIf } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
+import { NotesMenuComponent } from './../../../../components/notes-menu/notes-menu.component';
 
 import {
-  IonButtons,
-  IonNote,
-  IonButton,
   IonBackButton,
-  IonToolbar,
-  IonInput,
+  IonButton,
+  IonButtons,
   IonIcon,
-  IonTextarea,
-  IonContent,
-  IonList,
-  IonItem,
+  IonInput,
   IonLabel,
-  IonHeader,
-  IonAlert
+  IonTextarea
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
 export const NOTES_SAVE_DEPS = [
-  NgIf,
   DatePipe,
+  NgIf,
   ReactiveFormsModule,
   IonButtons,
-  IonNote,
   IonButton,
   IonBackButton,
-  IonToolbar,
   IonInput,
   IonIcon,
   IonTextarea,
-  IonContent,
-  IonList,
-  IonItem,
   IonLabel,
-  IonHeader,
-  IonAlert,
-  TranslateModule
+  TranslateModule,
+  NotesMenuComponent
 ]

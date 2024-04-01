@@ -91,15 +91,13 @@ export class NotesService {
     }));
   }
 
-  public addNote(note: Note): Observable<number> {
-    const sql = `INSERT INTO note (title, value, creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, ?, ?, 0, 0, ?);`;
-    return from(this.storageService.db.run(sql, [note.title, note.value, note.creationDate, note.lastModifiedDate, note.categoryId], true))
-      .pipe(tap(() => {
-        this.notesUpdated$.next();
-      }), map((value: capSQLiteChanges) => value.changes?.lastId as number));
+  public insertEmpty(creationDate: string, categoryId: number | undefined): Observable<number> {
+    const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;
+    return from(this.storageService.db.run(sql, [creationDate, creationDate, categoryId], true))
+      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number));
   }
 
-  public updateNote(id: number, note: Note): Observable<any> {
+  public update(id: number, note: Note): Observable<any> {
     const sql = `UPDATE note SET title = ? , value = ? , last_modified_date = ? WHERE id = ?;`;
     return from(this.storageService.db.run(sql, [note.title, note.value, note.lastModifiedDate, id], true)).pipe(tap(() => {
       this.notesUpdated$.next();
@@ -119,6 +117,11 @@ export class NotesService {
     return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
+  }
+
+  public deleteEmpty(id: number): Observable<any> {
+    const sql = `DELETE FROM note WHERE id  = ?;`;
+    return from(this.storageService.db.run(sql, [id], true));
   }
 
   public archiveNotes(ids: number[]): Observable<any> {

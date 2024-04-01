@@ -1,14 +1,14 @@
 import { Component, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
-import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
-import { Subscription } from "rxjs";
+import { IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
+import { Subject, Subscription, debounceTime, takeUntil } from "rxjs";
 
-import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 import { Note, NoteForm } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
+import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 
 @Component({
   templateUrl: "./notes-save.component.html",
@@ -17,14 +17,15 @@ import { NotesService } from "../../../../services/notes.service";
   imports: [NOTES_SAVE_DEPS]
 })
 export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
+  @Input() public id!: number;
+  public note!: Note;
   public form!: FormGroup;
-  private isDirty = false;
-  @Input() id!: number;
   public date: string;
   public locale: string;
   public timezone: string;
-  @ViewChild("textArea") textArea!: IonTextarea;
-  public deleteAlertBtns!: AlertButton[];
+  @ViewChild("textArea") public textArea!: IonTextarea;
+  private isTemporary = false;
+  private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
 
   constructor(
@@ -46,15 +47,17 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   ngOnInit(): void {
     this.initForm();
-    this.checkIfDirty();
     if (this.id) {
       this.getNoteById(this.id);
+    } else {
+      this.insertEmpty();
     }
-    this.createDeleteAlertBtns();
     this.handleBackButton();
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
     if (this.backButtonSubscription) {
       this.backButtonSubscription.unsubscribe();
     }
@@ -62,7 +65,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   private handleBackButton(): void {
     this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
-      this.ionRouterOutlet.pop();
+      this.back();
     });
   }
 
@@ -71,6 +74,11 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       title: new FormControl(),
       value: new FormControl()
     });
+    this.form.valueChanges.pipe(debounceTime(400)).subscribe(() => this.update());
+  }
+
+  private getNoteById(id: number): void {
+    this.notesService.getNoteById(id).subscribe(note => this.updateForm(note as Note));
   }
 
   private updateForm(note: Note): void {
@@ -78,60 +86,30 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     this.form.patchValue(note, { emitEvent: false });
   }
 
-  public saveNote(): void {
-    let note: Note = this.form.value;
-    note.categoryId = this.notesCategoryService.selectedCategory$.value;
-    if (this.checkEmptyNote()) return;
-    if (this.id) {
-      if (this.isDirty) {
-        this.update(note);
-      }
+  public update(): void {
+    const note: Note = this.form.value;
+    note.lastModifiedDate = new Date().toISOString();
+    this.notesService.update(this.id, note).pipe(takeUntil(this.destroy$)).subscribe();
+  }
+
+  public back(): void {
+    if (this.id && this.isTemporary && !this.form.value.value) {
+      this.notesService.deleteEmpty(this.id)
+        .pipe(takeUntil(this.destroy$)).subscribe(() => this.ionRouterOutlet.pop());
     } else {
-      this.insert(note);
+      this.ionRouterOutlet.pop();
     }
   }
 
-  public checkEmptyNote(): boolean {
-    return this.form.value.value ? false : true;
-  }
-
-  private checkIfDirty(): void {
-    this.form.valueChanges.subscribe(() => this.isDirty = true);
-  }
-
-  private insert(note: Note): void {
-    note.creationDate = new Date().toISOString();
-    note.lastModifiedDate = new Date().toISOString();
-    this.notesService.addNote(note).subscribe((id) => this.id = id);
-  }
-
-  private update(note: Note): void {
-    note.lastModifiedDate = new Date().toISOString();
-    this.notesService.updateNote(this.id, note).subscribe();
-  }
-
-  private getNoteById(id: number): void {
-    this.notesService.getNoteById(id).subscribe(note => this.updateForm(note as Note));
-  }
-
-  private delete(): void {
-    this.notesService.deleteForever([this.id]).subscribe(() => this.ionRouterOutlet.pop());
-  }
-
-  private createDeleteAlertBtns(): void {
-    const cancelText = this.translateService.instant("cancel");
-    const deleteText = this.translateService.instant("delete");
-    this.deleteAlertBtns = [
-      {
-        text: cancelText,
-        role: 'cancel',
-      },
-      {
-        text: deleteText,
-        role: 'confirm',
-        handler: () => this.delete()
-      },
-    ];
+  private insertEmpty(): void {
+    const creationDate = new Date().toISOString();
+    const categoryId: number | undefined = this.notesCategoryService.selectedCategory$.value;
+    this.notesService.insertEmpty(creationDate, categoryId)
+      .pipe(takeUntil(this.destroy$)).subscribe((id) => {
+        this.id = id;
+        this.isTemporary = true;
+        this.note = { id: id, categoryId: categoryId } as Note;
+      });
   }
 
 }

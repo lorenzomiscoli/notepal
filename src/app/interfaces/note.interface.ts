@@ -10,6 +10,7 @@ export interface Note {
   background: string | undefined;
   categoryId: number | undefined;
   isSelected?: boolean;
+  isTemporary?: boolean;
 }
 
 export interface NoteSetting {

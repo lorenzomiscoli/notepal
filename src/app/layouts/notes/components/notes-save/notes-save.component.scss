@@ -1,13 +1,25 @@
-.title-size {
-  font-size: 22px;
+.content {
+  background-color: unset !important;
 }
 
-.date {
+ion-label {
+  padding-left: 2px;
+  font-size: 0.75rem;
   color: #ababab;
-  font-size: 12px;
+}
 
-  ion-label {
-    margin-top: -10px !important;
-  }
+ion-input {
+  font-size: 1.375rem;
+  --border-color: none;
+  --highlight-color-invalid: none;
+  --highlight-color-valid: none;
+  --highlight-color-focused: none;
+}
 
+ion-textarea {
+  margin-top: 15px;
+  --border-color: none;
+  --highlight-color-invalid: none;
+  --highlight-color-valid: none;
+  --highlight-color-focused: none;
 }

@@ -1,11 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from "@angular/core";
-import { NotesService } from './../../services/notes.service';
+import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 
 import { Subject, takeUntil } from "rxjs";
+
 import { Note } from "../../interfaces/note.interface";
+import { NotificationEvent } from './../../interfaces/note.interface';
+import { NotesNotificationService } from './../../services/notes-notification-service';
+import { NotesService } from './../../services/notes.service';
 import { NOTES_MENU_DEPS } from "./notes-menu.dependencies";
-import { TranslateService } from "@ngx-translate/core";
-import { ToastButton } from "@ionic/angular/standalone";
 
 @Component({
   selector: "app-notes-menu",
@@ -14,83 +15,37 @@ import { ToastButton } from "@ionic/angular/standalone";
   standalone: true,
   imports: [NOTES_MENU_DEPS]
 })
-export class NotesMenuComponent implements OnInit, OnDestroy {
+export class NotesMenuComponent implements OnDestroy {
   @Input({ required: true }) public selectedNotes!: Note[];
-  public lastArchivedIds: number[] = [];
-  public lastDeletedIds: number[] = [];
-  public isArchiveToastOpen = false;
-  public isDeleteToastOpen = false;
+  @Output() public archived = new EventEmitter<void>();
+  @Output() public deleted = new EventEmitter<void>();
+  @Output() public moved = new EventEmitter<number>();
   public isMoveModalOpen = false;
-  public archiveToastButtons!: ToastButton[];
-  public deleteToastButtons!: ToastButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  public constructor(private notesService: NotesService, private translateService: TranslateService) { }
-
-  ngOnInit(): void {
-    this.createArchiveButtons();
-    this.createDeleteButtons();
-  }
+  public constructor(private notesService: NotesService,
+    private notesNotificationService: NotesNotificationService) { }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 
-  private createArchiveButtons(): void {
-    this.archiveToastButtons = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.unarchive()
-      }
-    ];
-  }
-
-  private createDeleteButtons(): void {
-    this.deleteToastButtons = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.undelete()
-      }
-    ];
-  }
-
-  public getArchiveMessage(): string {
-    return this.lastArchivedIds.length > 1 ? this.translateService.instant("notesArchived") : this.translateService.instant("noteArchived");
-  }
-
-  public getDeleteMessage(): string {
-    return this.lastDeletedIds.length > 1 ? this.translateService.instant("notesToTrash") : this.translateService.instant("noteToTrash");
-  }
-
   public archive(): void {
     const ids = this.selectedNotes.map(note => note.id);
-    this.notesService.archiveNotes(ids)
+    this.notesService.archiveNotes(ids, true)
       .pipe(takeUntil(this.destroy$)).subscribe(() => {
-        this.isArchiveToastOpen = true;
-        this.lastArchivedIds = ids;
+        this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.ARCHIVE });
+        this.archived.emit();
       });
   }
 
   public delete(): void {
     const ids = this.selectedNotes.map(note => note.id);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.isDeleteToastOpen = true;
-      this.lastDeletedIds = ids;
+      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
+      this.deleted.emit();
     })
-  }
-
-  private undelete(): void {
-    this.notesService.delete(this.lastDeletedIds, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.lastDeletedIds = [];
-    })
-  }
-
-  private unarchive(): void {
-    this.notesService.unarchiveNotes(this.lastArchivedIds)
-      .pipe(takeUntil(this.destroy$)).subscribe(() => this.lastArchivedIds = []);
   }
 
 }

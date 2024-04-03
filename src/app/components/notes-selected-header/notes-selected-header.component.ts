@@ -65,9 +65,9 @@ export class NotesSelectedHeaderComponent implements OnDestroy {
   public checkPinned(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
     if (this.getSelectedPinnedNotesLength() === this.getSelectedNotes().length) {
-      this.notesService.unpinNotes(ids).pipe(takeUntil(this.destroy$)).subscribe();
+      this.notesService.pin(ids, false).pipe(takeUntil(this.destroy$)).subscribe();
     } else {
-      this.notesService.pinNotes(ids).pipe(takeUntil(this.destroy$)).subscribe();
+      this.notesService.pin(ids, true).pipe(takeUntil(this.destroy$)).subscribe();
     }
   }
 

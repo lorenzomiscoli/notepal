@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
 
-import { AlertButton, ToastButton } from "@ionic/angular/standalone";
+import { AlertButton } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, takeUntil } from "rxjs";
 
-import { Note } from "../../../../interfaces/note.interface";
+import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
+import { NotesNotificationService } from "../../../../services/notes-notification-service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_TRASH_SELECTED_HEADER_DEPS } from "./notes-trash-selected-header.dependencies";
 
@@ -17,17 +18,15 @@ import { NOTES_TRASH_SELECTED_HEADER_DEPS } from "./notes-trash-selected-header.
 export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public notes!: Note[];
   @Output() public close = new EventEmitter<void>();
-  public isDeleteToastOpen = false;
   public isDeleteAlertOpen = false;
-  public deleteToastBtns!: ToastButton[];
   public deleteAlertBtns!: AlertButton[];
-  private lastDeletedIds: number[] = [];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService, private translateService: TranslateService) { }
+  constructor(private notesService: NotesService,
+    private notesNotificationService: NotesNotificationService,
+    private translateService: TranslateService) { }
 
   ngOnInit(): void {
-    this.createDeleteToastBtns();
     this.createDeleteAlertBtns();
   }
 
@@ -44,27 +43,16 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
     this.close.next();
   }
 
-  private delete(): void {
-    this.notesService.delete(this.lastDeletedIds, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.lastDeletedIds = [];
-    });
-  }
-
   public undelete(): void {
-    let ids = this.getSelectedNotes().map(note => note.id);
+    const ids = this.getSelectedNotes().map(note => note.id);
     this.notesService.delete(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.isDeleteToastOpen = true;
-      this.lastDeletedIds = ids;
+      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNDELETE });
     });
   }
 
   private deleteForever(): void {
-    let ids = this.getSelectedNotes().map(note => note.id);
+    const ids = this.getSelectedNotes().map(note => note.id);
     this.notesService.deleteForever(ids).pipe(takeUntil(this.destroy$)).subscribe();
-  }
-
-  public getDeleteToastMsg(): string {
-    return this.getSelectedNotes().length > 0 ? this.translateService.instant("notesRestored") : this.translateService.instant("noteRestored");
   }
 
   public getDeleteAlertMsg(): string {
@@ -74,16 +62,6 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
     } else {
       return this.translateService.instant("deleteNotesForever");
     }
-  }
-
-  private createDeleteToastBtns(): void {
-    this.deleteToastBtns = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.delete()
-      }
-    ]
   }
 
   private createDeleteAlertBtns(): void {

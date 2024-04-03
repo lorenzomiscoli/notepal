@@ -66,3 +66,12 @@ export enum NoteBackground {
 export enum NoteSearchFilter {
   CATEGORY, BACKGROUND
 }
+
+export enum NotificationEvent {
+  ARCHIVE, UNARCHIVE, DELETE, UNDELETE
+}
+
+export interface NoteEvent {
+  ids: number[],
+  event: NotificationEvent
+}

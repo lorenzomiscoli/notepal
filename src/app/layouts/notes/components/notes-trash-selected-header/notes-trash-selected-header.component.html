@@ -6,7 +6,5 @@
     <ion-icon slot="icon-only" name="trash-bin-outline"></ion-icon>
   </ion-button>
 </app-notes-selected-header>
-<ion-toast [duration]="2500" [isOpen]="isDeleteToastOpen" [buttons]="deleteToastBtns" [message]="getDeleteToastMsg()"
-  (ionToastDidDismiss)="isDeleteToastOpen=false"></ion-toast>
 <ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteNote' | translate}}" [message]="getDeleteAlertMsg()"
   [buttons]="deleteAlertBtns" (ionAlertDidDismiss)="isDeleteAlertOpen = false"></ion-alert>

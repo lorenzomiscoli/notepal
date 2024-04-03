@@ -19,6 +19,7 @@ export class NotesMoveComponent implements OnInit, OnDestroy {
   @Input() public isOpen = false;
   @Input({ required: true }) public selectedNotes!: Note[];
   @Output() public close = new EventEmitter<void>();
+  @Output() public moved = new EventEmitter<number>();
   @ViewChild(IonModal) moveModal!: IonModal;
   public categories$!: Observable<NoteCategory[]>
   public defaultValue: number | undefined;
@@ -45,7 +46,8 @@ export class NotesMoveComponent implements OnInit, OnDestroy {
   public moveNote(event: CustomEvent): void {
     const targetId: number = event.detail.value === 0 ? null : event.detail.value;
     const ids = this.selectedNotes.map(category => category.id);
-    this.notesService.moveCategoryNotes(ids, targetId).pipe(takeUntil(this.destroy$)).subscribe();
+    this.notesService.moveCategoryNotes(ids, targetId)
+      .pipe(takeUntil(this.destroy$)).subscribe(() => this.moved.emit(targetId));
     this.moveModal.dismiss();
   }
 

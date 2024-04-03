@@ -124,30 +124,18 @@ export class NotesService {
     return from(this.storageService.db.run(sql, [id], true));
   }
 
-  public archiveNotes(ids: number[]): Observable<any> {
-    const sql = `UPDATE note SET archived = 1 WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+  public archiveNotes(ids: number[], archived: boolean): Observable<any> {
+    const value = archived ? 1 : 0;
+    const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }
 
-  public unarchiveNotes(ids: number[]): Observable<any> {
-    const sql = `UPDATE note SET archived = 0 WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public pinNotes(ids: number[]): Observable<any> {
-    const sql = `UPDATE note SET pinned = 1 WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public unpinNotes(ids: number[]): Observable<any> {
-    const sql = `UPDATE note SET pinned = 0 WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+  public pin(ids: number[], pinned: boolean): Observable<any> {
+    const value = pinned ? 1 : 0;
+    const sql = `UPDATE note SET pinned = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
   }

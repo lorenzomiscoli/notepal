@@ -18,7 +18,7 @@ import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 })
 export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   @Input() public id!: number;
-  public note!: Note;
+  public note: Note = {} as Note;
   public form!: FormGroup;
   public date: string;
   public locale: string;
@@ -78,7 +78,15 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   private getNoteById(id: number): void {
-    this.notesService.getNoteById(id).subscribe(note => this.updateForm(note as Note));
+    this.notesService.getNoteById(id).subscribe(note => {
+      this.note = note as Note;
+      this.updateForm(this.note);
+    });
+  }
+
+  public pin(): void {
+    const pinned = this.note.pinned > 0 ? false : true;
+    this.notesService.pin([this.id], pinned).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   private updateForm(note: Note): void {
@@ -97,8 +105,12 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       this.notesService.deleteEmpty(this.id)
         .pipe(takeUntil(this.destroy$)).subscribe(() => this.ionRouterOutlet.pop());
     } else {
-      this.ionRouterOutlet.pop();
+      this.exit();
     }
+  }
+
+  public exit(): void {
+    this.ionRouterOutlet.pop();
   }
 
   private insertEmpty(): void {
@@ -110,6 +122,10 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.isTemporary = true;
         this.note = { id: id, categoryId: categoryId } as Note;
       });
+  }
+
+  public onMoved(categoryId: number): void {
+    this.note.categoryId = categoryId;
   }
 
 }

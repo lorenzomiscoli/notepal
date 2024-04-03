@@ -16,9 +16,5 @@
     </ion-list>
   </ng-template>
 </ion-popover>
-<ion-toast [duration]="2500" [isOpen]="isArchiveToastOpen" (ionToastDidDismiss)="isArchiveToastOpen = false"
-  [message]="getArchiveMessage()" [buttons]="archiveToastButtons"></ion-toast>
-<ion-toast [duration]="2500" [isOpen]="isDeleteToastOpen" (ionToastDidDismiss)="isDeleteToastOpen = false"
-  [message]="getDeleteMessage()" [buttons]="deleteToastButtons"></ion-toast>
 <app-notes-move [selectedNotes]="selectedNotes" [isOpen]="isMoveModalOpen"
-  (close)="isMoveModalOpen = false"></app-notes-move>
+  (close)="isMoveModalOpen = false" (moved)="moved.emit($event)"></app-notes-move>

@@ -5,10 +5,10 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonPopover,
-  IonToast
+  IonPopover
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+
 import { NotesMoveComponent } from "../notes-move/notes-move.component";
 
 export const NOTES_MENU_DEPS = [
@@ -19,7 +19,6 @@ export const NOTES_MENU_DEPS = [
   IonLabel,
   IonList,
   IonPopover,
-  IonToast,
   TranslateModule,
   NotesMoveComponent
 ];

@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 
-import { IonToast, ToastButton } from "@ionic/angular/standalone";
 import { Subject, takeUntil } from "rxjs";
-import { TranslateService } from "@ngx-translate/core";
 
-import { NOTES_ARCHIVE_SELECTED_HEADER_DEPS } from "./notes-archive-selected-header.dependencies";
-import { Note } from "../../../../interfaces/note.interface";
+import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesService } from "../../../../services/notes.service";
+import { NotesNotificationService } from './../../../../services/notes-notification-service';
+import { NOTES_ARCHIVE_SELECTED_HEADER_DEPS } from "./notes-archive-selected-header.dependencies";
 
 @Component({
   selector: "app-notes-archive-selected-header",
@@ -17,14 +16,9 @@ import { NotesService } from "../../../../services/notes.service";
 export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   @Input({ required: true }) public notes!: Note[];
   @Output() public close = new EventEmitter<void>();
-  public isToastOpen = false;
-  public toastButtons!: ToastButton[];
-  @ViewChild(IonToast) private toast!: IonToast;
-  private lastArchivedIds: number[] = [];
-  private lastDeletedIds: number[] = [];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService, private translateService: TranslateService) { }
+  constructor(private notesService: NotesService, private notesNotificationService: NotesNotificationService) { }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -39,54 +33,18 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
     this.close.next();
   }
 
-  public setUnarchiveToast(multi: boolean): void {
-    this.toast.buttons = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.archiveNotes()
-      }
-    ];
-    this.toast.message = multi ? this.translateService.instant("notesRestored") : this.translateService.instant("noteRestored");
-  }
-
-  public setUndeleteToast(multi: boolean): void {
-    this.toast.buttons = [
-      {
-        text: this.translateService.instant("undo"),
-        role: 'info',
-        handler: () => this.undeleteNotes()
-      }
-    ];
-    this.toast.message = multi ? this.translateService.instant("notesToTrash") : this.translateService.instant("noteToTrash");
-  }
-
   public unarchiveNotes(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
-    this.setUnarchiveToast(ids.length > 1);
-    this.notesService.unarchiveNotes(ids).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.isToastOpen = true
-      this.lastArchivedIds = ids;
+    this.notesService.archiveNotes(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNARCHIVE });
     });
-  }
-
-  private archiveNotes(): void {
-    this.notesService.archiveNotes(this.lastArchivedIds)
-      .pipe(takeUntil(this.destroy$)).subscribe(() => this.lastArchivedIds = []);
   }
 
   public deleteNotes(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
-    this.setUndeleteToast(ids.length > 1);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.isToastOpen = true
-      this.lastDeletedIds = ids;
+      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
     });
-  }
-
-  private undeleteNotes(): void {
-    this.notesService.delete(this.lastDeletedIds, false)
-      .pipe(takeUntil(this.destroy$)).subscribe(() => this.lastDeletedIds = []);
   }
 
 }

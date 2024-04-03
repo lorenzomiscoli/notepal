@@ -5,8 +5,11 @@
     </ion-button>
   </ion-buttons>
   <ion-buttons>
-    <ion-button>
+    <ion-button (click)="pin()" *ngIf="!note.pinned">
       <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
+    </ion-button>
+    <ion-button (click)="pin()" *ngIf="note.pinned">
+      <ion-icon slot="icon-only" src="assets/icons/push-pin.svg"></ion-icon>
     </ion-button>
     <ion-button>
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
@@ -14,7 +17,8 @@
     <ion-button>
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
-    <app-notes-menu [selectedNotes]="[note]"></app-notes-menu>
+    <app-notes-menu [selectedNotes]="[note]" (archived)="exit()" (deleted)="exit()"
+      (moved)="onMoved($event)"></app-notes-menu>
   </ion-buttons>
 </div>
 <div class="content">

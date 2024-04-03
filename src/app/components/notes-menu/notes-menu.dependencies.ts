@@ -9,7 +9,7 @@ import {
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { NotesMoveComponent } from "../notes-move/notes-move.component";
+import { NotesMoveComponent } from "./components/notes-move/notes-move.component";
 
 export const NOTES_MENU_DEPS = [
   IonButton,

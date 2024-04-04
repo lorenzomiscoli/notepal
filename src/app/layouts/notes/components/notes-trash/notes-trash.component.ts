@@ -34,9 +34,9 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.findNotesSetting();
-    this.findDeletedNotes();
+    this.findDeleted();
     this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
-      return this.notesService.getDeletedNotes();
+      return this.notesService.findDeleted();
     })).subscribe(notes => this.notes = notes);
     this.handleBackButton();
   }
@@ -68,8 +68,8 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
     })
   }
 
-  private findDeletedNotes(): void {
-    this.notesService.getDeletedNotes().pipe(take(1)).subscribe((notes) => this.notes = notes);
+  private findDeleted(): void {
+    this.notesService.findDeleted().pipe(take(1)).subscribe((notes) => this.notes = notes);
   }
 
   public tap(note: Note): void {

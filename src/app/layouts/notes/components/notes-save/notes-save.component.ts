@@ -48,7 +48,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   ngOnInit(): void {
     this.initForm();
     if (this.id) {
-      this.getNoteById(this.id);
+      this.findById(this.id);
     } else {
       this.insertEmpty();
     }
@@ -77,8 +77,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     this.form.valueChanges.pipe(debounceTime(400)).subscribe(() => this.update());
   }
 
-  private getNoteById(id: number): void {
-    this.notesService.getNoteById(id).subscribe(note => {
+  private findById(id: number): void {
+    this.notesService.findById(id).subscribe(note => {
       this.note = note as Note;
       this.updateForm(this.note);
     });

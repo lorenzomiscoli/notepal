@@ -5,12 +5,12 @@ import { Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/ang
 import { NgxMasonryOptions } from "ngx-masonry";
 import { Subject, Subscription, debounceTime, switchMap, takeUntil } from "rxjs";
 
-import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
 import { Note, NoteBackground, NoteCategory, NoteSearchFilter, ViewMode } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
-import { NotesService } from "../../../../services/notes.service";
 import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { NotesService } from "../../../../services/notes.service";
 import { environment } from './../../../../../environments/environment';
+import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
 
 @Component({
   templateUrl: "./notes-search.component.html",
@@ -78,13 +78,13 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     this.search$.pipe(takeUntil(this.destroy$), debounceTime(250), switchMap((value) => {
       if (this.filterMode) {
         if (this.filter.type === NoteSearchFilter.CATEGORY) {
-          return this.notesService.searchNotesByCategoryId(this.filter.id as number, value);
+          return this.notesService.searchByCategoryId(this.filter.id as number, value);
         }
         else {
-          return this.notesService.searchNotesByBackground(this.filter.id as string, value);
+          return this.notesService.searchByBackground(this.filter.id as string, value);
         }
       } else {
-        return this.notesService.searchNotes(value);
+        return this.notesService.search(value);
       }
     })).subscribe((value) => {
       this.notes = value;

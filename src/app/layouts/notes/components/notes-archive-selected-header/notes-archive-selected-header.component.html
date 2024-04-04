@@ -1,8 +1,8 @@
 <app-notes-selected-header [notes]="notes" [isCustomLayout]="true" (close)="cancel()">
-  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchiveNotes()">
+  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchive()">
     <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
   </ion-button>
-  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="deleteNotes()">
+  <ion-button [disabled]="getSelectedNotes().length < 1" (click)="delete()">
     <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
   </ion-button>
 </app-notes-selected-header>

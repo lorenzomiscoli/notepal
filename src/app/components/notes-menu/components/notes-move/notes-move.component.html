@@ -4,7 +4,7 @@
     <div class="modal">
       <div class=" modal-header modal-title">{{'selectCategory' | translate}}</div>
       <ng-container *ngIf="categories$ | async as categories">
-        <ion-radio-group [value]="defaultValue" (ionChange)="moveNote($event)" #radioGroup>
+        <ion-radio-group [value]="defaultValue" (ionChange)="updateCategory($event)" #radioGroup>
           <div class="sort-modal-content">
             <div>
               <ion-radio [value]="0" labelPlacement="end">{{'all' | translate}}</ion-radio>

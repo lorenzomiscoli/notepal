@@ -14,7 +14,7 @@ export class NotesService {
 
   constructor(private storageService: StorageService) { }
 
-  public getAllNotes(): Observable<Note[]> {
+  public findAll(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
       id,
       title,
@@ -32,7 +32,7 @@ export class NotesService {
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public getNotesByCategoryId(id: number): Observable<Note[]> {
+  public findByCategoryId(categoryId: number): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
     id,
     title,
@@ -46,11 +46,11 @@ export class NotesService {
     note
   WHERE
     archived = 0
-    AND category_id = ?`, [id]))
+    AND category_id = ?`, [categoryId]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public getNotesByBackground(background: string): Observable<Note[]> {
+  public findByBackground(background: string): Observable<Note[]> {
     let backgroundCheck = "background = ?";
     if (!background) {
       backgroundCheck = "background IS ?"
@@ -72,7 +72,7 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public getNoteById(id: number): Observable<Note | undefined> {
+  public findById(id: number): Observable<Note | undefined> {
     return from(this.storageService.db.query(`SELECT
     id,
     title,
@@ -91,63 +91,7 @@ export class NotesService {
     }));
   }
 
-  public insertEmpty(creationDate: string, categoryId: number | undefined): Observable<number> {
-    const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;
-    return from(this.storageService.db.run(sql, [creationDate, creationDate, categoryId], true))
-      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number));
-  }
-
-  public update(id: number, note: Note): Observable<any> {
-    const sql = `UPDATE note SET title = ? , value = ? , last_modified_date = ? WHERE id = ?;`;
-    return from(this.storageService.db.run(sql, [note.title, note.value, note.lastModifiedDate, id], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public deleteForever(ids: number[]): Observable<any> {
-    const sql = `DELETE FROM note WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public delete(ids: number[], deleted: boolean): Observable<any> {
-    const value = deleted ? 1 : 0;
-    const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public deleteEmpty(id: number): Observable<any> {
-    const sql = `DELETE FROM note WHERE id  = ?;`;
-    return from(this.storageService.db.run(sql, [id], true));
-  }
-
-  public archiveNotes(ids: number[], archived: boolean): Observable<any> {
-    const value = archived ? 1 : 0;
-    const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public pin(ids: number[], pinned: boolean): Observable<any> {
-    const value = pinned ? 1 : 0;
-    const sql = `UPDATE note SET pinned = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public changeNotesBackground(ids: number[], background: NoteBackground | undefined): Observable<any> {
-    const sql = `UPDATE note SET background = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [background], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public searchNotes(search: string): Observable<Note[]> {
+  public search(search: string): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
     id,
     title,
@@ -166,7 +110,7 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public searchNotesByCategoryId(categoryId: number, search: string): Observable<Note[]> {
+  public searchByCategoryId(categoryId: number, search: string): Observable<Note[]> {
     if (search) {
       return from(this.storageService.db.query(`SELECT
       id,
@@ -186,11 +130,11 @@ export class NotesService {
       AND title LIKE '%${search}%'`, [categoryId]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {
-      return this.getNotesByCategoryId(categoryId);
+      return this.findByCategoryId(categoryId);
     }
   }
 
-  public searchNotesByBackground(background: string, search: string): Observable<Note[]> {
+  public searchByBackground(background: string, search: string): Observable<Note[]> {
     let backgroundCheck = "background = ?";
     if (search) {
       if (!background) {
@@ -214,21 +158,21 @@ export class NotesService {
       AND title LIKE '%${search}%'`, [background]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {
-      return this.getNotesByBackground(background);
+      return this.findByBackground(background);
     }
   }
 
-  public countNotes(): Observable<{ totalNotes: number }> {
+  public count(): Observable<{ totalNotes: number }> {
     return from(this.storageService.db.query(`SELECT COUNT(n.id) as totalNotes FROM note n WHERE n.archived = 0 AND deleted = 0`))
       .pipe(map((value: DBSQLiteValues) => value.values![0] as { totalNotes: number }));
   }
 
-  public getNotesCreationDates(): Observable<{ creationDate: string }[]> {
+  public findCreationDates(): Observable<{ creationDate: string }[]> {
     return from(this.storageService.db.query(`SELECT DISTINCT DATE(creation_date) as creationDate FROM note WHERE archived = 0 AND deleted = 0`))
       .pipe(map((value: DBSQLiteValues) => value.values as { creationDate: string }[]));
   }
 
-  public getNotesByCreationDate(creationDate: string): Observable<Note[]> {
+  public findByCreationDate(creationDate: string): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
     id,
     title,
@@ -247,7 +191,7 @@ export class NotesService {
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public getArchivedNotes(): Observable<Note[]> {
+  public findArchived(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
       id,
       title,
@@ -265,7 +209,7 @@ export class NotesService {
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public getDeletedNotes(): Observable<Note[]> {
+  public findDeleted(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
       id,
       title,
@@ -282,11 +226,67 @@ export class NotesService {
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public moveCategoryNotes(ids: number[], targetId: number): Observable<any> {
-    const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [targetId], true)).pipe(tap(() => {
+  public insertEmpty(creationDate: string, categoryId: number | undefined): Observable<number> {
+    const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;
+    return from(this.storageService.db.run(sql, [creationDate, creationDate, categoryId], true))
+      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number));
+  }
+
+  public update(id: number, note: Note): Observable<any> {
+    const sql = `UPDATE note SET title = ? , value = ? , last_modified_date = ? WHERE id = ?;`;
+    return from(this.storageService.db.run(sql, [note.title, note.value, note.lastModifiedDate, id], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
+  }
+
+  public updateBackground(ids: number[], background: NoteBackground | undefined): Observable<any> {
+    const sql = `UPDATE note SET background = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [background], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public updateCategory(ids: number[], categoryId: number): Observable<any> {
+    const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [categoryId], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public pin(ids: number[], pinned: boolean): Observable<any> {
+    const value = pinned ? 1 : 0;
+    const sql = `UPDATE note SET pinned = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public archive(ids: number[], archived: boolean): Observable<any> {
+    const value = archived ? 1 : 0;
+    const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public deleteForever(ids: number[]): Observable<any> {
+    const sql = `DELETE FROM note WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public delete(ids: number[], deleted: boolean): Observable<any> {
+    const value = deleted ? 1 : 0;
+    const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
+      this.notesUpdated$.next();
+    }));
+  }
+
+  public deleteEmpty(id: number): Observable<any> {
+    const sql = `DELETE FROM note WHERE id  = ?;`;
+    return from(this.storageService.db.run(sql, [id], true));
   }
 
 }

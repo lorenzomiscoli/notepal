@@ -33,7 +33,7 @@ export class NotesMenuComponent implements OnDestroy {
 
   public archive(): void {
     const ids = this.selectedNotes.map(note => note.id);
-    this.notesService.archiveNotes(ids, true)
+    this.notesService.archive(ids, true)
       .pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.ARCHIVE });
         this.archived.emit();

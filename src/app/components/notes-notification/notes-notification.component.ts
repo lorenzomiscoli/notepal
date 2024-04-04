@@ -64,7 +64,7 @@ export class NotesNotificationComponent implements OnInit, OnDestroy {
         text: this.translateService.instant("undo"),
         role: 'info',
         handler: () => {
-          this.notesService.archiveNotes(ids, false).pipe(takeUntil(this.destroy$)).subscribe();
+          this.notesService.archive(ids, false).pipe(takeUntil(this.destroy$)).subscribe();
         }
       }
     ];
@@ -77,7 +77,7 @@ export class NotesNotificationComponent implements OnInit, OnDestroy {
         text: this.translateService.instant("undo"),
         role: 'info',
         handler: () => {
-          this.notesService.archiveNotes(ids, true).pipe(takeUntil(this.destroy$)).subscribe();
+          this.notesService.archive(ids, true).pipe(takeUntil(this.destroy$)).subscribe();
         }
       }
     ];

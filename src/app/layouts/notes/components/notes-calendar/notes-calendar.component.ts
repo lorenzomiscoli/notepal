@@ -2,16 +2,16 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { IonDatetime, Platform, ViewDidEnter, ViewWillEnter, ViewWillLeave } from "@ionic/angular/standalone";
-import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
 import { TranslateService } from "@ngx-translate/core";
+import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil, tap } from "rxjs";
 
-import { NOTES_CALENDAR_DEPS } from "./notes-calendar.dependencies";
-import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
-import { NotesService } from "../../../../services/notes.service";
-import { NotesSettingService } from "../../../../services/notes-setting.service";
 import { dateToIsoString, datetimeToDateString } from "../../../../../app/utils/date-utils";
 import { environment } from "../../../../../environments/environment";
+import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
+import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { NotesService } from "../../../../services/notes.service";
+import { NOTES_CALENDAR_DEPS } from "./notes-calendar.dependencies";
 
 @Component({
   templateUrl: "./notes-calendar.component.html",
@@ -42,7 +42,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
     private platform: Platform) { }
 
   ngOnInit(): void {
-    this.getNotesCreationDates().pipe(take(1)).subscribe();
+    this.findCreationDates().pipe(take(1)).subscribe();
     this.locale = this.translateService.currentLang;
   }
 
@@ -59,7 +59,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   ionViewWillEnter(): void {
     this.destroy$ = new Subject<boolean>();
     this.getNotesSettings();
-    this.getDatesOnNoteUpdate();
+    this.findCreationDatesOnNotesUpdate();
     this.handleBackButton();
   }
 
@@ -87,9 +87,9 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
       });
   }
 
-  private getDatesOnNoteUpdate(): void {
+  private findCreationDatesOnNotesUpdate(): void {
     this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$),
-      switchMap(() => this.getNotesCreationDates()), switchMap(() => this.getNotesByCreationDate())).subscribe();
+      switchMap(() => this.findCreationDates()), switchMap(() => this.findByCreationDate())).subscribe();
   }
 
   private setHighlightedDates(notesDates: { creationDate: string }[]): void {
@@ -102,15 +102,15 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   public showNotes(event: CustomEvent | string): void {
     this.selectedDate = event instanceof CustomEvent ? event.detail.value : event;
     this.selectedDate = datetimeToDateString(this.selectedDate);
-    this.getNotesByCreationDate().pipe(takeUntil(this.destroy$)).subscribe();
+    this.findByCreationDate().pipe(takeUntil(this.destroy$)).subscribe();
   }
 
-  private getNotesCreationDates(): Observable<{ creationDate: string }[]> {
-    return this.notesService.getNotesCreationDates().pipe(tap(notesDates => this.setHighlightedDates(notesDates)));
+  private findCreationDates(): Observable<{ creationDate: string }[]> {
+    return this.notesService.findCreationDates().pipe(tap(notesDates => this.setHighlightedDates(notesDates)));
   }
 
-  private getNotesByCreationDate(): Observable<Note[]> {
-    return this.notesService.getNotesByCreationDate(this.selectedDate).pipe(tap((notes) => {
+  private findByCreationDate(): Observable<Note[]> {
+    return this.notesService.findByCreationDate(this.selectedDate).pipe(tap((notes) => {
       this.notes = notes
       this.isEmpty = notes.length < 1;
     }));

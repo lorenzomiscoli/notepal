@@ -43,10 +43,10 @@ export class NotesMoveComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public moveNote(event: CustomEvent): void {
+  public updateCategory(event: CustomEvent): void {
     const targetId: number = event.detail.value === 0 ? null : event.detail.value;
     const ids = this.selectedNotes.map(category => category.id);
-    this.notesService.moveCategoryNotes(ids, targetId)
+    this.notesService.updateCategory(ids, targetId)
       .pipe(takeUntil(this.destroy$)).subscribe(() => this.moved.emit(targetId));
     this.moveModal.dismiss();
   }

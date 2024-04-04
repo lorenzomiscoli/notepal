@@ -51,7 +51,7 @@ export class NotesCategories implements OnInit, OnDestroy {
 
   private getAllCategories(): void {
     this.isLoading = true;
-    this.notesService.countNotes().pipe(takeUntil(this.destroy$), switchMap(notesCount => {
+    this.notesService.count().pipe(takeUntil(this.destroy$), switchMap(notesCount => {
       this.totalNotes = notesCount.totalNotes;
       return this.notesCategoryService.getAllNotesCategories();
     }), map(categories => this.mapCategories(categories)), finalize(() => this.isLoading = false))

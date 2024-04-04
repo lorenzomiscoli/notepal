@@ -33,14 +33,14 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
     this.close.next();
   }
 
-  public unarchiveNotes(): void {
+  public unarchive(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
-    this.notesService.archiveNotes(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.notesService.archive(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNARCHIVE });
     });
   }
 
-  public deleteNotes(): void {
+  public delete(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });

@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 
-import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
-import { Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 import { NavController, Platform } from "@ionic/angular/standalone";
+import { NgxMasonryOptions } from "ngx-masonry";
+import { Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 
-import { NOTES_ARCHIVE_DEPS } from "./notes-archive.dependencies";
 import { environment } from "../../../../../environments/environment";
 import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/note.interface";
-import { NotesService } from "../../../../services/notes.service";
 import { NotesSettingService } from "../../../../services/notes-setting.service";
+import { NotesService } from "../../../../services/notes.service";
+import { NOTES_ARCHIVE_DEPS } from "./notes-archive.dependencies";
 
 @Component({
   templateUrl: "./notes-archive.component.html",
@@ -24,7 +24,6 @@ export class NotesArchiveComponent implements OnInit, OnDestroy {
   public selectedMode = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
-  @ViewChild(NgxMasonryComponent) private masonry!: NgxMasonryComponent;
   public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
 
   constructor(private notesService: NotesService,
@@ -35,9 +34,9 @@ export class NotesArchiveComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.findNotesSetting();
-    this.findArchivedNotes();
+    this.findArchived();
     this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
-      return this.notesService.getArchivedNotes();
+      return this.notesService.findArchived();
     })).subscribe(notes => this.notes = notes);
     this.handleBackButton();
   }
@@ -51,7 +50,7 @@ export class NotesArchiveComponent implements OnInit, OnDestroy {
   }
 
   private handleBackButton(): void {
-    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+    this.backButtonSubscription = this.platform.backButton.subscribeWithPriority(10, () => {
       if (this.selectedMode) {
         this.deselectAll();
       }
@@ -69,8 +68,8 @@ export class NotesArchiveComponent implements OnInit, OnDestroy {
     })
   }
 
-  private findArchivedNotes(): void {
-    this.notesService.getArchivedNotes().pipe(take(1)).subscribe((notes) => this.notes = notes);
+  private findArchived(): void {
+    this.notesService.findArchived().pipe(take(1)).subscribe((notes) => this.notes = notes);
   }
 
   public tap(note: Note): void {

@@ -2,18 +2,17 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 
-import { Platform, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
 import { App } from "@capacitor/app";
+import { Platform, ViewWillEnter, ViewWillLeave } from "@ionic/angular";
 import { NgxMasonryComponent, NgxMasonryOptions } from "ngx-masonry";
 import { Observable, Subject, Subscription, switchMap, take, takeUntil } from "rxjs";
 
-import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
-import { Note, SortMode, ViewMode } from '../../../../interfaces/note.interface';
+import { Note, SortDirection, SortMode, ViewMode } from '../../../../interfaces/note.interface';
 import { NotesCategoryService } from '../../../../services/notes-category.service';
-import { NotesService } from "../../../../services/notes.service";
 import { NotesSettingService } from "../../../../services/notes-setting.service";
-import { SortDirection } from '../../../../interfaces/note.interface';
+import { NotesService } from "../../../../services/notes.service";
 import { environment } from './../../../../../environments/environment';
+import { NOTES_LIST_DEPS } from "./notes-list.dependencies";
 
 @Component({
   templateUrl: "./notes-list.component.html",
@@ -46,8 +45,8 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
 
   ionViewWillEnter(): void {
     this.destroy$ = new Subject<boolean>();
-    this.getNotesOnCategorySelection();
-    this.getNotesOnNotesUpdate();
+    this.findNotesOnCategorySelection();
+    this.findNotesOnNotesUpdate();
     this.handleBackButton();
   }
 
@@ -68,24 +67,24 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
     })
   }
 
-  private getNotesOnCategorySelection(): void {
+  private findNotesOnCategorySelection(): void {
     this.notesCategoryService.selectedCategory$.pipe(takeUntil(this.destroy$), switchMap((categoryId) => {
       this.categoryId = categoryId;
-      return this.getNotes();
+      return this.findNotes();
     })).subscribe(notes => this.notes = notes);
   }
 
-  private getNotesOnNotesUpdate(): void {
+  private findNotesOnNotesUpdate(): void {
     this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
-      return this.getNotes();
+      return this.findNotes();
     })).subscribe(notes => this.notes = notes);
   }
 
-  private getNotes(): Observable<Note[]> {
+  private findNotes(): Observable<Note[]> {
     if (this.categoryId) {
-      return this.notesService.getNotesByCategoryId(this.categoryId);
+      return this.notesService.findByCategoryId(this.categoryId);
     } else {
-      return this.notesService.getAllNotes();
+      return this.notesService.findAll();
     }
   }
 

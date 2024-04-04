@@ -40,7 +40,7 @@ export class NotesColorPicker implements OnDestroy {
 
   public changeColor(background: string | undefined): void {
     let ids: number[] = this.selectedNotes.map(note => note.id);
-    this.notesService.changeNotesBackground(ids, background as NoteBackground).pipe(takeUntil(this.destroy$)).subscribe();
+    this.notesService.updateBackground(ids, background as NoteBackground).pipe(takeUntil(this.destroy$)).subscribe();
     this.colorPickerModal.dismiss();
   }
 

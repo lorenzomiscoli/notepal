@@ -99,7 +99,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
   }
 
   public getNotesCategories(): void {
-    this.notesCategoryService.getAllNotesCategories().pipe(takeUntil(this.destroy$)).subscribe((categories) => {
+    this.notesCategoryService.findAll().pipe(takeUntil(this.destroy$)).subscribe((categories) => {
       this.categories = categories;
     });
   }

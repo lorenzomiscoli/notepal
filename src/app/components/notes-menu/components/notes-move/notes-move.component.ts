@@ -28,7 +28,7 @@ export class NotesMoveComponent implements OnInit, OnDestroy {
   constructor(private notesService: NotesService, private notesCategoryService: NotesCategoryService) { }
 
   ngOnInit(): void {
-    this.categories$ = this.notesCategoryService.getAllNotesCategories().pipe(tap(() => {
+    this.categories$ = this.notesCategoryService.findAll().pipe(tap(() => {
       const uniqueCategories = this.selectedNotes.map(note => note.categoryId).filter((elem, index, self) => index === self.indexOf(elem));
       if (uniqueCategories.length === 1) {
         this.defaultValue = uniqueCategories[0] ? uniqueCategories[0] : 0;

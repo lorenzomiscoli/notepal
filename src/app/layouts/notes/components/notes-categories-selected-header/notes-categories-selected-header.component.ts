@@ -123,11 +123,11 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
       return false;
     }
     const id = this.getSelectedCategories()[0].id;
-    this.notesCategoryService.existsCategoryByIdNotAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
+    this.notesCategoryService.existsByIdNotAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
       if (isPresent) {
         throw { isPresent: true };
       } else {
-        return this.notesCategoryService.updateNoteCategory(id, value.nameUpdate)
+        return this.notesCategoryService.update(id, value.nameUpdate)
       }
     })).subscribe({
       next: () => {
@@ -143,7 +143,7 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
 
   private deleteCategory(): void {
     let ids = this.getSelectedCategories().map(category => category.id);
-    this.notesCategoryService.deleteCategories(ids).pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.notesCategoryService.delete(ids).pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (this.getSelectedCategories().some(category => category.isDefault)) {
         let systemCategory = this.categories[0];
         systemCategory.isDefault = true;

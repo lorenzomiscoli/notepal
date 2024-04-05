@@ -43,7 +43,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
 
   ionViewWillEnter(): void {
     this.destroy$ = new Subject<boolean>();
-    this.getNotesSettings();
+    this.findSettings();
     this.getNotesCategories();
     this.search();
     this.handleBackButton();
@@ -92,8 +92,8 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     })
   }
 
-  public getNotesSettings(): void {
-    this.notesSettingsService.getNoteSetting().pipe(takeUntil(this.destroy$)).subscribe((noteSetting) => {
+  public findSettings(): void {
+    this.notesSettingsService.findFirst().pipe(takeUntil(this.destroy$)).subscribe((noteSetting) => {
       this.viewMode = noteSetting.viewMode;
     });
   }

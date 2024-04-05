@@ -40,7 +40,7 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
     private platform: Platform) { }
 
   ngOnInit(): void {
-    this.getNotesSettings();
+    this.findSettings();
   }
 
   ionViewWillEnter(): void {
@@ -59,8 +59,8 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
     this.deselectAll();
   }
 
-  private getNotesSettings(): void {
-    this.notesSettingService.getNoteSetting().pipe(take(1)).subscribe(({ viewMode, sortMode, sortDirection }) => {
+  private findSettings(): void {
+    this.notesSettingService.findFirst().pipe(take(1)).subscribe(({ viewMode, sortMode, sortDirection }) => {
       this.viewMode = viewMode;
       this.sortMode = sortMode;
       this.sortDirection = sortDirection;

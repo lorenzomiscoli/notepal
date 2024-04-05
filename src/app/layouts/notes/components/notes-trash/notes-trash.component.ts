@@ -33,7 +33,7 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.findNotesSetting();
+    this.findSettings();
     this.findDeleted();
     this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
       return this.notesService.findDeleted();
@@ -60,8 +60,8 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
     });
   }
 
-  private findNotesSetting(): void {
-    this.notesSettingService.getNoteSetting().pipe(take(1)).subscribe(({ viewMode, sortMode, sortDirection }) => {
+  private findSettings(): void {
+    this.notesSettingService.findFirst().pipe(take(1)).subscribe(({ viewMode, sortMode, sortDirection }) => {
       this.viewMode = viewMode;
       this.sortMode = sortMode;
       this.sortDirection = sortDirection;

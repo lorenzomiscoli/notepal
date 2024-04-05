@@ -32,7 +32,7 @@ export class NotesListHeaderComponent implements OnInit, OnDestroy {
   constructor(private notesSettingService: NotesSettingService) { }
 
   ngOnInit(): void {
-    this.getSettings();
+    this.findSettings();
   }
 
   ngOnDestroy(): void {
@@ -62,8 +62,8 @@ export class NotesListHeaderComponent implements OnInit, OnDestroy {
     return this.viewMode === ViewMode.GRID ? true : false;
   }
 
-  public getSettings(): void {
-    this.notesSettingService.getNoteSetting().pipe(takeUntil(this.destroy$))
+  public findSettings(): void {
+    this.notesSettingService.findFirst().pipe(takeUntil(this.destroy$))
       .subscribe((noteSetting) => this.updateData(noteSetting));
   }
 

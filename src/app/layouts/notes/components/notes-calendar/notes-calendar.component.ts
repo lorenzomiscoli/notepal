@@ -58,7 +58,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
 
   ionViewWillEnter(): void {
     this.destroy$ = new Subject<boolean>();
-    this.getNotesSettings();
+    this.findSettings();
     this.findCreationDatesOnNotesUpdate();
     this.handleBackButton();
   }
@@ -77,8 +77,8 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
     });
   }
 
-  public getNotesSettings(): void {
-    this.notesSettingsService.getNoteSetting()
+  public findSettings(): void {
+    this.notesSettingsService.findFirst()
       .pipe(takeUntil(this.destroy$)).subscribe(({ viewMode, sortMode, sortDirection }) => {
         this.viewMode = viewMode;
         this.sortMode = sortMode;

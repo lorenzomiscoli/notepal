@@ -13,15 +13,23 @@ export class NotesSettingService {
 
   constructor(private storageService: StorageService) { }
 
-  public getNoteSetting(): Observable<NoteSetting> {
-    return from(this.storageService.db.query("SELECT id, view_mode as viewMode, sort_mode as sortMode, sort_direction as sortDirection FROM note_setting WHERE id = 1"))
-      .pipe(map((value: DBSQLiteValues) => {
-        const settings = value.values as NoteSetting[];
-        return settings[0];
-      }));
+  public findFirst(): Observable<NoteSetting> {
+    return from(this.storageService.db.query(`SELECT
+    id,
+    view_mode as viewMode,
+    sort_mode as sortMode,
+    sort_direction as sortDirection
+  FROM
+    note_setting
+  WHERE
+    id = 1
+  `)).pipe(map((value: DBSQLiteValues) => {
+      const settings = value.values as NoteSetting[];
+      return settings[0];
+    }));
   }
 
-  public updateViewMode(viewMode: ViewMode,): Observable<number> {
+  public updateViewMode(viewMode: ViewMode): Observable<number> {
     const sql = `UPDATE note_setting SET view_mode = ? WHERE id = 1;`;
     return from(this.storageService.db.run(sql, [viewMode], true)).pipe(
       map((value: capSQLiteChanges) => value.changes?.lastId as number));

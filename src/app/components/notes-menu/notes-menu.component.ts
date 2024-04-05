@@ -4,7 +4,6 @@ import { Subject, takeUntil } from "rxjs";
 
 import { Note } from "../../interfaces/note.interface";
 import { NotificationEvent } from './../../interfaces/note.interface';
-import { NotesNotificationService } from './../../services/notes-notification-service';
 import { NotesService } from './../../services/notes.service';
 import { NOTES_MENU_DEPS } from "./notes-menu.dependencies";
 
@@ -23,8 +22,7 @@ export class NotesMenuComponent implements OnDestroy {
   public isMoveModalOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  public constructor(private notesService: NotesService,
-    private notesNotificationService: NotesNotificationService) { }
+  public constructor(private notesService: NotesService) { }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -35,7 +33,7 @@ export class NotesMenuComponent implements OnDestroy {
     const ids = this.selectedNotes.map(note => note.id);
     this.notesService.archive(ids, true)
       .pipe(takeUntil(this.destroy$)).subscribe(() => {
-        this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.ARCHIVE });
+        this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.ARCHIVE });
         this.archived.emit();
       });
   }
@@ -43,7 +41,7 @@ export class NotesMenuComponent implements OnDestroy {
   public delete(): void {
     const ids = this.selectedNotes.map(note => note.id);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
+      this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
       this.deleted.emit();
     })
   }

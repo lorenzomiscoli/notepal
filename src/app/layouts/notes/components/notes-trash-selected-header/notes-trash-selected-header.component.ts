@@ -5,7 +5,6 @@ import { TranslateService } from "@ngx-translate/core";
 import { Subject, takeUntil } from "rxjs";
 
 import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
-import { NotesNotificationService } from "../../../../services/notes-notification-service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_TRASH_SELECTED_HEADER_DEPS } from "./notes-trash-selected-header.dependencies";
 
@@ -22,9 +21,7 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
   public deleteAlertBtns!: AlertButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService,
-    private notesNotificationService: NotesNotificationService,
-    private translateService: TranslateService) { }
+  constructor(private notesService: NotesService, private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.createDeleteAlertBtns();
@@ -46,7 +43,7 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
   public undelete(): void {
     const ids = this.getSelectedNotes().map(note => note.id);
     this.notesService.delete(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNDELETE });
+      this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNDELETE });
     });
   }
 

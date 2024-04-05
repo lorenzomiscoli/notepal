@@ -4,13 +4,14 @@ import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, Subject, from, map, tap } from 'rxjs';
 
 import { StorageService } from './storage.service';
-import { Note, NoteBackground } from '../interfaces/note.interface';
+import { Note, NoteBackground, NoteEvent } from '../interfaces/note.interface';
 
 @Injectable({
   providedIn: "root"
 })
 export class NotesService {
   public notesUpdated$ = new Subject<void>();
+  public toastNotification$ = new Subject<NoteEvent>();
 
   constructor(private storageService: StorageService) { }
 

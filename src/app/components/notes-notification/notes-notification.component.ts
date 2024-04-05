@@ -4,7 +4,6 @@ import { NoteEvent, NotificationEvent } from './../../interfaces/note.interface'
 import { IonToast } from "@ionic/angular/standalone";
 
 import { Subject, takeUntil } from "rxjs";
-import { NotesNotificationService } from "../../services/notes-notification-service";
 import { NotesService } from "../../services/notes.service";
 import { TranslateService } from "@ngx-translate/core";
 
@@ -19,15 +18,12 @@ export class NotesNotificationComponent implements OnInit, OnDestroy {
   public isToastOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService,
-    private notesNotificationService: NotesNotificationService,
-    private translateService: TranslateService) { }
+  constructor(private notesService: NotesService, private translateService: TranslateService) { }
 
   ngOnInit(): void {
-    this.notesNotificationService.toastNotification$
-      .pipe(takeUntil(this.destroy$)).subscribe((noteEvent) => {
-        this.showToast(noteEvent);
-      });
+    this.notesService.toastNotification$.pipe(takeUntil(this.destroy$)).subscribe((noteEvent) => {
+      this.showToast(noteEvent);
+    });
   }
 
   ngOnDestroy(): void {

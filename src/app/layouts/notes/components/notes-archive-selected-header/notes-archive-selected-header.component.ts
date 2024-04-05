@@ -4,7 +4,6 @@ import { Subject, takeUntil } from "rxjs";
 
 import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesService } from "../../../../services/notes.service";
-import { NotesNotificationService } from './../../../../services/notes-notification-service';
 import { NOTES_ARCHIVE_SELECTED_HEADER_DEPS } from "./notes-archive-selected-header.dependencies";
 
 @Component({
@@ -18,7 +17,7 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   @Output() public close = new EventEmitter<void>();
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private notesService: NotesService, private notesNotificationService: NotesNotificationService) { }
+  constructor(private notesService: NotesService) { }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
@@ -36,14 +35,14 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   public unarchive(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
     this.notesService.archive(ids, false).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNARCHIVE });
+      this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.UNARCHIVE });
     });
   }
 
   public delete(): void {
     const ids: number[] = this.getSelectedNotes().map(note => note.id);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.notesNotificationService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
+      this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
     });
   }
 

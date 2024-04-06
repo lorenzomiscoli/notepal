@@ -227,10 +227,12 @@ export class NotesService {
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
-  public insertEmpty(creationDate: string, categoryId: number | undefined): Observable<number> {
+  public insert(creationDate: string, categoryId: number | undefined): Observable<number> {
     const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;
     return from(this.storageService.db.run(sql, [creationDate, creationDate, categoryId], true))
-      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number));
+      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number), tap(() => {
+        this.notesUpdated$.next();
+      }));
   }
 
   public update(id: number, note: Note): Observable<any> {
@@ -283,11 +285,6 @@ export class NotesService {
     return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
       this.notesUpdated$.next();
     }));
-  }
-
-  public deleteEmpty(id: number): Observable<any> {
-    const sql = `DELETE FROM note WHERE id  = ?;`;
-    return from(this.storageService.db.run(sql, [id], true));
   }
 
 }

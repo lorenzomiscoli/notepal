@@ -14,7 +14,7 @@
     <ion-button>
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
     </ion-button>
-    <ion-button>
+    <ion-button (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
     <app-notes-menu [selectedNotes]="[note]" (archived)="exit()" (deleted)="exit()"
@@ -24,8 +24,10 @@
 <div class="content">
   <form [formGroup]="form">
     <ion-input placeholder="{{ 'title' | translate }}" formControlName="title"></ion-input>
-    <ion-label>{{date | date:'longDate':timezone:locale }}</ion-label>
+    <ion-label>{{note.lastModifiedDate | date:'longDate':timezone:locale }}</ion-label>
     <ion-textarea [autoGrow]="true" placeholder="{{ 'note' | translate }}" formControlName="value"
       #textArea></ion-textarea>
   </form>
 </div>
+<app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen" (close)="isColorPickerOpen=false"
+  (backgroundChanged)="onBackgroundChanged($event)"></app-notes-color-picker>

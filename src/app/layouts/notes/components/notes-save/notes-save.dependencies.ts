@@ -1,6 +1,6 @@
 import { DatePipe, NgIf } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
-import { NotesMenuComponent } from './../../../../components/notes-menu/notes-menu.component';
+
 
 import {
   IonBackButton,
@@ -12,6 +12,9 @@ import {
   IonTextarea
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+
+import { NotesColorPicker } from "../../../../components/notes-color-picker/notes-color-picker.component";
+import { NotesMenuComponent } from './../../../../components/notes-menu/notes-menu.component';
 
 export const NOTES_SAVE_DEPS = [
   DatePipe,
@@ -25,5 +28,6 @@ export const NOTES_SAVE_DEPS = [
   IonTextarea,
   IonLabel,
   TranslateModule,
-  NotesMenuComponent
+  NotesMenuComponent,
+  NotesColorPicker
 ]

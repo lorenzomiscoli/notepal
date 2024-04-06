@@ -29,6 +29,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   public isEmpty = false;
   public selectedDate!: string;
   public locale!: string;
+  public isInsertBtnEnabled = true;
   @ViewChild(NgxMasonryComponent) private masonry!: NgxMasonryComponent;
   public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
   private backButtonSubscription!: Subscription;
@@ -102,6 +103,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   public showNotes(event: CustomEvent | string): void {
     this.selectedDate = event instanceof CustomEvent ? event.detail.value : event;
     this.selectedDate = datetimeToDateString(this.selectedDate);
+    this.isInsertBtnEnabled = this.isDateGreaterThanToday(this.selectedDate);
     this.findByCreationDate().pipe(takeUntil(this.destroy$)).subscribe();
   }
 
@@ -116,4 +118,8 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
     }));
   }
 
+  public isDateGreaterThanToday = (dateString: string) => {
+    const today = dateToIsoString(new Date()).split('T')[0];
+    return today <= dateString;
+  };
 }

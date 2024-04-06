@@ -10,7 +10,7 @@
   </div>
 </div>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="add-notes-btn">
-  <ion-fab-button routerLink="/notes/save" [queryParams]="{creationDate:selectedDate}">
+  <ion-fab-button routerLink="/notes/save" [queryParams]="{creationDate:selectedDate}" [disabled]="!isInsertBtnEnabled">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

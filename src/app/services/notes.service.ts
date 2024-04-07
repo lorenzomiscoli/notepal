@@ -4,13 +4,13 @@ import { DBSQLiteValues, capSQLiteChanges } from '@capacitor-community/sqlite';
 import { Observable, Subject, from, map, tap } from 'rxjs';
 
 import { StorageService } from './storage.service';
-import { Note, NoteBackground, NoteEvent } from '../interfaces/note.interface';
+import { Note, NoteAction, NoteBackground, NoteChange, NoteEvent } from '../interfaces/note.interface';
 
 @Injectable({
   providedIn: "root"
 })
 export class NotesService {
-  public notesUpdated$ = new Subject<void>();
+  public notesUpdated$ = new Subject<NoteChange>();
   public toastNotification$ = new Subject<NoteEvent>();
 
   constructor(private storageService: StorageService) { }
@@ -228,62 +228,107 @@ export class NotesService {
   }
 
   public insert(creationDate: string, categoryId: number | undefined): Observable<number> {
+    const lastModifiedDate = new Date().toISOString();
     const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;
-    return from(this.storageService.db.run(sql, [creationDate, creationDate, categoryId], true))
-      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number), tap(() => {
-        this.notesUpdated$.next();
+    return from(this.storageService.db.run(sql, [creationDate, lastModifiedDate, categoryId], true))
+      .pipe(map((value: capSQLiteChanges) => value.changes?.lastId as number), tap((id) => {
+        this.notesUpdated$.next({
+          ids: [id],
+          action: NoteAction.INSERT,
+          changes: {
+            id: id,
+            creationDate: creationDate,
+            lastModifiedDate: lastModifiedDate,
+            categoryId: categoryId
+          }
+        });
       }));
   }
 
-  public update(id: number, note: Note): Observable<any> {
+  public update(id: number, title: string, value: string): Observable<any> {
+    const lastModifiedDate = new Date().toISOString();
     const sql = `UPDATE note SET title = ? , value = ? , last_modified_date = ? WHERE id = ?;`;
-    return from(this.storageService.db.run(sql, [note.title, note.value, note.lastModifiedDate, id], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+    return from(this.storageService.db.run(sql, [title, value, lastModifiedDate, id], true)).pipe(tap(() => {
+      this.notesUpdated$.next({
+        ids: [id],
+        action: NoteAction.UPDATE,
+        changes: {
+          title: title,
+          value: value,
+          lastModifiedDate: lastModifiedDate
+        }
+      });
     }));
   }
 
   public updateBackground(ids: number[], background: NoteBackground | undefined): Observable<any> {
-    const sql = `UPDATE note SET background = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [background], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+    const lastModifiedDate = new Date().toISOString();
+    const sql = `UPDATE note SET background = ? , last_modified_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [background, lastModifiedDate], true)).pipe(tap(() => {
+      this.notesUpdated$.next({
+        ids: ids,
+        action: NoteAction.UPDATE,
+        changes: {
+          background: background,
+          lastModifiedDate: lastModifiedDate
+        }
+      });
     }));
   }
 
   public updateCategory(ids: number[], categoryId: number): Observable<any> {
-    const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [categoryId], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+    const lastModifiedDate = new Date().toISOString();
+    const sql = `UPDATE note SET category_id = ? , last_modified_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [categoryId, lastModifiedDate], true)).pipe(tap(() => {
+      this.notesUpdated$.next({
+        ids: ids,
+        action: NoteAction.UPDATE,
+        changes: {
+          categoryId: categoryId,
+          lastModifiedDate: lastModifiedDate
+        }
+      });
     }));
   }
 
   public pin(ids: number[], pinned: boolean): Observable<any> {
+    const lastModifiedDate = new Date().toISOString();
     const value = pinned ? 1 : 0;
-    const sql = `UPDATE note SET pinned = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+    const sql = `UPDATE note SET pinned = ? , last_modified_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value, lastModifiedDate], true)).pipe(tap(() => {
+      this.notesUpdated$.next({
+        ids: ids,
+        action: NoteAction.UPDATE,
+        changes: {
+          pinned: pinned,
+          lastModifiedDate: lastModifiedDate
+        }
+      });
     }));
   }
 
   public archive(ids: number[], archived: boolean): Observable<any> {
+    const lastModifiedDate = new Date().toISOString();
     const value = archived ? 1 : 0;
-    const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+    const sql = `UPDATE note SET archived = ? , last_modified_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value, lastModifiedDate], true)).pipe(tap(() => {
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.ARCHIVE });
+    }));
+  }
+
+  public delete(ids: number[], deleted: boolean): Observable<any> {
+    const lastModifiedDate = new Date().toISOString();
+    const value = deleted ? 1 : 0;
+    const sql = `UPDATE note SET deleted = ? , last_modified_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value, lastModifiedDate], true)).pipe(tap(() => {
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE });
     }));
   }
 
   public deleteForever(ids: number[]): Observable<any> {
     const sql = `DELETE FROM note WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
-    }));
-  }
-
-  public delete(ids: number[], deleted: boolean): Observable<any> {
-    const value = deleted ? 1 : 0;
-    const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next();
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE_FOREVER });
     }));
   }
 

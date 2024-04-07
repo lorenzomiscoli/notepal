@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
+import { Component, Input, OnDestroy } from "@angular/core";
 
 import { Subject, takeUntil } from "rxjs";
 
@@ -16,9 +16,6 @@ import { NOTES_MENU_DEPS } from "./notes-menu.dependencies";
 })
 export class NotesMenuComponent implements OnDestroy {
   @Input({ required: true }) public selectedNotes!: Note[];
-  @Output() public archived = new EventEmitter<void>();
-  @Output() public deleted = new EventEmitter<void>();
-  @Output() public moved = new EventEmitter<number>();
   public isMoveModalOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -34,7 +31,6 @@ export class NotesMenuComponent implements OnDestroy {
     this.notesService.archive(ids, true)
       .pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.ARCHIVE });
-        this.archived.emit();
       });
   }
 
@@ -42,7 +38,6 @@ export class NotesMenuComponent implements OnDestroy {
     const ids = this.selectedNotes.map(note => note.id);
     this.notesService.delete(ids, true).pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.notesService.toastNotification$.next({ ids: ids, event: NotificationEvent.DELETE });
-      this.deleted.emit();
     })
   }
 

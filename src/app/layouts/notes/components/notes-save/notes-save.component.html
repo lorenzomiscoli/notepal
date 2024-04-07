@@ -17,8 +17,7 @@
     <ion-button (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
-    <app-notes-menu [selectedNotes]="[note]" (archived)="exit()" (deleted)="exit()"
-      (moved)="onMoved($event)"></app-notes-menu>
+    <app-notes-menu [selectedNotes]="[note]"></app-notes-menu>
   </ion-buttons>
 </div>
 <div class="content">
@@ -29,5 +28,5 @@
       #textArea></ion-textarea>
   </form>
 </div>
-<app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen" (close)="isColorPickerOpen=false"
-  (backgroundChanged)="onBackgroundChanged($event)"></app-notes-color-picker>
+<app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
+  (close)="isColorPickerOpen=false"></app-notes-color-picker>

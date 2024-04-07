@@ -17,7 +17,6 @@ import { NOTES_COLOR_PICKER_DEPS } from "./notes-color-picker.dependencies";
 export class NotesColorPicker implements OnDestroy {
   @Input() public isOpen = false;
   @Input({ required: true }) public selectedNotes!: Note[];
-  @Output() backgroundChanged = new EventEmitter<string>();
   @Output() public close = new EventEmitter<void>();
   @ViewChild(IonModal) colorPickerModal!: IonModal;
   public backgrounds: string[] = Object.values(NoteBackground);
@@ -41,9 +40,7 @@ export class NotesColorPicker implements OnDestroy {
 
   public changeColor(background: string | undefined): void {
     let ids: number[] = this.selectedNotes.map(note => note.id);
-    this.notesService.updateBackground(ids, background as NoteBackground).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.backgroundChanged.emit(background);
-    });
+    this.notesService.updateBackground(ids, background as NoteBackground).pipe(takeUntil(this.destroy$)).subscribe();
     this.colorPickerModal.dismiss();
   }
 

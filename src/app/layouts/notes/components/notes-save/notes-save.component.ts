@@ -1,11 +1,11 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
 import { IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, Subscription, debounceTime, takeUntil } from "rxjs";
 
-import { Note, NoteForm } from "../../../../interfaces/note.interface";
+import { Note, NoteAction, NoteForm } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
@@ -24,6 +24,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public locale: string;
   public timezone: string;
   @ViewChild("textArea") public textArea!: IonTextarea;
+  @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'unset' }
   private isTemporary = false;
   public isColorPickerOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -34,8 +35,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     private notesCategoryService: NotesCategoryService,
     private translateService: TranslateService,
     private ionRouterOutlet: IonRouterOutlet,
-    private platform: Platform,
-    private el: ElementRef) {
+    private platform: Platform) {
     this.locale = translateService.currentLang;
     this.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
@@ -48,6 +48,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   ngOnInit(): void {
     this.initForm();
+    this.onNotesUpdate();
     if (this.id) {
       this.findById(this.id);
     } else {
@@ -81,16 +82,33 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
       this.note = note as Note;
-      this.el.nativeElement.style.background = note?.background;
       this.updateForm(this.note);
     });
   }
 
+  private onNotesUpdate(): void {
+    this.notesService.notesUpdated$
+      .pipe(takeUntil(this.destroy$)).subscribe((noteChange) => {
+        switch (noteChange.action) {
+          case NoteAction.ARCHIVE:
+          case NoteAction.DELETE: {
+            this.ionRouterOutlet.pop();
+            break;
+          }
+          case NoteAction.INSERT:
+          case NoteAction.UPDATE: {
+            for (const [key, value] of Object.entries(noteChange.changes!)) {
+              Object.assign(this.note, { [key]: value });
+            }
+            break;
+          }
+        }
+      })
+  }
+
   public pin(): void {
     const pinned = this.note.pinned > 0 ? false : true;
-    this.notesService.pin([this.id], pinned).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.note.pinned = pinned ? 1 : 0;
-    });
+    this.notesService.pin([this.id], pinned).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   private updateForm(note: Note): void {
@@ -98,23 +116,14 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   public update(): void {
-    const note: Note = this.form.value;
-    note.lastModifiedDate = new Date().toISOString();
-    this.notesService.update(this.id, note).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.note.value = note.value;
-      this.note.title = note.title;
-      this.note.lastModifiedDate = note.lastModifiedDate;
-    });
+    this.notesService.update(this.id, this.form.value.title, this.form.value.value)
+      .pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   public back(): void {
     if (this.id && this.isTemporary && !this.form.value.value) {
       this.notesService.deleteForever([this.id]).pipe(takeUntil(this.destroy$)).subscribe();
     }
-    this.exit();
-  }
-
-  public exit(): void {
     this.ionRouterOutlet.pop();
   }
 
@@ -125,17 +134,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       .pipe(takeUntil(this.destroy$)).subscribe((id) => {
         this.id = id;
         this.isTemporary = true;
-        this.note = { id: id, categoryId: categoryId, creationDate: creationDate, lastModifiedDate: creationDate } as Note;
       });
-  }
-
-  public onMoved(categoryId: number): void {
-    this.note.categoryId = categoryId;
-  }
-
-  public onBackgroundChanged(background: string): void {
-    this.note.background = background;
-    this.el.nativeElement.style.background = background ? background : 'unset';
   }
 
 }

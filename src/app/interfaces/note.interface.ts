@@ -75,3 +75,13 @@ export interface NoteEvent {
   ids: number[],
   event: NotificationEvent
 }
+
+export enum NoteAction {
+  INSERT, UPDATE, ARCHIVE, DELETE, DELETE_FOREVER
+}
+
+export interface NoteChange {
+  ids: number[],
+  action: NoteAction,
+  changes?: { [key: string]: string | number | boolean | undefined }
+}

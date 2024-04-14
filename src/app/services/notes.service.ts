@@ -17,76 +17,92 @@ export class NotesService {
 
   public findAll(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-      id,
-      title,
-      value,
-      creation_date as creationDate,
-      last_modified_date as lastModifiedDate,
-      pinned,
-      background,
-      category_id as categoryId
-    FROM
-      note
-    WHERE
-      archived = 0
-    AND deleted = 0
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
+  FROM
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
+  WHERE
+    n.archived = 0
+  AND n.deleted = 0
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public findByCategoryId(categoryId: number): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-    id,
-    title,
-    value,
-    creation_date as creationDate,
-    last_modified_date as lastModifiedDate,
-    pinned,
-    background,
-    category_id as categoryId
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
   FROM
-    note
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
-    archived = 0
-    AND category_id = ?`, [categoryId]))
+    n.archived = 0
+  AND n.category_id = ?`, [categoryId]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public findByBackground(background: string): Observable<Note[]> {
-    let backgroundCheck = "background = ?";
+    let backgroundCheck = "n.background = ?";
     if (!background) {
-      backgroundCheck = "background IS ?"
+      backgroundCheck = "n.background IS ?"
     }
     return from(this.storageService.db.query(`SELECT
-    id,
-    title,
-    value,
-    creation_date as creationDate,
-    last_modified_date as lastModifiedDate,
-    pinned,
-    background,
-    category_id as categoryId
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
   FROM
-    note
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
-    archived = 0
-    AND ${backgroundCheck}`, [background]))
+    n.archived = 0
+  AND ${backgroundCheck}`, [background]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public findById(id: number): Observable<Note | undefined> {
     return from(this.storageService.db.query(`SELECT
-    id,
-    title,
-    value,
-    creation_date as creationDate,
-    last_modified_date as lastModifiedDate,
-    pinned,
-    background,
-    category_id as categoryId
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
   FROM
-    note
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
-    id = ?`, [id])).pipe(map((value: DBSQLiteValues) => {
+    n.id = ?`, [id])).pipe(map((value: DBSQLiteValues) => {
       const notes = value.values as Note[];
       return notes && notes.length > 0 ? notes[0] as Note : undefined;
     }));
@@ -94,41 +110,49 @@ export class NotesService {
 
   public search(search: string): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-    id,
-    title,
-    value,
-    creation_date as creationDate,
-    last_modified_date as lastModifiedDate,
-    pinned,
-    background,
-    category_id as categoryId
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
   FROM
-    note
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
-    archived = 0
-  AND deleted = 0
-  AND title LIKE '%${search}%'`))
+    n.archived = 0
+  AND n.deleted = 0
+  AND n.title LIKE '%${search}%'`))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public searchByCategoryId(categoryId: number, search: string): Observable<Note[]> {
     if (search) {
       return from(this.storageService.db.query(`SELECT
-      id,
-      title,
-      value,
-      creation_date as creationDate,
-      last_modified_date as lastModifiedDate,
-      pinned,
-      background,
-      category_id as categoryId
+      n.id,
+      n.title,
+      n.value,
+      n.creation_date as creationDate,
+      n.last_modified_date as lastModifiedDate,
+      n.pinned,
+      n.background,
+      n.category_id as categoryId,
+      nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
     FROM
-      note
+      note n
+    LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
-      archived = 0
-      AND deleted = 0
-      AND category_id = ?
-      AND title LIKE '%${search}%'`, [categoryId]))
+      n.archived = 0
+    AND n.deleted = 0
+    AND n.category_id = ?
+    AND n.title LIKE '%${search}%'`, [categoryId]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {
       return this.findByCategoryId(categoryId);
@@ -136,27 +160,31 @@ export class NotesService {
   }
 
   public searchByBackground(background: string, search: string): Observable<Note[]> {
-    let backgroundCheck = "background = ?";
+    let backgroundCheck = "n.background = ?";
     if (search) {
       if (!background) {
-        backgroundCheck = "background IS ?"
+        backgroundCheck = "n.background IS ?"
       }
       return from(this.storageService.db.query(`SELECT
-      id,
-      title,
-      value,
-      creation_date as creationDate,
-      last_modified_date as lastModifiedDate,
-      pinned,
-      background,
-      category_id as categoryId
+      n.id,
+      n.title,
+      n.value,
+      n.creation_date as creationDate,
+      n.last_modified_date as lastModifiedDate,
+      n.pinned,
+      n.background,
+      n.category_id as categoryId,
+      nr.id as reminderId,
+      nr.date as reminderDate,
+      nr.every as reminderEvery
     FROM
-      note
+      note n
+    LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
-      archived = 0
-      AND deleted = 0
+      n.archived = 0
+      AND m.deleted = 0
       AND ${backgroundCheck}
-      AND title LIKE '%${search}%'`, [background]))
+      AND n.title LIKE '%${search}%'`, [background]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
     } else {
       return this.findByBackground(background);
@@ -175,55 +203,67 @@ export class NotesService {
 
   public findByCreationDate(creationDate: string): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-    id,
-    title,
-    value,
-    creation_date as creationDate,
-    last_modified_date as lastModifiedDate,
-    pinned,
-    background,
-    category_id as categoryId
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
   FROM
-    note
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
-    archived = 0
-    AND deleted = 0
-    AND DATE(creation_date) = ?`, [creationDate]))
+    n.archived = 0
+    AND n.deleted = 0
+    AND DATE(n.creation_date) = ?`, [creationDate]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public findArchived(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-      id,
-      title,
-      value,
-      creation_date as creationDate,
-      last_modified_date as lastModifiedDate,
-      pinned,
-      background,
-      category_id as categoryId
-    FROM
-      note
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
+  FROM
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
-      archived = 1
-      AND deleted = 0
+      n.archived = 1
+      AND n.deleted = 0
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
   public findDeleted(): Observable<Note[]> {
     return from(this.storageService.db.query(`SELECT
-      id,
-      title,
-      value,
-      creation_date as creationDate,
-      last_modified_date as lastModifiedDate,
-      pinned,
-      background,
-      category_id as categoryId
-    FROM
-      note
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
+  FROM
+    note n
+  LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
-      deleted = 1
+      n.deleted = 1
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 

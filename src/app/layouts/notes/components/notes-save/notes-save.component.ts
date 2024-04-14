@@ -27,6 +27,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'unset' }
   private isTemporary = false;
   public isColorPickerOpen = false;
+  public isReminderOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
 
@@ -81,6 +82,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
+      console.log(note);
       this.note = note as Note;
       this.updateForm(this.note);
     });

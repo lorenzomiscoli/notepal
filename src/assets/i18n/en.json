@@ -56,5 +56,14 @@
   "noteToTrash": "Note moved to trash",
   "deleteNoteForever": "Delete note forever?",
   "deleteNotesForever": "Delete notes forever?",
-  "trashWarning": "Notes in Trash are deleted after 7 days"
+  "trashWarning": "Notes in Trash are deleted after 7 days",
+  "addReminder": "Add reminder",
+  "editReminder": "Edit reminder",
+  "time": "Time",
+  "repeat": "Repeat",
+  "doesNotRepeat": "Does not repeat",
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "monthly": "Monthly",
+  "yearly": "Yearly"
 }

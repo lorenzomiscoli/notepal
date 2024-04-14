@@ -25,6 +25,14 @@ export class UserUpgradeStatements {
         `CREATE TABLE IF NOT EXISTS note_category(
           id INTEGER PRIMARY KEY,
           name TEXT NOT NULL UNIQUE
+          );`,
+        `CREATE TABLE IF NOT EXISTS note_reminder(
+          id INTEGER PRIMARY KEY,
+          date TEXT NOT NULL,
+          repeat INTEGER,
+          every TEXT,
+          note_id INTEGER,
+          FOREIGN KEY (note_id) REFERENCES note(id) ON DELETE CASCADE
           );`
       ],
     },

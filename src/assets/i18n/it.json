@@ -57,5 +57,14 @@
   "noteToTrash": "Nota spostata nel cestino",
   "deleteNoteForever": "Eliminare nota per sempre?",
   "deleteNotesForever": "Eliminare note per sempre?",
-  "trashWarning": "Le note nel Cestino vengono eliminate dopo 7 giorni"
+  "trashWarning": "Le note nel Cestino vengono eliminate dopo 7 giorni",
+  "addReminder": "Aggiungi promemoria",
+  "editReminder": "Modifica promemoria",
+  "time": "Orario",
+  "repeat": "Ripeti",
+  "doesNotRepeat": "Non ripetere",
+  "daily": "Giornalmente",
+  "weekly": "Settimanalmente",
+  "monthly": "Mensilmente",
+  "yearly": "Annualmente"
 }

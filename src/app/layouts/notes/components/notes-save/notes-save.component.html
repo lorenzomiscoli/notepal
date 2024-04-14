@@ -11,8 +11,11 @@
     <ion-button (click)="pin()" *ngIf="note.pinned">
       <ion-icon slot="icon-only" src="assets/icons/push-pin.svg"></ion-icon>
     </ion-button>
-    <ion-button>
+    <ion-button (click)="isReminderOpen = true" *ngIf="!note.reminderId">
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+    </ion-button>
+    <ion-button (click)="isReminderOpen = true" *ngIf="note.reminderId">
+      <ion-icon slot="icon-only" name="notifications"></ion-icon>
     </ion-button>
     <ion-button (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
@@ -30,3 +33,4 @@
 </div>
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
   (close)="isColorPickerOpen=false"></app-notes-color-picker>
+<app-notes-reminder [note]="note" [isOpen]="isReminderOpen" (close)="isReminderOpen = false"></app-notes-reminder>

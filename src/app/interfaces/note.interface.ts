@@ -9,6 +9,9 @@ export interface Note {
   pinned: number;
   background: string | undefined;
   categoryId: number | undefined;
+  reminderId: number | undefined;
+  reminderDate: string | undefined;
+  reminderEvery: ScheduleEvery | undefined;
   isSelected?: boolean;
   isTemporary?: boolean;
 }
@@ -27,6 +30,22 @@ export interface NoteCategory {
   isSelected?: boolean;
   isDefault?: boolean;
   isSystem?: boolean;
+}
+
+export interface NoteReminder {
+  id: number,
+  date: string,
+  repeat: number,
+  every: ScheduleEvery,
+  noteId: number
+}
+
+export enum ScheduleEvery {
+  NO_SCHEDULE = 'no-schedule',
+  DAY = 'day',
+  WEEK = 'week',
+  MONTH = 'month',
+  YEAR = 'year'
 }
 
 export interface NoteForm {
@@ -77,7 +96,7 @@ export interface NoteEvent {
 }
 
 export enum NoteAction {
-  INSERT, UPDATE, ARCHIVE, DELETE, DELETE_FOREVER
+  INSERT, UPDATE, ARCHIVE, DELETE, DELETE_FOREVER, SAVE_REMINDER, DELETE_REMINDER
 }
 
 export interface NoteChange {

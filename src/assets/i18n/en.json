@@ -65,5 +65,6 @@
   "daily": "Daily",
   "weekly": "Weekly",
   "monthly": "Monthly",
-  "yearly": "Yearly"
+  "yearly": "Yearly",
+  "allowNotifications":"Allow notification access to use this functionality"
 }

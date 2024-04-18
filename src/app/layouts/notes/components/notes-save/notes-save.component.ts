@@ -1,14 +1,15 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
-import { IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
+import { IonRouterOutlet, IonTextarea, IonToast, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject, Subscription, debounceTime, takeUntil } from "rxjs";
+import { Subject, Subscription, debounceTime, from, take, takeUntil } from "rxjs";
 
 import { Note, NoteAction, NoteForm } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
+import { LocalNotifications } from "@capacitor/local-notifications";
 
 @Component({
   templateUrl: "./notes-save.component.html",
@@ -28,6 +29,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   private isTemporary = false;
   public isColorPickerOpen = false;
   public isReminderOpen = false;
+  public isToastOpen = false;
+  public toastMessage = "";
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
 
@@ -82,7 +85,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
-      console.log(note);
       this.note = note as Note;
       this.updateForm(this.note);
     });
@@ -137,6 +139,17 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.id = id;
         this.isTemporary = true;
       });
+  }
+
+  public checkReminder(): void {
+    from(LocalNotifications.requestPermissions()).pipe(takeUntil(this.destroy$)).subscribe((status) => {
+      if (status.display === 'denied') {
+        this.toastMessage = this.translateService.instant('allowNotifications');
+        this.isToastOpen = true;
+      } else {
+        this.isReminderOpen = true;
+      }
+    });
   }
 
 }

@@ -66,5 +66,6 @@
   "daily": "Giornalmente",
   "weekly": "Settimanalmente",
   "monthly": "Mensilmente",
-  "yearly": "Annualmente"
+  "yearly": "Annualmente",
+  "allowNotifications":"Consenti l'accesso alle notifiche per utilizzare questa funzionalità"
 }

@@ -1,3 +1,11 @@
+export var isDateGreaterThanToday = (dateString: string) => {
+  const scheduled = new Date(dateString);
+  const today = new Date();
+  scheduled.setSeconds(0, 0);
+  today.setSeconds(0, 0);
+  return scheduled.toISOString() > today.toISOString();
+};
+
 export var datetimeToDateString = (datetime: string) => {
   return datetime.split("T", 1)[0];
 }

@@ -1,9 +1,8 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from "@angular/core";
 
-import { LocalNotifications, ScheduleResult } from "@capacitor/local-notifications";
 import { IonModal } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
-import { Observable, Subject, from, of, switchMap, takeUntil } from "rxjs";
+import { Subject, takeUntil } from "rxjs";
 
 import { NotesReminderService } from "../../services/notes-reminder.service";
 import { dateToIsoString } from "../../utils/date-utils";
@@ -50,6 +49,7 @@ export class NotesReminder implements OnInit, OnDestroy {
         if (reminder) {
           this.isEdit = true;
           this.selectedDate = dateToIsoString(new Date(reminder.date));
+          this.selectedRepeat = reminder.every;
         } else {
           this.selectedDate = dateToIsoString(new Date());
         }

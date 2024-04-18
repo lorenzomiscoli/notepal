@@ -9,7 +9,8 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
-  IonTextarea
+  IonTextarea,
+  IonToast
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
@@ -28,6 +29,7 @@ export const NOTES_SAVE_DEPS = [
   IonIcon,
   IonTextarea,
   IonLabel,
+  IonToast,
   TranslateModule,
   NotesReminder,
   NotesMenuComponent,

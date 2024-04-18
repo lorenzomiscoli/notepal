@@ -42,7 +42,7 @@ export class NotesReminderService {
             reminderDate: noteReminder.date
           }
         });
-      }), switchMap(() => this.notesService.findById(noteReminder.noteId)), switchMap((note) => addNotification(note as Note)));
+      }), switchMap(() => this.notesService.findById(noteReminder.noteId)), switchMap((note) => addNotification([note as Note])));
   }
 
   public update(noteReminder: NoteReminder): Observable<any> {
@@ -57,8 +57,8 @@ export class NotesReminderService {
             reminderDate: noteReminder.date
           }
         });
-      }), switchMap(() => cancelNotification(noteReminder.noteId)),
-        switchMap(() => this.notesService.findById(noteReminder.noteId)), switchMap((note) => addNotification(note as Note)));
+      }), switchMap(() => cancelNotification([noteReminder.noteId])),
+        switchMap(() => this.notesService.findById(noteReminder.noteId)), switchMap((note) => addNotification([note as Note])));
   }
 
   public delete(id: number, noteId: number): Observable<any> {
@@ -73,7 +73,7 @@ export class NotesReminderService {
             reminderDate: undefined
           }
         });
-      }), switchMap(() => cancelNotification(noteId)));
+      }), switchMap(() => cancelNotification([noteId])));
   }
 
 }

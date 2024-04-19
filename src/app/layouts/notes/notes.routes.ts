@@ -32,5 +32,8 @@ export const NOTES_ROUTES: Routes = [
   },
   {
     path: "trash", loadComponent: () => import('./components/notes-trash/notes-trash.component').then(m => m.NotesTrashComponent)
+  },
+  {
+    path: "reminders", loadComponent: () => import('./components/notes-reminder/notes-reminder.component').then(m => m.NotesReminderComponent)
   }
 ];

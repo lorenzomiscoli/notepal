@@ -4,19 +4,19 @@ import { IonModal } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, takeUntil } from "rxjs";
 
+import { Note, NoteReminder, ScheduleEvery } from '../../interfaces/note.interface';
 import { NotesReminderService } from "../../services/notes-reminder.service";
 import { dateToIsoString } from "../../utils/date-utils";
-import { Note, NoteReminder, ScheduleEvery } from './../../interfaces/note.interface';
-import { NOTES_REMINDER_DEPS } from "./notes-reminder.dependencies";
+import { NOTES_MANAGE_REMINDER_DEPS } from "./notes-manage-reminder.dependencies";
 
 @Component({
-  selector: "app-notes-reminder",
-  templateUrl: "./notes-reminder.component.html",
-  styleUrls: ["./notes-reminder.component.scss"],
+  selector: "app-notes-manage-reminder",
+  templateUrl: "./notes-manage-reminder.component.html",
+  styleUrls: ["./notes-manage-reminder.component.scss"],
   standalone: true,
-  imports: [NOTES_REMINDER_DEPS]
+  imports: [NOTES_MANAGE_REMINDER_DEPS]
 })
-export class NotesReminder implements OnInit, OnDestroy {
+export class NotesManageReminder implements OnInit, OnDestroy {
   @Input({ required: true }) public note!: Note;
   @Input() public isOpen = false;
   @Output() public close = new EventEmitter<void>();

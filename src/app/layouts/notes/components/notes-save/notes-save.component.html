@@ -33,6 +33,7 @@
 </div>
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
   (close)="isColorPickerOpen=false"></app-notes-color-picker>
-<app-notes-reminder [note]="note" [isOpen]="isReminderOpen" (close)="isReminderOpen = false"></app-notes-reminder>
+<app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"
+  (close)="isReminderOpen = false"></app-notes-manage-reminder>
 <ion-toast [duration]="2500" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
   [message]="toastMessage"></ion-toast>

@@ -288,6 +288,28 @@ export class NotesService {
     n.id IN (${ids.toString()})`)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
 
+  public findReminders(): Observable<Note[]> {
+    return from(this.storageService.db.query(`SELECT
+    n.id,
+    n.title,
+    n.value,
+    n.creation_date as creationDate,
+    n.last_modified_date as lastModifiedDate,
+    n.pinned,
+    n.background,
+    n.category_id as categoryId,
+    nr.id as reminderId,
+    nr.date as reminderDate,
+    nr.every as reminderEvery
+  FROM
+    note n
+  INNER JOIN note_reminder nr ON n.id = nr.note_id
+    WHERE
+      n.deleted = 0
+    AND n.archived = 0
+  `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
   public insert(creationDate: string, categoryId: number | undefined): Observable<number> {
     const lastModifiedDate = new Date().toISOString();
     const sql = `INSERT INTO note (creation_date, last_modified_date, archived, deleted, category_id) VALUES (?, ?, 0, 0, ?);`;

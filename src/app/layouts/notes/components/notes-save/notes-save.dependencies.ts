@@ -15,7 +15,7 @@ import {
 import { TranslateModule } from "@ngx-translate/core";
 
 import { NotesColorPicker } from "../../../../components/notes-color-picker/notes-color-picker.component";
-import { NotesReminder } from "../../../../components/notes-reminder/notes-reminder.component";
+import { NotesManageReminder } from "../../../../components/notes-manage-reminder/notes-manage-reminder.component";
 import { NotesMenuComponent } from './../../../../components/notes-menu/notes-menu.component';
 
 export const NOTES_SAVE_DEPS = [
@@ -31,7 +31,7 @@ export const NOTES_SAVE_DEPS = [
   IonLabel,
   IonToast,
   TranslateModule,
-  NotesReminder,
+  NotesManageReminder,
   NotesMenuComponent,
   NotesColorPicker
 ]

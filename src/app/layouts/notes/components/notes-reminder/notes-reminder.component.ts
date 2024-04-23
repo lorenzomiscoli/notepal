@@ -9,6 +9,7 @@ import { NotesSettingService } from "../../../../../app/services/notes-setting.s
 import { NotesService } from "../../../../../app/services/notes.service";
 import { environment } from "../../../../../environments/environment";
 import { NOTES_REMINDER_DEPS } from "./notes-reminder.dependencies";
+import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./notes-reminder.component.html",
@@ -29,7 +30,8 @@ export class NotesReminderComponent implements OnInit, OnDestroy {
   constructor(private notesService: NotesService,
     private notesSettingService: NotesSettingService,
     private platform: Platform,
-    private navController: NavController) { }
+    private navController: NavController,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.findSettings();
@@ -84,6 +86,8 @@ export class NotesReminderComponent implements OnInit, OnDestroy {
       else {
         note.isSelected = true;
       }
+    } else {
+      this.router.navigate(["/notes/save"], { queryParams: { id: note.id } });
     }
   }
 

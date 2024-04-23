@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 
 
 import {
+  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -22,6 +23,7 @@ export const NOTES_SAVE_DEPS = [
   DatePipe,
   NgIf,
   ReactiveFormsModule,
+  IonAlert,
   IonButtons,
   IonButton,
   IonBackButton,

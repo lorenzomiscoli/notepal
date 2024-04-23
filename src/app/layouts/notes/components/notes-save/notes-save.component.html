@@ -4,7 +4,7 @@
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons>
+  <ion-buttons *ngIf="!note.archived && !note.deleted; else elseBlock">
     <ion-button (click)="pin()" *ngIf="!note.pinned">
       <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
     </ion-button>
@@ -22,6 +22,21 @@
     </ion-button>
     <app-notes-menu [selectedNotes]="[note]"></app-notes-menu>
   </ion-buttons>
+  <ng-template #elseBlock>
+    <ion-buttons *ngIf="note.archived && !note.deleted">
+      <ion-button (click)="unarchive()">
+        <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons *ngIf="note.deleted">
+      <ion-button (click)="undelete()">
+        <ion-icon slot="icon-only" src="assets/icons/undelete-outline.svg"></ion-icon>
+      </ion-button>
+      <ion-button (click)="isDeleteAlertOpen = true">
+        <ion-icon slot="icon-only" name="trash-bin-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ng-template>
 </div>
 <div class="content">
   <form [formGroup]="form">
@@ -37,3 +52,6 @@
   (close)="isReminderOpen = false"></app-notes-manage-reminder>
 <ion-toast [duration]="2500" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
   [message]="toastMessage"></ion-toast>
+<ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteNote' | translate}}"
+  message="{{'deleteNoteForever'|translate}}" [buttons]="deleteAlertBtns"
+  (ionAlertDidDismiss)="isDeleteAlertOpen = false"></ion-alert>

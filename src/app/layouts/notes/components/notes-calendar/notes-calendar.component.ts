@@ -122,4 +122,9 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
     const today = dateToIsoString(new Date()).split('T')[0];
     return today <= dateString;
   };
+
+  public tap(note: Note): void {
+    this.router.navigate(["/notes/save"], { queryParams: { id: note.id } });
+  }
+
 }

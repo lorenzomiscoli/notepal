@@ -9,6 +9,7 @@ import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/
 import { NotesSettingService } from "../../../../services/notes-setting.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_TRASH_DEPS } from "./notes-trash.dependencies";
+import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./notes-trash.component.html",
@@ -29,7 +30,8 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
   constructor(private notesService: NotesService,
     private notesSettingService: NotesSettingService,
     private platform: Platform,
-    private navController: NavController) { }
+    private navController: NavController,
+    private router: Router) { }
 
 
   ngOnInit(): void {
@@ -80,6 +82,8 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
       else {
         note.isSelected = true;
       }
+    } else {
+      this.router.navigate(["/notes/save"], { queryParams: { id: note.id } });
     }
   }
 

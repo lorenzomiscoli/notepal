@@ -1,15 +1,15 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
-import { IonRouterOutlet, IonTextarea, IonToast, Platform, ViewDidEnter } from "@ionic/angular/standalone";
+import { LocalNotifications } from "@capacitor/local-notifications";
+import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject, Subscription, debounceTime, from, take, takeUntil } from "rxjs";
+import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
-import { Note, NoteAction, NoteForm } from "../../../../interfaces/note.interface";
+import { Note, NoteAction, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
-import { LocalNotifications } from "@capacitor/local-notifications";
 
 @Component({
   templateUrl: "./notes-save.component.html",
@@ -31,6 +31,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public isReminderOpen = false;
   public isToastOpen = false;
   public toastMessage = "";
+  public isDeleteAlertOpen = false;
+  public deleteAlertBtns!: AlertButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
 
@@ -51,6 +53,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   ngOnInit(): void {
+    this.createDeleteAlertBtns();
     this.initForm();
     this.onNotesUpdate();
     if (this.id) {
@@ -86,24 +89,47 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
       this.note = note as Note;
+      console.log(note);
       this.updateForm(this.note);
+    });
+  }
+
+  public unarchive(): void {
+    this.notesService.archive([this.id], false)
+      .pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.notesService.toastNotification$.next({ ids: [this.id], event: NotificationEvent.UNARCHIVE });
+      });
+  }
+
+  public undelete(): void {
+    this.notesService.delete([this.id], false).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.notesService.toastNotification$.next({ ids: [this.id], event: NotificationEvent.UNDELETE });
     });
   }
 
   private onNotesUpdate(): void {
     this.notesService.notesUpdated$
       .pipe(takeUntil(this.destroy$)).subscribe((noteChange) => {
+        if (noteChange.changes) {
+          for (const [key, value] of Object.entries(noteChange.changes)) {
+            Object.assign(this.note, { [key]: value });
+          }
+        }
         switch (noteChange.action) {
-          case NoteAction.ARCHIVE:
-          case NoteAction.DELETE: {
-            this.ionRouterOutlet.pop();
+          case NoteAction.ARCHIVE: {
+            if (this.note.archived) {
+              this.ionRouterOutlet.pop();
+            }
             break;
           }
-          case NoteAction.INSERT:
-          case NoteAction.UPDATE: {
-            for (const [key, value] of Object.entries(noteChange.changes!)) {
-              Object.assign(this.note, { [key]: value });
+          case NoteAction.DELETE: {
+            if (this.note.deleted) {
+              this.ionRouterOutlet.pop();
             }
+            break;
+          }
+          case NoteAction.DELETE_FOREVER: {
+            this.ionRouterOutlet.pop();
             break;
           }
         }
@@ -150,6 +176,25 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.isReminderOpen = true;
       }
     });
+  }
+
+  private createDeleteAlertBtns(): void {
+    this.deleteAlertBtns = [
+      {
+        text: this.translateService.instant("cancel"),
+        role: 'cancel',
+      },
+      {
+        cssClass: "cancel-btn",
+        text: this.translateService.instant("delete"),
+        role: 'confirm',
+        handler: () => this.deleteForever()
+      },
+    ];
+  }
+
+  private deleteForever(): void {
+    this.notesService.deleteForever([this.id]).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
 }

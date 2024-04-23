@@ -96,6 +96,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -183,7 +185,7 @@ export class NotesService {
     LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.archived = 0
-      AND m.deleted = 0
+      AND n.deleted = 0
       AND ${backgroundCheck}
       AND n.title LIKE '%${search}%'`, [background]))
         .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
@@ -382,7 +384,7 @@ export class NotesService {
     const value = archived ? 1 : 0;
     const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next({ ids: ids, action: NoteAction.ARCHIVE });
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.ARCHIVE, changes: { archived: value }});
     }), switchMap(() => this.updateNotifications(ids, value)));
   }
 
@@ -390,7 +392,7 @@ export class NotesService {
     const value = deleted ? 1 : 0;
     const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE });
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE, changes: { deleted: value } });
     }), switchMap(() => this.updateNotifications(ids, value)));
   }
 

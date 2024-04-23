@@ -46,6 +46,8 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
     this.findSettings();
     this.getNotesCategories();
     this.search();
+    this.notesService.notesUpdated$
+      .pipe(takeUntil(this.destroy$)).subscribe(() => this.search$.next(this.filterValue))
     this.handleBackButton();
   }
 
@@ -75,7 +77,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
   }
 
   public search(): void {
-    this.search$.pipe(takeUntil(this.destroy$), debounceTime(250), switchMap((value) => {
+    this.search$.pipe(debounceTime(250), switchMap((value) => {
       if (this.filterMode) {
         if (this.filter.type === NoteSearchFilter.CATEGORY) {
           return this.notesService.searchByCategoryId(this.filter.id as number, value);
@@ -86,7 +88,7 @@ export class NotesSearchComponent implements ViewWillEnter, ViewWillLeave, ViewD
       } else {
         return this.notesService.search(value);
       }
-    })).subscribe((value) => {
+    }), takeUntil(this.destroy$)).subscribe((value) => {
       this.notes = value;
       this.isSearch = true
     })

@@ -5,6 +5,7 @@ import { IonDatetime, IonFab, IonFabButton, IonIcon } from "@ionic/angular/stand
 import { TranslateModule } from "@ngx-translate/core";
 import { NgxMasonryModule } from 'ngx-masonry';
 
+import { LongPressDirective } from "../../../../../app/directives/long-press.directive";
 import { SortNotesPipe } from "../../../../../app/pipes/sort-property.pipe";
 import { NotesCardComponent } from "../../../../components/notes-card/notes-card.component";
 
@@ -21,6 +22,7 @@ export const NOTES_CALENDAR_DEPS = [
   IonIcon,
   NgxMasonryModule,
   TranslateModule,
+  LongPressDirective,
   NotesCardComponent,
   SortNotesPipe
 ];

@@ -5,6 +5,7 @@ export const environment = {
   viewMode: ViewMode.GRID,
   sortMode: SortMode.MODIFIED_DATE,
   sortDirection: SortDirection.ASCENDING,
+  toastDuration: 2000,
   masonryOptions: {
     gutter: 20,
     horizontalOrder: true,

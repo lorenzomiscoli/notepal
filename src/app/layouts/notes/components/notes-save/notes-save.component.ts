@@ -6,6 +6,7 @@ import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } fro
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
+import { environment } from "../../../../../environments/environment";
 import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
@@ -33,6 +34,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public toastMessage = "";
   public isDeleteAlertOpen = false;
   public isMoveModalOpen = false;
+  public toastDuration = environment.toastDuration;
   public deleteAlertBtns!: AlertButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;

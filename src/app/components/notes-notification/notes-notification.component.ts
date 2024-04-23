@@ -3,9 +3,10 @@ import { NoteEvent, NotificationEvent } from './../../interfaces/note.interface'
 
 import { IonToast } from "@ionic/angular/standalone";
 
-import { Subject, takeUntil } from "rxjs";
-import { NotesService } from "../../services/notes.service";
 import { TranslateService } from "@ngx-translate/core";
+import { Subject, takeUntil } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { NotesService } from "../../services/notes.service";
 
 @Component({
   selector: "app-notes-notification",
@@ -16,6 +17,7 @@ import { TranslateService } from "@ngx-translate/core";
 export class NotesNotificationComponent implements OnInit, OnDestroy {
   @ViewChild(IonToast) private toast!: IonToast;
   public isToastOpen = false;
+  public toastDuration = environment.toastDuration;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private notesService: NotesService, private translateService: TranslateService) { }

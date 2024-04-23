@@ -68,7 +68,7 @@
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"
   (close)="isReminderOpen = false"></app-notes-manage-reminder>
 <app-notes-move [selectedNotes]="[note]" [isOpen]="isMoveModalOpen" (close)="isMoveModalOpen = false"></app-notes-move>
-<ion-toast [duration]="2500" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
+<ion-toast [duration]="toastDuration" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
   [message]="toastMessage"></ion-toast>
 <ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteNote' | translate}}"
   message="{{'deleteNoteForever'|translate}}" [buttons]="deleteAlertBtns"

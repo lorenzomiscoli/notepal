@@ -20,16 +20,33 @@
     <ion-button (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
-    <app-notes-menu [selectedNotes]="[note]"></app-notes-menu>
+    <ion-button id="more-options-trigger">
+      <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+    </ion-button>
+    <ion-popover trigger="more-options-trigger" triggerAction="click" [dismissOnSelect]="true">
+      <ng-template>
+        <ion-list>
+          <ion-item [button]="true" lines="none" (click)="isMoveModalOpen = true">
+            <ion-label>{{'move'|translate}}</ion-label>
+          </ion-item>
+          <ion-item [button]="true" lines="none" (click)="archive(true)">
+            <ion-label>{{'archive'|translate}}</ion-label>
+          </ion-item>
+          <ion-item [button]="true" lines="none" (click)="delete(true)">
+            <ion-label>{{'delete'|translate}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+    </ion-popover>
   </ion-buttons>
   <ng-template #elseBlock>
     <ion-buttons *ngIf="note.archived && !note.deleted">
-      <ion-button (click)="unarchive()">
+      <ion-button (click)="archive(false)">
         <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-buttons *ngIf="note.deleted">
-      <ion-button (click)="undelete()">
+      <ion-button (click)="delete(false)">
         <ion-icon slot="icon-only" src="assets/icons/undelete-outline.svg"></ion-icon>
       </ion-button>
       <ion-button (click)="isDeleteAlertOpen = true">
@@ -50,6 +67,7 @@
   (close)="isColorPickerOpen=false"></app-notes-color-picker>
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"
   (close)="isReminderOpen = false"></app-notes-manage-reminder>
+<app-notes-move [selectedNotes]="[note]" [isOpen]="isMoveModalOpen" (close)="isMoveModalOpen = false"></app-notes-move>
 <ion-toast [duration]="2500" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
   [message]="toastMessage"></ion-toast>
 <ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteNote' | translate}}"

@@ -26,6 +26,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -48,6 +50,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -74,6 +78,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -121,6 +127,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -145,6 +153,8 @@ export class NotesService {
       n.pinned,
       n.background,
       n.category_id as categoryId,
+      n.archived,
+      n.deleted,
       nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -177,6 +187,8 @@ export class NotesService {
       n.pinned,
       n.background,
       n.category_id as categoryId,
+      n.archived,
+      n.deleted,
       nr.id as reminderId,
       nr.date as reminderDate,
       nr.every as reminderEvery
@@ -214,6 +226,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -237,6 +251,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -259,6 +275,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -280,6 +298,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery
@@ -300,6 +320,8 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    n.archived,
+    n.deleted,
     nr.id as reminderId,
     nr.date as reminderDate,
     nr.every as reminderEvery

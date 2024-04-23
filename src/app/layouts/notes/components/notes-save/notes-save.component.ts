@@ -6,7 +6,7 @@ import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } fro
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
-import { Note, NoteAction, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
+import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
@@ -32,6 +32,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public isToastOpen = false;
   public toastMessage = "";
   public isDeleteAlertOpen = false;
+  public isMoveModalOpen = false;
   public deleteAlertBtns!: AlertButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
@@ -47,7 +48,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   ionViewDidEnter(): void {
-    if (!this.id) {
+    if (this.isTemporary) {
       this.textArea.setFocus();
     }
   }
@@ -89,22 +90,33 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
       this.note = note as Note;
-      console.log(note);
       this.updateForm(this.note);
     });
   }
 
-  public unarchive(): void {
-    this.notesService.archive([this.id], false)
+  public archive(archived: boolean): void {
+    const eventType = archived ? NotificationEvent.ARCHIVE : NotificationEvent.UNARCHIVE;
+    this.notesService.archive([this.id], archived)
       .pipe(takeUntil(this.destroy$)).subscribe(() => {
-        this.notesService.toastNotification$.next({ ids: [this.id], event: NotificationEvent.UNARCHIVE });
+        this.notesService.toastNotification$.next({ ids: [this.id], event: eventType });
+        if (archived)
+          this.ionRouterOutlet.pop();
       });
   }
 
-  public undelete(): void {
-    this.notesService.delete([this.id], false).pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.notesService.toastNotification$.next({ ids: [this.id], event: NotificationEvent.UNDELETE });
-    });
+  public delete(deleted: boolean): void {
+    const eventType = deleted ? NotificationEvent.DELETE : NotificationEvent.UNDELETE;
+    this.notesService.delete([this.id], deleted)
+      .pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.notesService.toastNotification$.next({ ids: [this.id], event: eventType });
+        if (deleted)
+          this.ionRouterOutlet.pop();
+      });
+  }
+
+  private deleteForever(): void {
+    this.notesService.deleteForever([this.id])
+      .pipe(takeUntil(this.destroy$)).subscribe(() => this.ionRouterOutlet.pop());
   }
 
   private onNotesUpdate(): void {
@@ -115,25 +127,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
             Object.assign(this.note, { [key]: value });
           }
         }
-        switch (noteChange.action) {
-          case NoteAction.ARCHIVE: {
-            if (this.note.archived) {
-              this.ionRouterOutlet.pop();
-            }
-            break;
-          }
-          case NoteAction.DELETE: {
-            if (this.note.deleted) {
-              this.ionRouterOutlet.pop();
-            }
-            break;
-          }
-          case NoteAction.DELETE_FOREVER: {
-            this.ionRouterOutlet.pop();
-            break;
-          }
-        }
-      })
+      });
   }
 
   public pin(): void {
@@ -191,10 +185,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         handler: () => this.deleteForever()
       },
     ];
-  }
-
-  private deleteForever(): void {
-    this.notesService.deleteForever([this.id]).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
 }

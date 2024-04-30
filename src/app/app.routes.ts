@@ -10,5 +10,9 @@ export const routes: Routes = [
     path: "notes",
     loadComponent: () => import('./layouts/notes/notes.component').then(m => m.NotesComponent),
     children: NOTES_ROUTES
+  },
+  {
+    path: "settings",
+    loadComponent: () => import('./layouts/settings/settings.component').then(m => m.SettingsComponent)
   }
 ];

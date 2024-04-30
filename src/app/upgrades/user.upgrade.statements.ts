@@ -33,13 +33,19 @@ export class UserUpgradeStatements {
           every TEXT,
           note_id INTEGER,
           FOREIGN KEY (note_id) REFERENCES note(id) ON DELETE CASCADE
-          );`
+          );`,
+        `CREATE TABLE IF NOT EXISTS setting(
+          id INTEGER PRIMARY KEY,
+          theme TEXT NOT NULL,
+          language TEXT NOT NULL
+          );`,
       ],
     },
     {
       toVersion: 2,
       statements: [
-        `INSERT INTO note_setting (view_mode, sort_mode, sort_direction) VALUES('grid', 'modifiedDate', 'ascending');`
+        `INSERT INTO note_setting (view_mode, sort_mode, sort_direction) VALUES('grid', 'modifiedDate', 'ascending');`,
+        `INSERT INTO setting (theme, language) VALUES('system-default', 'system-default');`
       ]
     }
   ]

@@ -26,7 +26,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public locale: string;
   public timezone: string;
   @ViewChild("textArea") public textArea!: IonTextarea;
-  @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'unset' }
+  @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'var(--ion-color-light)' }
   private isTemporary = false;
   public isColorPickerOpen = false;
   public isReminderOpen = false;

@@ -1,10 +1,12 @@
-import { LocaleService } from './services/locale.service';
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import * as icons from 'ionicons/icons';
-import { addIcons } from 'ionicons';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import * as icons from 'ionicons/icons';
+import { fromEvent, merge, switchMap } from 'rxjs';
+
+import { LocaleService } from './services/locale.service';
+import { SettingsService } from './services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -14,12 +16,14 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private localeService: LocaleService) { }
+  constructor(private localeService: LocaleService, private settingsService: SettingsService) { }
 
   ngOnInit(): void {
     addIcons(icons);
     this.localeService.registerLocales();
     this.ignoreGestures();
+    this.onLanguageChange();
+    this.onThemeChange();
   }
 
   // Workaround bug gestures with ripple effect. Ionic Github 22491
@@ -30,6 +34,15 @@ export class AppComponent implements OnInit {
       }
     }, true
     );
+  }
+
+  private onLanguageChange(): void {
+    this.settingsService.languageChange$.pipe(switchMap(() => this.settingsService.setInitialLanguage())).subscribe();
+  }
+
+  private onThemeChange(): void {
+    merge(fromEvent(window.matchMedia('(prefers-color-scheme: dark)'), 'change'), this.settingsService.themeChange$)
+      .pipe(switchMap(() => this.settingsService.setInitialTheme())).subscribe();
   }
 
 }

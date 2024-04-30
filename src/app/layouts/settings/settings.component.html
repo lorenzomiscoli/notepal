@@ -1,0 +1,31 @@
+<ion-content color="light">
+  <div class="toolbar">
+    <ion-buttons>
+      <ion-back-button defaultHref="/notes/more" text=""></ion-back-button>
+      <div class="toolbar-title">{{'settings'|translate}}</div>
+    </ion-buttons>
+  </div>
+  <ion-list [inset]="true">
+    <ion-item>
+      <ion-select [label]="'theme'|translate" [value]="theme" [cancelText]="'cancel'|translate"
+        [okText]="'update'|translate" (ionChange)="onThemeChange($event)">
+        <ion-select-option value="system-default">{{'systemDefault'|translate}}</ion-select-option>
+        <ion-select-option value="light">{{'light-theme'|translate}}</ion-select-option>
+        <ion-select-option value="dark">{{'dark-theme'|translate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-select [label]="'language'|translate" [value]="language" [cancelText]="'cancel'|translate"
+        [okText]="'update'|translate" (ionChange)="onLanguageChange($event)">
+        <ion-select-option value="system-default">{{'systemDefault'|translate}}</ion-select-option>
+        <ion-select-option value="en">{{'english'|translate}}</ion-select-option>
+        <ion-select-option value="it">{{'italian'|translate}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-list [inset]="true">
+    <ion-item [button]="true">
+      <ion-label>{{'privacyPolicy'|translate}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

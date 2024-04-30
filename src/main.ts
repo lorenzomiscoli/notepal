@@ -12,23 +12,20 @@ import { defineCustomElements as jeepSqlite } from 'jeep-sqlite/loader';
 
 import { AppComponent } from './app/app.component';
 import { InitializeAppService } from './app/services/initialize-app.service';
-import { LocaleService } from './app/services/locale.service';
 import { environment } from './environments/environment';
 import { routes } from './app/app.routes';
+import { from, switchMap } from 'rxjs';
+import { SettingsService } from './app/services/settings.service';
 
 // Define translations
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-// Define database
-export function initializeFactory(init: InitializeAppService) {
-  return () => init.initializeApp();
-}
-
-// Define language
-export function initializeLanguage(locale: LocaleService) {
-  return () => locale.setLanguage();
+// Define database, language and theme
+export function initializeFactory(init: InitializeAppService, setting: SettingsService) {
+  return () => from(init.initializeApp())
+    .pipe(switchMap(() => setting.setInitialLanguage()), switchMap(() => setting.setInitialTheme()));
 }
 
 if (environment.production) {
@@ -73,13 +70,7 @@ bootstrapApplication(AppComponent, {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeFactory,
-      deps: [InitializeAppService],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeLanguage,
-      deps: [LocaleService],
+      deps: [InitializeAppService, SettingsService],
       multi: true
     }
   ],

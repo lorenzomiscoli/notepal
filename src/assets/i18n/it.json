@@ -67,5 +67,13 @@
   "weekly": "Settimanalmente",
   "monthly": "Mensilmente",
   "yearly": "Annualmente",
-  "allowNotifications":"Consenti l'accesso alle notifiche per utilizzare questa funzionalità"
+  "allowNotifications": "Consenti l'accesso alle notifiche per utilizzare questa funzionalità",
+  "systemDefault": "Predefinito di sistema",
+  "theme": "Tema",
+  "light-theme": "Tema chiaro",
+  "dark-theme": "Tema scuro",
+  "language": "Lingua",
+  "english": "English",
+  "italian": "Italian",
+  "privacyPolicy": "Informativa sulla privacy"
 }

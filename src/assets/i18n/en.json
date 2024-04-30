@@ -66,5 +66,13 @@
   "weekly": "Weekly",
   "monthly": "Monthly",
   "yearly": "Yearly",
-  "allowNotifications":"Allow notification access to use this functionality"
+  "allowNotifications": "Allow notification access to use this functionality",
+  "systemDefault": "System default",
+  "theme": "Theme",
+  "light-theme": "Light theme",
+  "dark-theme": "Dark theme",
+  "language": "Language",
+  "english": "English",
+  "italian": "Italian",
+  "privacyPolicy": "Privacy policy"
 }

@@ -44,6 +44,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
 
   ngOnInit(): void {
     this.findCreationDates().pipe(take(1)).subscribe();
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((value) => this.locale = value.lang);
     this.locale = this.translateService.currentLang;
   }
 

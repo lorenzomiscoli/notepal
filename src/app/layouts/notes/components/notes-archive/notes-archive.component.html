@@ -13,7 +13,7 @@
       (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
   </ngx-masonry>
   <div class="empty-content-container" *ngIf="notes.length === 0">
-    <img src="assets/images/add-note.svg" alt="Add note" width="200" height="200">
-    <p>{{'emptyNotes' | translate}}</p>
+    <img src="assets/images/archive.svg" alt="Add note" width="75" height="auto">
+    <p>{{'emptyArchive' | translate}}</p>
   </div>
 </div>

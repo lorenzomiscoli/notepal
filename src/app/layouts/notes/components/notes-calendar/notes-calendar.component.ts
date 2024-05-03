@@ -97,7 +97,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   private setHighlightedDates(notesDates: { creationDate: string }[]): void {
     this.highlightedDates = [];
     notesDates.forEach(noteDate => {
-      this.highlightedDates.push({ date: datetimeToDateString(noteDate.creationDate), textColor: "#800080", backgroundColor: '#ffc0cb' });
+      this.highlightedDates.push({ date: datetimeToDateString(noteDate.creationDate), textColor: "#ffff", backgroundColor: '#598d93' });
     });
   }
 

@@ -130,3 +130,7 @@ html[mode="md"] .toolbar {
   font-size: 1.25rem;
   margin-left: 5px;
 }
+
+body.dark .logo{
+  filter: brightness(0) invert(1);
+}

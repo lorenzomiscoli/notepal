@@ -38,7 +38,7 @@ export class UserUpgradeStatements {
           id INTEGER PRIMARY KEY,
           theme TEXT NOT NULL,
           language TEXT NOT NULL
-          );`,
+          );`
       ],
     },
     {

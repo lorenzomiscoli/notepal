@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.lorenzomiscoli.notepal;
 
 import com.getcapacitor.BridgeActivity;
 

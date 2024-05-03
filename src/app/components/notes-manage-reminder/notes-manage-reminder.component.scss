@@ -42,3 +42,10 @@ ion-modal {
 ion-select::part(label) {
   color: var(--ion-color-step-650, #595959);
 }
+
+ion-item.md{
+  --background: var(--ion-color-step-100, #ffff);
+}
+ion-item.ios{
+  --background: var(--ion-color-light, #ffffff);
+}

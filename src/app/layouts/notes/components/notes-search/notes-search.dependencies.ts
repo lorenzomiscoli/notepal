@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgOptimizedImage, NgStyle } from "@angular/common";
+import { NgClass, NgFor, NgIf, NgStyle } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 
 import { IonButton, IonButtons, IonChip, IonContent, IonIcon } from "@ionic/angular/standalone";
@@ -12,9 +12,7 @@ export const NOTES_SEARCH_DEPS = [
   NgClass,
   NgFor,
   NgStyle,
-
   NgIf,
-  NgOptimizedImage,
   FormsModule,
   IonButton,
   IonButtons,

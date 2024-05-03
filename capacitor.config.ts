@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'notepal',
+  appId: 'com.lorenzomiscoli.notepal',
+  appName: 'Notepal',
   webDir: 'www',
   server: {
     androidScheme: 'https'

@@ -1,6 +1,6 @@
-.app-title {
-  font-size: 1.375rem;
-  font-weight: 600;
+.logo {
+  width: 90px;
+  height: auto;
   margin-left: var(--content-margin);
 }
 
@@ -40,9 +40,9 @@ ion-modal {
   margin-bottom: 12px;
 }
 
-.radio-group-row > span:first-of-type{
-    width: 160px;
-    display: inline-block;
+.radio-group-row>span:first-of-type {
+  width: 160px;
+  display: inline-block;
 }
 
 .modal-footer {

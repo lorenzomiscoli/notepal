@@ -74,5 +74,8 @@
   "language": "Language",
   "english": "English",
   "italian": "Italian",
-  "privacyPolicy": "Privacy policy"
+  "privacyPolicy": "Privacy policy",
+  "emptyTrash": "No notes in trash",
+  "emptyArchive": "No notes in archive",
+  "noRemindersSet": "No reminders set"
 }

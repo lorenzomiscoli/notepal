@@ -28,6 +28,7 @@ export class NotesManageReminder implements OnInit, OnDestroy {
   public selectedRepeatType: typeof ScheduleEvery = ScheduleEvery;
   public repeatTranslation!: string;
   public isEdit = false;
+  public invalidDate = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private notesReminderService: NotesReminderService, private translateService: TranslateService) { }
@@ -59,6 +60,7 @@ export class NotesManageReminder implements OnInit, OnDestroy {
 
   public onModalDismiss(): void {
     this.isEdit = false;
+    this.invalidDate = false;
     this.close.next();
   }
 
@@ -67,6 +69,10 @@ export class NotesManageReminder implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    if (!this.isDateValid(new Date(this.selectedDate).toISOString())) {
+      this.invalidDate = true;
+      return;
+    }
     const reminder = {
       date: new Date(this.selectedDate).toISOString(),
       repeat: this.selectedRepeat === ScheduleEvery.NO_SCHEDULE ? 0 : 1,
@@ -85,5 +91,14 @@ export class NotesManageReminder implements OnInit, OnDestroy {
     this.notesReminderService.delete(this.reminder!.id, this.note.id)
       .pipe(takeUntil(this.destroy$)).subscribe(() => this.modal.dismiss());
   }
+
+  private isDateValid(selectedDate: string): boolean {
+    return selectedDate <= new Date().toISOString() ? false : true;
+  }
+
+  public isDateGreaterThanToday = (dateString: string) => {
+    const today = dateToIsoString(new Date()).split('T')[0];
+    return today <= dateString;
+  };
 
 }

@@ -77,5 +77,6 @@
   "privacyPolicy": "Privacy policy",
   "emptyTrash": "No notes in trash",
   "emptyArchive": "No notes in archive",
-  "noRemindersSet": "No reminders set"
+  "noRemindersSet": "No reminders set",
+  "cannotChoosePastDate": "Cannot choose a past date"
 }

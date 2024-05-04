@@ -78,5 +78,6 @@
   "privacyPolicy": "Informativa sulla privacy",
   "emptyTrash": "Nessuna nota nel cestino",
   "emptyArchive": "Nessuna nota nell'archivio",
-  "noRemindersSet": "Nessun promemoria impostato"
+  "noRemindersSet": "Nessun promemoria impostato",
+  "cannotChoosePastDate": "Impossibile scegliere una data passata"
 }

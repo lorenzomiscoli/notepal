@@ -95,7 +95,6 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
         role: 'cancel',
       },
       {
-        cssClass: "cancel-btn",
         text: deleteText,
         role: 'confirm',
         handler: () => this.deleteCategory()

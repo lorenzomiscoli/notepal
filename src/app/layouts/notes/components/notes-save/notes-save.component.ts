@@ -181,7 +181,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         role: 'cancel',
       },
       {
-        cssClass: "cancel-btn",
         text: this.translateService.instant("delete"),
         role: 'confirm',
         handler: () => this.deleteForever()

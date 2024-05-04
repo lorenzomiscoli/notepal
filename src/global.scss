@@ -59,10 +59,6 @@
   overflow: hidden;
 }
 
-.cancel-btn {
-  color: var(--ion-color-danger) !important;
-}
-
 ion-fab.add-notes-btn {
   margin-bottom: calc(var(--ion-safe-area-bottom, 0) + 10px);
   right: var(--content-margin);

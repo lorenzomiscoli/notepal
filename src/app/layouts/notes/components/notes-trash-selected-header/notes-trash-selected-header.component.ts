@@ -68,7 +68,6 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
         role: 'cancel',
       },
       {
-        cssClass: "cancel-btn",
         text: this.translateService.instant("delete"),
         role: 'confirm',
         handler: () => this.deleteForever()

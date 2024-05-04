@@ -23,7 +23,7 @@
         </ion-item>
       </div>
       <div class="modal-footer">
-        <ion-button fill="clear" class="cancel-btn" *ngIf="isEdit" (click)="delete()">{{'delete' |
+        <ion-button fill="clear" *ngIf="isEdit" (click)="delete()">{{'delete' |
           translate}}</ion-button>
         <ion-button fill="clear" (click)="modal.dismiss()">{{'cancel' | translate}}</ion-button>
         <ion-button fill="clear" (click)="save()">{{'update' | translate}}</ion-button>

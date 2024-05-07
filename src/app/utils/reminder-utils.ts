@@ -18,7 +18,11 @@ export var addNotification = (notes: Note[]) => {
         }
       }
     });
-  return from(LocalNotifications.schedule({ notifications: notificationsToSchedule }))
+  if (notificationsToSchedule.length > 0) {
+    console.log(notificationsToSchedule);
+    return from(LocalNotifications.schedule({ notifications: notificationsToSchedule }));
+  }
+  return of(undefined);
 }
 
 export var cancelNotification = (notesIds: number[]) => {
@@ -26,8 +30,17 @@ export var cancelNotification = (notesIds: number[]) => {
     const notificationToDelete = results.notifications.filter(notification => notesIds.includes(notification.id))
     if (notificationToDelete.length > 0) {
       return LocalNotifications.cancel({ notifications: notificationToDelete })
-    } else {
-      return of(undefined);
     }
+    return of(undefined);
+  }));
+}
+
+export var updateNotification = (note: Note) => {
+  return from(LocalNotifications.getPending()).pipe(switchMap((results) => {
+    const notificationToUpdate = results.notifications.filter(notification => note.id == notification.id)
+    if (notificationToUpdate.length > 0) {
+      return addNotification([note]);
+    }
+    return of(undefined);
   }));
 }

@@ -5,7 +5,7 @@ import { Observable, Subject, from, map, of, switchMap, tap } from 'rxjs';
 
 import { StorageService } from './storage.service';
 import { Note, NoteAction, NoteBackground, NoteChange, NoteEvent } from '../interfaces/note.interface';
-import { addNotification, cancelNotification } from "../utils/reminder-utils";
+import { addNotification, cancelNotification, updateNotification } from "../utils/reminder-utils";
 
 @Injectable({
   providedIn: "root"
@@ -365,7 +365,7 @@ export class NotesService {
           lastModifiedDate: lastModifiedDate
         }
       });
-    }));
+    }), switchMap(() => this.findById(id)), switchMap((note) => updateNotification(note as Note)));
   }
 
   public updateBackground(ids: number[], background: NoteBackground | undefined): Observable<any> {
@@ -406,7 +406,7 @@ export class NotesService {
     const value = archived ? 1 : 0;
     const sql = `UPDATE note SET archived = ? WHERE id IN (${ids.join()});`;
     return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
-      this.notesUpdated$.next({ ids: ids, action: NoteAction.ARCHIVE, changes: { archived: value }});
+      this.notesUpdated$.next({ ids: ids, action: NoteAction.ARCHIVE, changes: { archived: value } });
     }), switchMap(() => this.updateNotifications(ids, value)));
   }
 

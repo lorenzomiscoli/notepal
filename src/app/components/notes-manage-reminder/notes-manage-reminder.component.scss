@@ -39,18 +39,27 @@ ion-modal {
   justify-content: flex-end;
 }
 
-ion-select::part(label) {
+ion-select.md::part(label) {
   color: var(--ion-color-step-650, #595959);
 }
 
-ion-item ion-label{
+ion-select.ios::part(label) {
+  font-weight: 600;
+  color: var(--ion-text-color, #000) !important;
+}
+
+ion-item ion-label {
   white-space: pre-wrap;
 }
 
+ion-datetime {
+  --background: var(--ion-background-color, #fff);
+}
+
 ion-item.md {
-  --background: var(--ion-color-step-100, #ffff);
+  --background: var(--ion-background-color, #fff);
 }
 
 ion-item.ios {
-  --background: var(--ion-color-light, #ffffff);
+  --background: var(--ion-background-color, #fff);
 }

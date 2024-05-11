@@ -1,5 +1,5 @@
 <ion-datetime presentation="date" [highlightedDates]="highlightedDates" (ionChange)="showNotes($event)"
-  [locale]="locale"></ion-datetime>
+  [locale]="locale" [firstDayOfWeek]="firstDayOfWeek"></ion-datetime>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode:sortDirection" [note]="note" ngxMasonryItem

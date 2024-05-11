@@ -4,7 +4,8 @@
     <div class="modal">
       <h2 class="modal-header">{{getModalTitle() | translate}}</h2>
       <div class="modal-section">
-        <ion-datetime [locale]="locale" [(ngModel)]="selectedDate" [isDateEnabled]="isDateGreaterThanToday">
+        <ion-datetime [locale]="locale" [firstDayOfWeek]="firstDayOfWeek" [(ngModel)]="selectedDate"
+          [isDateEnabled]="isDateGreaterThanToday">
           <span slot="time-label">{{'time' | translate}}</span>
         </ion-datetime>
         <ion-item lines="none" *ngIf="invalidDate">

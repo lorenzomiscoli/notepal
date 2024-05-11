@@ -29,6 +29,7 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   public isEmpty = false;
   public selectedDate!: string;
   public locale!: string;
+  public firstDayOfWeek = 1;
   public isInsertBtnEnabled = true;
   @ViewChild(NgxMasonryComponent) private masonry!: NgxMasonryComponent;
   public masonryOptions: NgxMasonryOptions = environment.masonryOptions;
@@ -44,8 +45,12 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
 
   ngOnInit(): void {
     this.findCreationDates().pipe(take(1)).subscribe();
-    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((value) => this.locale = value.lang);
+    this.translateService.onLangChange.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.locale = value.lang;
+      this.firstDayOfWeek = value.lang === 'en' ? 0 : 1;
+    });
     this.locale = this.translateService.currentLang;
+    this.firstDayOfWeek = this.translateService.currentLang === 'en' ? 0 : 1;
   }
 
   ionViewDidEnter(): void {

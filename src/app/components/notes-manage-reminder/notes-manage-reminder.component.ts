@@ -23,6 +23,7 @@ export class NotesManageReminder implements OnInit, OnDestroy {
   @ViewChild('modal') modal!: IonModal;
   public reminder!: NoteReminder | undefined;
   public locale!: string;
+  public firstDayOfWeek = 0;
   public selectedDate!: string;
   public selectedRepeat = ScheduleEvery.NO_SCHEDULE;
   public selectedRepeatType: typeof ScheduleEvery = ScheduleEvery;
@@ -36,6 +37,7 @@ export class NotesManageReminder implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.repeatTranslation = this.translateService.instant("repeat");
     this.locale = this.translateService.currentLang;
+    this.firstDayOfWeek = this.translateService.currentLang === 'en' ? 0 : 1;
   }
 
   ngOnDestroy(): void {

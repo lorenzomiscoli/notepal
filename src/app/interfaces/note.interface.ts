@@ -9,6 +9,7 @@ export interface Note {
   pinned: number;
   background: string | undefined;
   categoryId: number | undefined;
+  categoryName: string | undefined;
   archived: number;
   deleted: number;
   reminderId: number | undefined;

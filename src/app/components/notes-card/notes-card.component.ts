@@ -1,7 +1,7 @@
 import { Component, Input } from "@angular/core";
 
-import { NOTES_CARD_DEPS } from "./notes-card.dependencies";
 import { Note } from "../../interfaces/note.interface";
+import { NOTES_CARD_DEPS } from "./notes-card.dependencies";
 
 @Component({
   selector: "app-notes-card",

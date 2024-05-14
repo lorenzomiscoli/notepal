@@ -5,5 +5,17 @@
   </span>
   <ion-ripple-effect></ion-ripple-effect>
   <div class="card-title">{{note.title}}</div>
-  <div class="card-content">{{note.value}}</div>
+  <div class="card-content">
+    {{note.value}}
+    <div class="date-reminder" *ngIf="note.reminderId || note.categoryId">
+      <div *ngIf="note.reminderId">
+        <ion-icon name="alarm-outline"></ion-icon>
+        <span appReminderDate [reminderDate]="note.reminderDate">{{note.reminderDate | appDatePipe:'long'}}</span>
+      </div>
+      <div *ngIf="note.categoryId">
+        <ion-icon name="pricetag-outline"></ion-icon>
+        <span>{{note.categoryName}}</span>
+      </div>
+    </div>
+  </div>
 </div>

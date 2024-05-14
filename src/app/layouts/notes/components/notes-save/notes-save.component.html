@@ -58,7 +58,20 @@
 <div class="content">
   <form [formGroup]="form">
     <ion-input placeholder="{{ 'title' | translate }}" formControlName="title"></ion-input>
-    <ion-label>{{note.lastModifiedDate | date:'longDate':timezone:locale }}</ion-label>
+    <ion-label class="edit-date"><span>{{'lastModified'|translate}}: </span>{{note.lastModifiedDate |
+      appDatePipe:'short'
+      }}<span></span></ion-label>
+    <div class="meta-container" *ngIf="note.categoryId || note.reminderId">
+      <ion-chip *ngIf="note.reminderId" (click)="checkReminder()">
+        <ion-icon name="alarm-outline"></ion-icon>
+        <ion-label appReminderDate [reminderDate]="note.reminderDate">{{note.reminderDate |
+          appDatePipe:'long'}}</ion-label>
+      </ion-chip>
+      <ion-chip *ngIf="note.categoryId" (click)="isMoveModalOpen = true">
+        <ion-icon name="pricetag-outline"></ion-icon>
+        <ion-label>{{note.categoryName}}</ion-label>
+      </ion-chip>
+    </div>
     <ion-textarea [autoGrow]="true" placeholder="{{ 'note' | translate }}" formControlName="value"
       #textArea></ion-textarea>
   </form>

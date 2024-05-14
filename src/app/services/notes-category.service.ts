@@ -22,6 +22,9 @@ export class NotesCategoryService {
     (SELECT nc.id, COUNT(n.id) AS notesCount
     FROM note_category nc
     LEFT JOIN note n ON nc.id = n.category_id
+    WHERE n.deleted = 0
+    AND
+    n.archived = 0
     GROUP BY nc.id)
     ncCount ON ncCount.id = nc.id`))
       .pipe(map((value: DBSQLiteValues) => value.values as NoteCategory[]));

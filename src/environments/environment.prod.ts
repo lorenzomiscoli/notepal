@@ -7,7 +7,7 @@ export const environment = {
   sortDirection: SortDirection.ASCENDING,
   toastDuration: 2000,
   masonryOptions: {
-    gutter: 20,
+    gutter: 16,
     horizontalOrder: true,
     originLeft: true,
     animations: {},

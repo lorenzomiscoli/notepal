@@ -6,6 +6,7 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
+  IonChip,
   IonIcon,
   IonInput,
   IonItem,
@@ -20,6 +21,8 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NotesColorPicker } from "../../../../components/notes-color-picker/notes-color-picker.component";
 import { NotesManageReminder } from "../../../../components/notes-manage-reminder/notes-manage-reminder.component";
 import { NotesMoveComponent } from "../../../../components/notes-menu/components/notes-move/notes-move.component";
+import { ReminderDateDirective } from "../../../../directives/reminder-date.directive";
+import { DateFormatterPipe } from "../../../../pipes/date-formatter.directive";
 
 export const NOTES_SAVE_DEPS = [
   DatePipe,
@@ -29,6 +32,7 @@ export const NOTES_SAVE_DEPS = [
   IonBackButton,
   IonButton,
   IonButtons,
+  IonChip,
   IonIcon,
   IonInput,
   IonItem,
@@ -40,5 +44,7 @@ export const NOTES_SAVE_DEPS = [
   TranslateModule,
   NotesColorPicker,
   NotesManageReminder,
-  NotesMoveComponent
+  NotesMoveComponent,
+  ReminderDateDirective,
+  DateFormatterPipe
 ]

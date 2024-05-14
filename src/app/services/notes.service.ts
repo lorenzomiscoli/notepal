@@ -26,6 +26,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -33,6 +34,7 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.archived = 0
@@ -50,6 +52,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -57,9 +60,11 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.archived = 0
+  AND n.deleted = 0
   AND n.category_id = ?`, [categoryId]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
@@ -78,6 +83,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -85,9 +91,11 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
-  LEFT JOIN note_reminder nr ON n.id = nr.note_id
+    LEFT JOIN note_category nc ON n.category_id = nc.id
+    LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.archived = 0
+  AND n.deleted = 0
   AND ${backgroundCheck}`, [background]))
       .pipe(map((value: DBSQLiteValues) => value.values as Note[]));
   }
@@ -102,6 +110,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -109,7 +118,8 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
-  LEFT JOIN note_reminder nr ON n.id = nr.note_id
+    LEFT JOIN note_category nc ON n.category_id = nc.id
+    LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.id = ?`, [id])).pipe(map((value: DBSQLiteValues) => {
       const notes = value.values as Note[];
@@ -127,6 +137,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -134,7 +145,8 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
-  LEFT JOIN note_reminder nr ON n.id = nr.note_id
+    LEFT JOIN note_category nc ON n.category_id = nc.id
+    LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.archived = 0
   AND n.deleted = 0
@@ -153,6 +165,7 @@ export class NotesService {
       n.pinned,
       n.background,
       n.category_id as categoryId,
+      nc.name as categoryName,
       n.archived,
       n.deleted,
       nr.id as reminderId,
@@ -160,7 +173,8 @@ export class NotesService {
     nr.every as reminderEvery
     FROM
       note n
-    LEFT JOIN note_reminder nr ON n.id = nr.note_id
+      LEFT JOIN note_category nc ON n.category_id = nc.id
+      LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.archived = 0
     AND n.deleted = 0
@@ -187,6 +201,7 @@ export class NotesService {
       n.pinned,
       n.background,
       n.category_id as categoryId,
+      nc.name as categoryName,
       n.archived,
       n.deleted,
       nr.id as reminderId,
@@ -194,6 +209,7 @@ export class NotesService {
       nr.every as reminderEvery
     FROM
       note n
+    LEFT JOIN note_category nc ON n.category_id = nc.id
     LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.archived = 0
@@ -226,6 +242,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -233,6 +250,7 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.archived = 0
@@ -251,6 +269,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -258,6 +277,7 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.archived = 1
@@ -275,6 +295,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -282,6 +303,7 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.deleted = 1
@@ -298,6 +320,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -305,6 +328,7 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   LEFT JOIN note_reminder nr ON n.id = nr.note_id
   WHERE
     n.id IN (${ids.toString()})`)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
@@ -320,6 +344,7 @@ export class NotesService {
     n.pinned,
     n.background,
     n.category_id as categoryId,
+    nc.name as categoryName,
     n.archived,
     n.deleted,
     nr.id as reminderId,
@@ -327,11 +352,22 @@ export class NotesService {
     nr.every as reminderEvery
   FROM
     note n
+  LEFT JOIN note_category nc ON n.category_id = nc.id
   INNER JOIN note_reminder nr ON n.id = nr.note_id
     WHERE
       n.deleted = 0
     AND n.archived = 0
   `)).pipe(map((value: DBSQLiteValues) => value.values as Note[]));
+  }
+
+  public findCategoryNameById(categoryId: number): Observable<{ name: string } | undefined> {
+    return from(this.storageService.db.query(`SELECT
+    nc.name
+  FROM
+    note_category nc
+  WHERE
+    nc.id = ?
+  `, [categoryId])).pipe(map((value: DBSQLiteValues) => value.values ? value.values[0] as { name: string } : undefined));
   }
 
   public insert(creationDate: string, categoryId: number | undefined): Observable<number> {
@@ -381,11 +417,11 @@ export class NotesService {
 
   public updateCategory(ids: number[], categoryId: number): Observable<any> {
     const sql = `UPDATE note SET category_id = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [categoryId], true)).pipe(tap(() => {
+    return from(this.storageService.db.run(sql, [categoryId], true)).pipe(switchMap(() => this.findCategoryNameById(categoryId)), tap((nameObj) => {
       this.notesUpdated$.next({
         ids: ids,
         action: NoteAction.UPDATE,
-        changes: { categoryId: categoryId }
+        changes: { categoryId: categoryId, categoryName: nameObj ? nameObj.name : undefined }
       });
     }));
   }

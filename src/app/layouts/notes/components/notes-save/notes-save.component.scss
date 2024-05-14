@@ -2,10 +2,10 @@
   background-color: inherit;
 }
 
-ion-label {
+.edit-date {
   padding-left: 2px;
   font-size: 0.75rem;
-  color: #ababab;
+  color: var(--ion-color-step-550, #737373);
 }
 
 ion-input {
@@ -26,4 +26,8 @@ ion-textarea {
 
 ion-popover {
   --width: 200px;
+}
+
+.meta-container{
+  margin: 10px -4px 10px -4px;
 }

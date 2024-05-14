@@ -78,5 +78,9 @@
   "emptyTrash": "No notes in trash",
   "emptyArchive": "No notes in archive",
   "noRemindersSet": "No reminders set",
-  "cannotChoosePastDate": "Cannot choose a past date"
+  "cannotChoosePastDate": "Cannot choose a past date",
+  "yesterday": "Yesterday",
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "lastModified":"Last modified"
 }

@@ -79,5 +79,9 @@
   "emptyTrash": "Nessuna nota nel cestino",
   "emptyArchive": "Nessuna nota nell'archivio",
   "noRemindersSet": "Nessun promemoria impostato",
-  "cannotChoosePastDate": "Impossibile scegliere una data passata"
+  "cannotChoosePastDate": "Impossibile scegliere una data passata",
+  "yesterday": "Ieri",
+  "today": "Oggi",
+  "tomorrow": "Domani",
+  "lastModified":"Ultima modifica"
 }

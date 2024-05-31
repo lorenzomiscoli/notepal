@@ -18,6 +18,8 @@ import {
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
 
+import { NotesEditorToolsComponent } from "../../../../../app/components/notes-editor-tools/notes-editor-tools.component";
+import { ContenteditableValueAccessor } from "../../../../../app/directives/contenteditable.directive";
 import { NotesColorPicker } from "../../../../components/notes-color-picker/notes-color-picker.component";
 import { NotesManageReminder } from "../../../../components/notes-manage-reminder/notes-manage-reminder.component";
 import { NotesMoveComponent } from "../../../../components/notes-menu/components/notes-move/notes-move.component";
@@ -46,5 +48,7 @@ export const NOTES_SAVE_DEPS = [
   NotesManageReminder,
   NotesMoveComponent,
   ReminderDateDirective,
-  DateFormatterPipe
+  DateFormatterPipe,
+  ContenteditableValueAccessor,
+  NotesEditorToolsComponent
 ]

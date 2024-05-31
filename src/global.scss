@@ -127,6 +127,16 @@ html[mode="md"] .toolbar {
   margin-left: 5px;
 }
 
-body.dark .logo{
+body.dark .logo {
   filter: brightness(0) invert(1);
+}
+
+
+[contenteditable] {
+  outline: 0px solid transparent;
+
+  &:empty:before {
+    content: attr(title);
+    opacity: 0.6;
+  }
 }

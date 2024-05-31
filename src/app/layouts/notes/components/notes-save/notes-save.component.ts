@@ -1,8 +1,8 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
 import { LocalNotifications } from "@capacitor/local-notifications";
-import { AlertButton, IonRouterOutlet, IonTextarea, Platform, ViewDidEnter } from "@ionic/angular/standalone";
+import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
@@ -25,7 +25,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public form!: FormGroup;
   public locale: string;
   public timezone: string;
-  @ViewChild("textArea") public textArea!: IonTextarea;
+  @ViewChild("textArea") public textArea!: ElementRef;
   @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'var(--ion-color-light)' }
   private isTemporary = false;
   public isColorPickerOpen = false;
@@ -36,6 +36,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public isMoveModalOpen = false;
   public toastDuration = environment.toastDuration;
   public deleteAlertBtns!: AlertButton[];
+  public isEditorFocus = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
 
@@ -51,7 +52,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   ionViewDidEnter(): void {
     if (this.isTemporary) {
-      this.textArea.setFocus();
+      this.textArea.nativeElement.focus();
     }
   }
 
@@ -86,7 +87,10 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       title: new FormControl(),
       value: new FormControl()
     });
-    this.form.valueChanges.pipe(debounceTime(400)).subscribe(() => this.update());
+    this.form.valueChanges.pipe(debounceTime(250)).subscribe(() => {
+      this.update()
+    }
+    );
   }
 
   private findById(id: number): void {
@@ -186,6 +190,21 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         handler: () => this.deleteForever()
       },
     ];
+  }
+
+  public keepFocus(event: any) {
+    event.preventDefault();
+  }
+
+  public handleNewContent(content: Node): void {
+    var sel = window.getSelection();
+    var range = sel!.getRangeAt(0).cloneRange();
+    range.deleteContents();
+    range.insertNode(content);
+    range.setStartAfter(content);
+    range.collapse(true);
+    sel?.removeAllRanges();
+    sel?.addRange(range);
   }
 
 }

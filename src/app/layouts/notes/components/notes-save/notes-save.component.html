@@ -72,10 +72,12 @@
         <ion-label>{{note.categoryName}}</ion-label>
       </ion-chip>
     </div>
-    <ion-textarea [autoGrow]="true" placeholder="{{ 'note' | translate }}" formControlName="value"
-      #textArea></ion-textarea>
+    <div class="note-editor" title="{{ 'note' | translate }}" contenteditable formControlName="value" #textArea
+      (focus)="isEditorFocus=true" (blur)="isEditorFocus=false"></div>
   </form>
 </div>
+<app-notes-editor-tools *ngIf="isEditorFocus" (newContent)="handleNewContent($event)"
+  (mousedown)="keepFocus($event)"></app-notes-editor-tools>
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
   (close)="isColorPickerOpen=false"></app-notes-color-picker>
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"

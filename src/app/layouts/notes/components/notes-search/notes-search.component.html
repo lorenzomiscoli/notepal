@@ -14,7 +14,7 @@
   </div>
 </div>
 <div class="content">
-  <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
+  <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"
       ngxMasonryItem></app-notes-card>
   </ngx-masonry>

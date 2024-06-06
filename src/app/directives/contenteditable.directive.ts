@@ -1,11 +1,9 @@
 import {
-  AfterViewInit,
   Directive,
   ElementRef,
   forwardRef,
   HostListener,
   Inject,
-  OnDestroy,
   Renderer2
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -22,10 +20,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
   ],
   standalone: true
 })
-export class ContenteditableValueAccessor implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class ContenteditableValueAccessor implements ControlValueAccessor {
   private onTouched = () => { };
   private onChange = (_value: string) => { };
-  private observer!: MutationObserver;
 
   constructor(
     @Inject(ElementRef) private readonly elementRef: ElementRef<Element>,
@@ -38,25 +35,8 @@ export class ContenteditableValueAccessor implements ControlValueAccessor, After
     );
   }
 
-  ngAfterViewInit() {
-    this.observer = new MutationObserver(() => {
-      this.onChange(this.elementRef.nativeElement.innerHTML);
-    });
-
-    this.observer.observe(this.elementRef.nativeElement, {
-      characterData: true,
-      childList: true,
-      subtree: true,
-    });
-  }
-
-  ngOnDestroy() {
-    this.observer.disconnect();
-  }
-
   @HostListener('input')
   onInput() {
-    this.observer.disconnect();
     this.onChange(this.elementRef.nativeElement.innerHTML);
   }
 
@@ -88,4 +68,5 @@ export class ContenteditableValueAccessor implements ControlValueAccessor, After
       String(!disabled)
     );
   }
+
 }

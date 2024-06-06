@@ -73,7 +73,7 @@
       </ion-chip>
     </div>
     <div class="note-editor" title="{{ 'note' | translate }}" contenteditable formControlName="value" #textArea
-      (focus)="isEditorFocus=true" (blur)="isEditorFocus=false"></div>
+      (focus)="isEditorFocus=true" (blur)="isEditorFocus = false"></div>
   </form>
 </div>
 <app-notes-editor-tools *ngIf="isEditorFocus" (newContent)="handleNewContent($event)"

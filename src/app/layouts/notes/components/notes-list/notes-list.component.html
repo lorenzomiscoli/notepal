@@ -2,7 +2,7 @@
   (sortChange)="changeSort($event)"></app-notes-list-header>
 <app-notes-selected-header *ngIf="selectedMode" [notes]="notes" (close)="deselectAll()"></app-notes-selected-header>
 <div class=" content">
-  <ngx-masonry [options]="masonryOptions" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
+  <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
     <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" appLongPress (tap)="tap(note)"
       (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
   </ngx-masonry>

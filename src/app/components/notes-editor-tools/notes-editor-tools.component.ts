@@ -18,4 +18,8 @@ export class NotesEditorToolsComponent {
     this.newContent.next(content);
   }
 
+  public keepFocus(event: any) {
+    event.preventDefault();
+  }
+
 }

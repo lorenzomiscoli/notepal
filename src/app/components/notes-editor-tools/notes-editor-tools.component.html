@@ -9,8 +9,13 @@
     <ion-button>
       <ion-icon slot="icon-only" name="text-outline"></ion-icon>
     </ion-button>
-    <ion-button>
+    <ion-button id="camera-trigger">
       <ion-icon slot="icon-only" src="assets/icons/add-photo-outline.svg"></ion-icon>
     </ion-button>
   </ion-buttons>
 </div>
+<ion-popover trigger="camera-trigger" triggerAction="click" [dismissOnSelect]="true" (mousedown)="keepFocus($event)" [keyboardClose]="false">
+  <ng-template>
+    <app-camera></app-camera>
+  </ng-template>
+</ion-popover>

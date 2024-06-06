@@ -4,8 +4,9 @@ import { FormControl, FormGroup } from "@angular/forms";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
+import { Subject, Subscription, debounceTime, from, take, takeUntil, timer } from "rxjs";
 
+import { EditorService } from "src/app/services/editor.service";
 import { environment } from "../../../../../environments/environment";
 import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
@@ -43,6 +44,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   constructor(
     private notesService: NotesService,
     private notesCategoryService: NotesCategoryService,
+    private editorService: EditorService,
     private translateService: TranslateService,
     private ionRouterOutlet: IonRouterOutlet,
     private platform: Platform) {
@@ -60,6 +62,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     this.createDeleteAlertBtns();
     this.initForm();
     this.onNotesUpdate();
+    this.onEditorChanges();
     if (this.id) {
       this.findById(this.id);
     } else {
@@ -136,13 +139,18 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       });
   }
 
+  private onEditorChanges(): void {
+    this.editorService.newEditorContent$
+      .pipe(takeUntil(this.destroy$)).subscribe((newContent) => this.handleNewContent(newContent));
+  }
+
   public pin(): void {
     const pinned = this.note.pinned > 0 ? false : true;
     this.notesService.pin([this.id], pinned).pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   private updateForm(note: Note): void {
-    this.form.patchValue(note, { emitEvent: false });
+    this.form.patchValue({ title: note.title, value: note.value }, { emitEvent: false });
   }
 
   public update(): void {
@@ -205,6 +213,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     range.collapse(true);
     sel?.removeAllRanges();
     sel?.addRange(range);
+    this.form.patchValue({ value: this.textArea.nativeElement.innerHTML });
   }
 
 }

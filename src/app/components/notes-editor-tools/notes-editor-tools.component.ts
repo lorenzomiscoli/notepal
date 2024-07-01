@@ -1,23 +1,36 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component } from "@angular/core";
 
+import { EditorService } from "../../../app/services/editor.service";
 import { NOTES_EDITOR_TOOLS_DEPS } from "./notes-editor-tools.dependencies";
 
 @Component({
   selector: "app-notes-editor-tools",
   templateUrl: "./notes-editor-tools.component.html",
-  styleUrls: ["./notes-editor-tools.component.scss"],
+  styles:[`.toolbar{justify-content: center;}`],
   standalone: true,
   imports: [NOTES_EDITOR_TOOLS_DEPS]
 })
 export class NotesEditorToolsComponent {
-  @Output() public newContent = new EventEmitter<Node>();
+
+  constructor(private editorService: EditorService) { }
 
   public generateCheckBox(): void {
-    let content = document.createElement("div");
-    content.textContent = "Example";
-    this.newContent.next(content);
+    let container = document.createElement("div");
+    let content = document.createElement("input");
+    content.setAttribute("type", "checkbox");
+    content.classList.add('checkbox-editor');
+    content.setAttribute("onclick", `
+      if (this.getAttribute("checked")) {
+        this.removeAttribute("checked");
+      }else{
+        this.setAttribute("checked","true");
+      }
+    `);
+    container.appendChild(content);
+    this.editorService.newEditorContent$.next(container);
   }
 
+  // Method used to keep focus on the editor while selecting one of its components
   public keepFocus(event: any) {
     event.preventDefault();
   }

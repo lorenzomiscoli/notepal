@@ -1,14 +1,13 @@
 import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
 
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject, Subscription, debounceTime, from, take, takeUntil, timer } from "rxjs";
+import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
-import { EditorService } from "src/app/services/editor.service";
+import { EditorService } from "../../../../../app/services/editor.service";
 import { environment } from "../../../../../environments/environment";
-import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
+import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
@@ -22,11 +21,12 @@ import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   @Input() public id!: number;
   @Input() public creationDate!: string;
+  public valueChanges$ = new Subject<void>();
   public note: Note = {} as Note;
-  public form!: FormGroup;
   public locale: string;
   public timezone: string;
   @ViewChild("textArea") public textArea!: ElementRef;
+  @ViewChild("title", { read: ElementRef }) public title!: ElementRef;
   @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'var(--ion-color-light)' }
   private isTemporary = false;
   public isColorPickerOpen = false;
@@ -60,7 +60,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   ngOnInit(): void {
     this.createDeleteAlertBtns();
-    this.initForm();
+    this.valueChanges$.pipe(takeUntil(this.destroy$), debounceTime(250)).subscribe(() => this.update())
     this.onNotesUpdate();
     this.onEditorChanges();
     if (this.id) {
@@ -85,16 +85,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     });
   }
 
-  private initForm(): void {
-    this.form = new FormGroup<NoteForm>({
-      title: new FormControl(),
-      value: new FormControl()
-    });
-    this.form.valueChanges.pipe(debounceTime(250)).subscribe(() => {
-      this.update()
-    }
-    );
-  }
 
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
@@ -150,16 +140,17 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   private updateForm(note: Note): void {
-    this.form.patchValue({ title: note.title, value: note.value }, { emitEvent: false });
+    this.title.nativeElement.value = note.title;
+    this.textArea.nativeElement.innerHTML = note.value;
   }
 
   public update(): void {
-    this.notesService.update(this.id, this.form.value.title, this.form.value.value)
+    this.notesService.update(this.id, this.title.nativeElement.value, this.textArea.nativeElement.innerHTML)
       .pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   public back(): void {
-    if (this.id && this.isTemporary && !this.form.value.value) {
+    if (this.id && this.isTemporary && !this.textArea.nativeElement.innerHTML) {
       this.notesService.deleteForever([this.id]).pipe(takeUntil(this.destroy$)).subscribe();
     }
     this.ionRouterOutlet.pop();
@@ -205,6 +196,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   public handleNewContent(content: Node): void {
+    this.checkEmptyContent();
     var sel = window.getSelection();
     var range = sel!.getRangeAt(0).cloneRange();
     range.deleteContents();
@@ -213,7 +205,24 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     range.collapse(true);
     sel?.removeAllRanges();
     sel?.addRange(range);
-    this.form.patchValue({ value: this.textArea.nativeElement.innerHTML });
+    this.update();
+  }
+
+  private checkEmptyContent(): void {
+    let content = this.textArea.nativeElement.innerHTML;
+    if (!content) {
+      var sel = window.getSelection();
+      var range = sel!.getRangeAt(0).cloneRange();
+      var element = document.createElement("div");
+      element.style.cssText = "display:none;"
+      element.appendChild(document.createElement("br"));
+      range.deleteContents();
+      range.insertNode(element);
+      range.setStartAfter(element);
+      range.collapse(true);
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+    }
   }
 
 }

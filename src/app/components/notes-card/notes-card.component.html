@@ -6,7 +6,8 @@
   <ion-ripple-effect></ion-ripple-effect>
   <div class="card-title">{{note.title}}</div>
   <div class="card-content">
-    <div [innerHTML]="note.value"></div>
+    <div class="overlay"></div>
+    <div [innerHTML]="note.value | sanitizeHtml"></div>
     <div class="date-reminder" *ngIf="note.reminderId || note.categoryId">
       <div *ngIf="note.reminderId">
         <ion-icon name="alarm-outline"></ion-icon>

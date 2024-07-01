@@ -56,8 +56,8 @@
   </ng-template>
 </div>
 <div class="content">
-  <form [formGroup]="form">
-    <ion-input placeholder="{{ 'title' | translate }}" formControlName="title"></ion-input>
+  <form>
+    <ion-input placeholder="{{ 'title' | translate }}" #title (input)="valueChanges$.next()"></ion-input>
     <ion-label class="edit-date"><span>{{'lastModified'|translate}}: </span>{{note.lastModifiedDate |
       appDatePipe:'short'
       }}<span></span></ion-label>
@@ -72,12 +72,11 @@
         <ion-label>{{note.categoryName}}</ion-label>
       </ion-chip>
     </div>
-    <div class="note-editor" title="{{ 'note' | translate }}" contenteditable formControlName="value" #textArea
-      (focus)="isEditorFocus=true" (blur)="isEditorFocus = false"></div>
+    <div class="note-editor" title="{{ 'note' | translate }}" contenteditable="true" #textArea
+      (focus)="isEditorFocus=true" (blur)="isEditorFocus = false" (input)="valueChanges$.next()"></div>
   </form>
 </div>
-<app-notes-editor-tools *ngIf="isEditorFocus" (newContent)="handleNewContent($event)"
-  (mousedown)="keepFocus($event)"></app-notes-editor-tools>
+<app-notes-editor-tools *ngIf="isEditorFocus" (mousedown)="keepFocus($event)"></app-notes-editor-tools>
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
   (close)="isColorPickerOpen=false"></app-notes-color-picker>
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"

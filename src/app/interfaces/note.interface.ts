@@ -90,12 +90,13 @@ export enum NoteSearchFilter {
 }
 
 export enum NotificationEvent {
-  ARCHIVE, UNARCHIVE, DELETE, UNDELETE
+  ANY, ARCHIVE, UNARCHIVE, DELETE, UNDELETE
 }
 
 export interface NoteEvent {
   ids: number[],
-  event: NotificationEvent
+  event: NotificationEvent,
+  message?: string
 }
 
 export enum NoteAction {

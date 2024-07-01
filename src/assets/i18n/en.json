@@ -82,5 +82,6 @@
   "yesterday": "Yesterday",
   "today": "Today",
   "tomorrow": "Tomorrow",
-  "lastModified":"Last modified"
+  "lastModified":"Last modified",
+  "allowGallery":"Allow gallery access to use this functionality"
 }

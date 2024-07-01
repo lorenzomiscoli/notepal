@@ -36,6 +36,10 @@ export class NotesNotificationComponent implements OnInit, OnDestroy {
   private showToast(noteEvent: NoteEvent): void {
     const multi: boolean = noteEvent.ids.length > 1;
     switch (noteEvent.event) {
+      case NotificationEvent.ANY: {
+        this.anyTemplate(noteEvent.message);
+        break;
+      }
       case NotificationEvent.ARCHIVE: {
         this.archiveTemplate(multi, noteEvent.ids);
         break;
@@ -54,6 +58,10 @@ export class NotesNotificationComponent implements OnInit, OnDestroy {
       }
     }
     this.isToastOpen = true;
+  }
+
+  private anyTemplate(message: string | undefined): void {
+    this.toast.message = message;
   }
 
   private archiveTemplate(multi: boolean, ids: number[]): void {

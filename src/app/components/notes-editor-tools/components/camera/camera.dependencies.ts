@@ -13,5 +13,5 @@ export const CAMERA_DEPS = [
   IonIcon,
   IonItem,
   IonLabel,
-  IonList,
+  IonList
 ];

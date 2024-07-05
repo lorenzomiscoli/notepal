@@ -1,13 +1,14 @@
-import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, HostBinding, Input, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
 
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
+import { Editor, toDoc, toHTML } from "ngx-editor";
 import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
 
-import { EditorService } from "../../../../../app/services/editor.service";
 import { environment } from "../../../../../environments/environment";
-import { Note, NotificationEvent } from "../../../../interfaces/note.interface";
+import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
@@ -21,12 +22,9 @@ import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   @Input() public id!: number;
   @Input() public creationDate!: string;
-  public valueChanges$ = new Subject<void>();
   public note: Note = {} as Note;
   public locale: string;
   public timezone: string;
-  @ViewChild("textArea") public textArea!: ElementRef;
-  @ViewChild("title", { read: ElementRef }) public title!: ElementRef;
   @HostBinding('style.background') get background() { return this.note.background ? this.note.background : 'var(--ion-color-light)' }
   private isTemporary = false;
   public isColorPickerOpen = false;
@@ -37,6 +35,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public isMoveModalOpen = false;
   public toastDuration = environment.toastDuration;
   public deleteAlertBtns!: AlertButton[];
+  public editor = new Editor();
+  public form!: FormGroup;
   public isEditorFocus = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
   private backButtonSubscription!: Subscription;
@@ -44,7 +44,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   constructor(
     private notesService: NotesService,
     private notesCategoryService: NotesCategoryService,
-    private editorService: EditorService,
     private translateService: TranslateService,
     private ionRouterOutlet: IonRouterOutlet,
     private platform: Platform) {
@@ -54,15 +53,14 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
 
   ionViewDidEnter(): void {
     if (this.isTemporary) {
-      this.textArea.nativeElement.focus();
+      this.editor.view.focus();
     }
   }
 
   ngOnInit(): void {
+    this.initForm();
     this.createDeleteAlertBtns();
-    this.valueChanges$.pipe(takeUntil(this.destroy$), debounceTime(250)).subscribe(() => this.update())
     this.onNotesUpdate();
-    this.onEditorChanges();
     if (this.id) {
       this.findById(this.id);
     } else {
@@ -72,6 +70,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   ngOnDestroy(): void {
+    this.editor.destroy();
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
     if (this.backButtonSubscription) {
@@ -85,6 +84,12 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     });
   }
 
+  private initForm(): void {
+    this.form = new FormGroup<NoteForm>({
+      title: new FormControl(null),
+      value: new FormControl(null)
+    });
+  }
 
   private findById(id: number): void {
     this.notesService.findById(id).subscribe(note => {
@@ -129,9 +134,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
       });
   }
 
-  private onEditorChanges(): void {
-    this.editorService.newEditorContent$
-      .pipe(takeUntil(this.destroy$)).subscribe((newContent) => this.handleNewContent(newContent));
+  private onFormChanges(): void {
+    this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(250)).subscribe(() => this.update());
   }
 
   public pin(): void {
@@ -140,17 +144,17 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   private updateForm(note: Note): void {
-    this.title.nativeElement.value = note.title;
-    this.textArea.nativeElement.innerHTML = note.value;
+    this.form.patchValue({ title: note.title, value: toDoc(note.value) });
+    this.onFormChanges();
   }
 
   public update(): void {
-    this.notesService.update(this.id, this.title.nativeElement.value, this.textArea.nativeElement.innerHTML)
+    this.notesService.update(this.id, this.form.value.title, toHTML(this.form.value.value))
       .pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   public back(): void {
-    if (this.id && this.isTemporary && !this.textArea.nativeElement.innerHTML) {
+    if (this.id && this.isTemporary && this.isEmpty(this.form.value.value)) {
       this.notesService.deleteForever([this.id]).pipe(takeUntil(this.destroy$)).subscribe();
     }
     this.ionRouterOutlet.pop();
@@ -164,6 +168,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         this.id = id;
         this.isTemporary = true;
       });
+    this.onFormChanges();
   }
 
   public checkReminder(): void {
@@ -195,34 +200,13 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     event.preventDefault();
   }
 
-  public handleNewContent(content: Node): void {
-    this.checkEmptyContent();
-    var sel = window.getSelection();
-    var range = sel!.getRangeAt(0).cloneRange();
-    range.deleteContents();
-    range.insertNode(content);
-    range.setStartAfter(content);
-    range.collapse(true);
-    sel?.removeAllRanges();
-    sel?.addRange(range);
-    this.update();
-  }
-
-  private checkEmptyContent(): void {
-    let content = this.textArea.nativeElement.innerHTML;
-    if (!content) {
-      var sel = window.getSelection();
-      var range = sel!.getRangeAt(0).cloneRange();
-      var element = document.createElement("div");
-      element.style.cssText = "display:none;"
-      element.appendChild(document.createElement("br"));
-      range.deleteContents();
-      range.insertNode(element);
-      range.setStartAfter(element);
-      range.collapse(true);
-      sel?.removeAllRanges();
-      sel?.addRange(range);
+  private isEmpty(value: { content: [{ content?: [] }] } | null): boolean {
+    if (value && value.content.length > 0) {
+      var firstContent = value.content[0];
+      if (firstContent.content)
+        return false;
     }
+    return true;
   }
 
 }

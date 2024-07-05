@@ -17,6 +17,7 @@ import {
   IonToast
 } from "@ionic/angular/standalone";
 import { TranslateModule } from "@ngx-translate/core";
+import { NgxEditorModule } from "ngx-editor";
 
 import { NotesEditorToolsComponent } from "../../../../../app/components/notes-editor-tools/notes-editor-tools.component";
 import { ContenteditableValueAccessor } from "../../../../../app/directives/contenteditable.directive";
@@ -50,5 +51,6 @@ export const NOTES_SAVE_DEPS = [
   ReminderDateDirective,
   DateFormatterPipe,
   ContenteditableValueAccessor,
-  NotesEditorToolsComponent
+  NotesEditorToolsComponent,
+  NgxEditorModule
 ]

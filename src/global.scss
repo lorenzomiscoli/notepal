@@ -153,3 +153,16 @@ body.dark .logo {
   margin-right: 6px;
   accent-color: var(--ion-color-primary);
 }
+
+.NgxEditor {
+  border: unset !important;
+  background: unset !important;
+}
+
+.NgxEditor__Content {
+  padding: unset !important;
+}
+
+.NgxEditor__MenuBar {
+  background-color: transparent !important;
+}

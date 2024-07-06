@@ -1,3 +1,7 @@
+:host {
+  --ngx-editor-popup-bg-color: var(--ion-color-step-100, var(--ion-background-color-step-100, #ffffff)) !important;
+}
+
 .toolbar {
   justify-content: center;
 }

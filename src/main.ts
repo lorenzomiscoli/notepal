@@ -1,21 +1,24 @@
-import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/core';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouteReuseStrategy, provideRouter, withComponentInputBinding } from '@angular/router';
+
 import { Capacitor } from '@capacitor/core';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 import { defineCustomElements as pwaElements } from '@ionic/pwa-elements/loader';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { defineCustomElements as jeepSqlite } from 'jeep-sqlite/loader';
+import { NgxEditorModule } from 'ngx-editor';
+import { from, switchMap } from 'rxjs';
+import { routes } from './app/app.routes';
 
 import { AppComponent } from './app/app.component';
+import { editorIcons, editorLocals } from './app/components/notes-editor-tools/editor-conf';
 import { InitializeAppService } from './app/services/initialize-app.service';
-import { environment } from './environments/environment';
-import { routes } from './app/app.routes';
-import { from, switchMap } from 'rxjs';
 import { SettingsService } from './app/services/settings.service';
+import { environment } from './environments/environment';
 
 // Define translations
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
@@ -64,6 +67,10 @@ bootstrapApplication(AppComponent, {
           useFactory: createTranslateLoader,
           deps: [HttpClient],
         },
+      }),
+      NgxEditorModule.forRoot({
+        icons: editorIcons,
+        locals:editorLocals
       })
     ),
     provideRouter(routes, withComponentInputBinding()),

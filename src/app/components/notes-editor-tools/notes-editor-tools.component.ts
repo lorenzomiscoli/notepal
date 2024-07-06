@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { TranslateService } from '@ngx-translate/core';
@@ -8,6 +8,7 @@ import { from, of, switchMap } from 'rxjs';
 import { NotificationEvent } from "../../../app/interfaces/note.interface";
 import { NotesService } from "../../../app/services/notes.service";
 import { NOTES_EDITOR_TOOLS_DEPS } from "./notes-editor-tools.dependencies";
+import { editorLocals } from "./editor-conf";
 
 @Component({
   selector: "app-notes-editor-tools",
@@ -16,12 +17,16 @@ import { NOTES_EDITOR_TOOLS_DEPS } from "./notes-editor-tools.dependencies";
   standalone: true,
   imports: [NOTES_EDITOR_TOOLS_DEPS]
 })
-export class NotesEditorToolsComponent {
-  toolbar: Toolbar = [['bold', 'italic',], ['underline', 'strike'], ['text_color', 'background_color']];
+export class NotesEditorToolsComponent implements OnInit {
+  toolbar: Toolbar = [['bold', 'italic', 'underline', 'strike', 'text_color', 'background_color', 'ordered_list', 'bullet_list']];
   @Input({ required: true }) public editor!: Editor;
 
   constructor(private noteService: NotesService,
     private traslateService: TranslateService) { }
+
+  ngOnInit(): void {
+    editorLocals.remove.next(this.traslateService.instant("remove"))
+  }
 
   // Method used to keep focus on the editor while selecting one of its components
   public keepFocus(event: any) {

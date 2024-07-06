@@ -83,5 +83,8 @@
   "today": "Today",
   "tomorrow": "Tomorrow",
   "lastModified":"Last modified",
-  "allowGallery":"Allow gallery access to use this functionality"
+  "allowGallery":"Allow gallery access to use this functionality",
+  "remove":"Remove",
+  "camera":"Camera",
+  "gallery":"Gallery"
 }

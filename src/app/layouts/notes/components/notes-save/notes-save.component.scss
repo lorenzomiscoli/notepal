@@ -1,3 +1,7 @@
+:host{
+  --ngx-editor-text-color: var(--color) !important;
+}
+
 .content {
   background-color: inherit;
 }

@@ -3,28 +3,27 @@
     [customMenuRef]="customMenu"></ngx-editor-menu>
 </div>
 <ng-template #customMenu>
-  <div class="NgxEditor__Seperator"></div>
+ <!-- <div class="NgxEditor__Seperator"></div>-->
   <div class="NgxEditor__MenuItem NgxEditor__MenuItem--IconContainer">
     <button _ngcontent-ng-c3945204179="" type="button" class="NgxEditor__MenuItem--Icon" id="camera-trigger">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" height="20" width="20">
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -900 900 900" width="24px" fill="currentColor">
         <path
-          d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z">
-        </path>
+          d="M204.62-140q-29.83 0-51.07-21.24-21.24-21.24-21.24-51.07v-535.38q0-29.83 21.24-51.07Q174.79-820 204.62-820h347.69v60H204.62q-5.39 0-8.85 3.46t-3.46 8.85v535.38q0 5.39 3.46 8.85t8.85 3.46H740q5.38 0 8.85-3.46 3.46-3.46 3.46-8.85V-560h60v347.69q0 29.83-21.24 51.07Q769.83-140 740-140H204.62Zm483.07-475.39v-80h-80v-59.99h80v-80h60v80h80v59.99h-80v80h-60ZM262.31-290h423.07L553.84-465.38l-112.3 146.15-80-102.31L262.31-290Zm-70-470V-200v-560Z" />
       </svg>
     </button>
   </div>
 </ng-template>
 <ion-popover trigger="camera-trigger" triggerAction="click" [dismissOnSelect]="true" (mousedown)="keepFocus($event)"
-  [keyboardClose]="false">
+  [keyboardClose]="false" [showBackdrop]="false">
   <ng-template>
     <ion-list>
       <ion-item [button]="true" lines="none" (click)="openCamera()">
         <ion-icon name="camera-outline" slot="start"></ion-icon>
-        <ion-label>Take photo</ion-label>
+        <ion-label>{{'camera'|translate}}</ion-label>
       </ion-item>
       <ion-item [button]="true" lines="none" (click)="openGallery()">
         <ion-icon name="image-outline" slot="start"></ion-icon>
-        <ion-label>Add image</ion-label>
+        <ion-label>{{'gallery'|translate}}</ion-label>
       </ion-item>
     </ion-list>
   </ng-template>

@@ -45,7 +45,7 @@ export var updateNotification = (note: Note) => {
   }));
 }
 
-var convertValue = (htmlValue: any) => {
+export var convertValue = (htmlValue: any) => {
   let resultString = '';
   const docValue: any = toDoc(htmlValue);
   if (docValue && docValue.content) {

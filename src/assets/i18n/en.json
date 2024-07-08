@@ -82,9 +82,10 @@
   "yesterday": "Yesterday",
   "today": "Today",
   "tomorrow": "Tomorrow",
-  "lastModified":"Last modified",
-  "allowGallery":"Allow gallery access to use this functionality",
-  "remove":"Remove",
-  "camera":"Camera",
-  "gallery":"Gallery"
+  "lastModified": "Last modified",
+  "allowGallery": "Allow gallery access to use this functionality",
+  "remove": "Remove",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "sharingNotSupported": "Sharing is not supported on this device"
 }

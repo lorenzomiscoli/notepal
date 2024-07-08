@@ -87,5 +87,6 @@
   "allowGallery": "Consenti l'accesso alla galleria per utilizzare questa funzionalità",
   "remove":"Rimuovi",
   "camera":"Fotocamera",
-  "gallery":"Galleria"
+  "gallery":"Galleria",
+  "sharingNotSupported": "La condivisione non è supportata su questo dispositivo"
 }

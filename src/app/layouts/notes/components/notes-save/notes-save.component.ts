@@ -2,11 +2,13 @@ import { Component, HostBinding, Input, OnDestroy, OnInit } from "@angular/core"
 import { FormControl, FormGroup } from "@angular/forms";
 
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { CanShareResult, Share } from "@capacitor/share";
 import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Editor, toDoc, toHTML } from "ngx-editor";
-import { Subject, Subscription, debounceTime, from, takeUntil } from "rxjs";
+import { Subject, Subscription, catchError, debounceTime, from, of, switchMap, takeUntil, throwError } from "rxjs";
 
+import { convertValue } from "../../../../../app/utils/reminder-utils";
 import { environment } from "../../../../../environments/environment";
 import { Note, NoteForm, NotificationEvent } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
@@ -208,6 +210,24 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         return false;
     }
     return true;
+  }
+
+  public share(): void {
+    const value = this.form.value.value ? toHTML(this.form.value.value) : '';
+    from(Share.canShare())
+      .pipe(takeUntil(this.destroy$), switchMap((shareResult: CanShareResult) => {
+        if (shareResult.value)
+          return Share.share({
+            title: this.form.value.title,
+            text: convertValue(value),
+          });
+        else
+          return throwError(() => new Error("sharingNotSupported"));
+      }), catchError((err: Error) => {
+        this.toastMessage = this.translateService.instant(err.message);
+        this.isToastOpen = true;
+        return of()
+      })).subscribe();
   }
 
 }

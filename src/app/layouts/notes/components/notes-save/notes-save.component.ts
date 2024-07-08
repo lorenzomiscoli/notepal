@@ -149,7 +149,8 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   public update(): void {
-    this.notesService.update(this.id, this.form.value.title, toHTML(this.form.value.value))
+    const value = this.form.value.value ? toHTML(this.form.value.value) : '';
+    this.notesService.update(this.id, this.form.value.title, value)
       .pipe(takeUntil(this.destroy$)).subscribe();
   }
 

@@ -1,4 +1,5 @@
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { toDoc } from "ngx-editor";
 import { from, of, switchMap } from "rxjs";
 
 import { Note, ScheduleEvery } from "../interfaces/note.interface";
@@ -9,7 +10,7 @@ export var addNotification = (notes: Note[]) => {
     .map(note => {
       return {
         title: note.title,
-        body: note.value,
+        body: convertValue(note.value),
         id: note.id,
         schedule: {
           at: new Date(dateToIsoString(new Date(note.reminderDate as string))),
@@ -19,7 +20,6 @@ export var addNotification = (notes: Note[]) => {
       }
     });
   if (notificationsToSchedule.length > 0) {
-    console.log(notificationsToSchedule);
     return from(LocalNotifications.schedule({ notifications: notificationsToSchedule }));
   }
   return of(undefined);
@@ -43,4 +43,21 @@ export var updateNotification = (note: Note) => {
     }
     return of(undefined);
   }));
+}
+
+var convertValue = (htmlValue: any) => {
+  let resultString = '';
+  const docValue: any = toDoc(htmlValue);
+  if (docValue && docValue.content) {
+    docValue.content.forEach((paragraph: any) => {
+      if (paragraph.content) {
+        paragraph.content.forEach((value: any) => {
+          if (value.text)
+            resultString += value.text;
+        });
+        resultString += "\n";
+      }
+    });
+  }
+  return resultString.replace(/(^[ \t]*\n)/gm, "");
 }

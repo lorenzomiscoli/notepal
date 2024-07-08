@@ -6,7 +6,7 @@ import { CanShareResult, Share } from "@capacitor/share";
 import { AlertButton, IonRouterOutlet, Platform, ViewDidEnter } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
 import { Editor, toDoc, toHTML } from "ngx-editor";
-import { Subject, Subscription, catchError, debounceTime, from, of, switchMap, takeUntil, throwError } from "rxjs";
+import { Subject, Subscription, debounceTime, from, of, switchMap, takeUntil } from "rxjs";
 
 import { convertValue } from "../../../../../app/utils/reminder-utils";
 import { environment } from "../../../../../environments/environment";
@@ -216,17 +216,17 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     const value = this.form.value.value ? toHTML(this.form.value.value) : '';
     from(Share.canShare())
       .pipe(takeUntil(this.destroy$), switchMap((shareResult: CanShareResult) => {
-        if (shareResult.value)
+        if (shareResult.value) {
           return Share.share({
             title: this.form.value.title,
             text: convertValue(value),
           });
-        else
-          return throwError(() => new Error("sharingNotSupported"));
-      }), catchError((err: Error) => {
-        this.toastMessage = this.translateService.instant(err.message);
-        this.isToastOpen = true;
-        return of()
+        }
+        else {
+          this.toastMessage = this.translateService.instant("sharingNotSupported");
+          this.isToastOpen = true;
+          return of()
+        }
       })).subscribe();
   }
 

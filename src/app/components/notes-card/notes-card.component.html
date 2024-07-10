@@ -1,22 +1,30 @@
 <div class="card ion-activatable ripple-parent" [ngClass]="{'activated':note.isSelected}"
   [ngStyle]="{'background':note.background}">
-  <span class="pinned" *ngIf="note.pinned">
+  @if(note.pinned){
+  <span class="pinned">
     <ion-icon color="primary" src="assets/icons/push-pin.svg"></ion-icon>
   </span>
+  }
   <ion-ripple-effect></ion-ripple-effect>
   <div class="card-title">{{note.title}}</div>
   <div class="card-content">
     <div class="overlay"></div>
     <div [innerHTML]="note.value"></div>
-    <div class="date-reminder" *ngIf="note.reminderId || note.categoryId">
-      <div *ngIf="note.reminderId">
+    @if(note.reminderId || note.categoryId){
+    <div class="date-reminder">
+      @if(note.reminderId){
+      <div>
         <ion-icon name="alarm-outline"></ion-icon>
         <span appReminderDate [reminderDate]="note.reminderDate">{{note.reminderDate | appDatePipe:'long'}}</span>
       </div>
-      <div *ngIf="note.categoryId">
+      }
+      @if(note.categoryId){
+      <div>
         <ion-icon name="pricetag-outline"></ion-icon>
         <span>{{note.categoryName}}</span>
       </div>
+      }
     </div>
+    }
   </div>
 </div>

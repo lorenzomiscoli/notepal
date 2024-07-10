@@ -10,14 +10,14 @@ import { NOTES_COLOR_PICKER_DEPS } from "./notes-color-picker.dependencies";
 @Component({
   selector: "app-notes-color-picker",
   templateUrl: "./notes-color-picker.component.html",
-  styleUrls: ["./notes-color-picker.component.scss"],
+  styleUrl: "./notes-color-picker.component.scss",
   standalone: true,
   imports: [NOTES_COLOR_PICKER_DEPS]
 })
-export class NotesColorPicker implements OnDestroy {
+export class NotesColorPickerComponent implements OnDestroy {
   @Input() public isOpen = false;
   @Input({ required: true }) public selectedNotes!: Note[];
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   @ViewChild(IonModal) colorPickerModal!: IonModal;
   public backgrounds: string[] = Object.values(NoteBackground);
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -29,8 +29,8 @@ export class NotesColorPicker implements OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public onClose(): void {
-    this.close.emit();
+  public onDismiss(): void {
+    this.dismiss.emit();
   }
 
   public isSelected(background: string | null): boolean {

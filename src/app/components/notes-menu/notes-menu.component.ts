@@ -10,7 +10,7 @@ import { NOTES_MENU_DEPS } from "./notes-menu.dependencies";
 @Component({
   selector: "app-notes-menu",
   templateUrl: "./notes-menu.component.html",
-  styleUrls: ["./notes-menu.component.scss"],
+  styleUrl: "./notes-menu.component.scss",
   standalone: true,
   imports: [NOTES_MENU_DEPS]
 })

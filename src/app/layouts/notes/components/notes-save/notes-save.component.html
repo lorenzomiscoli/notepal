@@ -84,10 +84,11 @@
 <app-notes-editor-tools *ngIf="isEditorFocus" (mousedown)="keepFocus($event)"
   [editor]="editor"></app-notes-editor-tools>
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
-  (close)="isColorPickerOpen=false"></app-notes-color-picker>
+  (dismiss)="isColorPickerOpen=false"></app-notes-color-picker>
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"
-  (close)="isReminderOpen = false"></app-notes-manage-reminder>
-<app-notes-move [selectedNotes]="[note]" [isOpen]="isMoveModalOpen" (close)="isMoveModalOpen = false"></app-notes-move>
+  (dismiss)="isReminderOpen = false"></app-notes-manage-reminder>
+<app-notes-move [selectedNotes]="[note]" [isOpen]="isMoveModalOpen"
+  (dismiss)="isMoveModalOpen = false"></app-notes-move>
 <ion-toast [duration]="toastDuration" [isOpen]="isToastOpen" (ionToastDidDismiss)="isToastOpen=false"
   [message]="toastMessage"></ion-toast>
 <ion-alert [isOpen]="isDeleteAlertOpen" header="{{'deleteNote' | translate}}"

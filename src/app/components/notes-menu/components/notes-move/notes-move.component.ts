@@ -3,22 +3,22 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { IonModal } from "@ionic/angular/standalone";
 import { Observable, Subject, takeUntil, tap } from "rxjs";
 
-import { NOTES_MOVE_DEPS } from "./notes-move.dependencies";
 import { Note, NoteCategory } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
+import { NOTES_MOVE_DEPS } from "./notes-move.dependencies";
 
 @Component({
   selector: "app-notes-move",
   templateUrl: "./notes-move.component.html",
-  styleUrls: ["./notes-move.component.scss"],
+  styleUrl: "./notes-move.component.scss",
   standalone: true,
   imports: [NOTES_MOVE_DEPS]
 })
 export class NotesMoveComponent implements OnInit, OnDestroy {
   @Input() public isOpen = false;
   @Input({ required: true }) public selectedNotes!: Note[];
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   @ViewChild(IonModal) moveModal!: IonModal;
   public categories$!: Observable<NoteCategory[]>
   public defaultValue: number | undefined;
@@ -49,8 +49,8 @@ export class NotesMoveComponent implements OnInit, OnDestroy {
     this.moveModal.dismiss();
   }
 
-  public onClose(): void {
-    this.close.emit();
+  public onDismiss(): void {
+    this.dismiss.emit();
   }
 
 }

@@ -8,9 +8,11 @@
           [isDateEnabled]="isDateGreaterThanToday">
           <span slot="time-label">{{'time' | translate}}</span>
         </ion-datetime>
-        <ion-item lines="none" *ngIf="invalidDate">
+        @if(invalidDate){
+        <ion-item lines="none">
           <ion-label color="danger">{{'cannotChoosePastDate' | translate}}</ion-label>
         </ion-item>
+        }
         <ion-item lines="none">
           <ion-select justify="space-between" [label]="repeatTranslation" [(ngModel)]="selectedRepeat"
             [value]="'no-repeat'">
@@ -24,8 +26,9 @@
         </ion-item>
       </div>
       <div class="modal-footer">
-        <ion-button fill="clear" *ngIf="isEdit" (click)="delete()">{{'delete' |
-          translate}}</ion-button>
+        @if(isEdit){
+        <ion-button fill="clear" (click)="delete()">{{'delete'|translate}}</ion-button>
+        }
         <ion-button fill="clear" (click)="modal.dismiss()">{{'cancel' | translate}}</ion-button>
         <ion-button fill="clear" (click)="save()">{{'update' | translate}}</ion-button>
       </div>

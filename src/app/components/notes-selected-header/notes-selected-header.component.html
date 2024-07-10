@@ -9,18 +9,24 @@
     <ion-button (click)="checkSelection()">
       <ion-icon slot="icon-only" name="checkbox-outline"></ion-icon>
     </ion-button>
-    <ng-container *ngIf="!isCustomLayout">
-      <ion-button [disabled]="!isSelected()" (click)="checkPinned()">
-        <ion-icon slot="icon-only" src="assets/icons/push-pin.svg" *ngIf="isEachNotePinned();"></ion-icon>
-        <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg" *ngIf="!isEachNotePinned();"></ion-icon>
-      </ion-button>
-      <ion-button [disabled]="!isSelected()" (click)="isColorPickerOpen=true">
-        <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
-      </ion-button>
-      <app-notes-menu [selectedNotes]="getSelectedNotes()"></app-notes-menu>
-    </ng-container>
-    <ng-content *ngIf="isCustomLayout"></ng-content>
+    @if(!isCustomLayout){
+    <ion-button [disabled]="!isSelected()" (click)="checkPinned()">
+      @if(isEachNotePinned()){
+      <ion-icon slot="icon-only" src="assets/icons/push-pin.svg"></ion-icon>
+      }
+      @if(!isEachNotePinned()){
+      <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
+      }
+    </ion-button>
+    <ion-button [disabled]="!isSelected()" (click)="isColorPickerOpen=true">
+      <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
+    </ion-button>
+    <app-notes-menu [selectedNotes]="getSelectedNotes()"></app-notes-menu>
+    }
+    @if(isCustomLayout){
+    <ng-content></ng-content>
+    }
   </ion-buttons>
 </div>
-<app-notes-color-picker [isOpen]="isColorPickerOpen" (close)="isColorPickerOpen=false"
+<app-notes-color-picker [isOpen]="isColorPickerOpen" (dismiss)="isColorPickerOpen=false"
   [selectedNotes]="getSelectedNotes()"></app-notes-color-picker>

@@ -12,14 +12,14 @@ import { NOTES_MANAGE_REMINDER_DEPS } from "./notes-manage-reminder.dependencies
 @Component({
   selector: "app-notes-manage-reminder",
   templateUrl: "./notes-manage-reminder.component.html",
-  styleUrls: ["./notes-manage-reminder.component.scss"],
+  styleUrl: "./notes-manage-reminder.component.scss",
   standalone: true,
   imports: [NOTES_MANAGE_REMINDER_DEPS]
 })
-export class NotesManageReminder implements OnInit, OnDestroy {
+export class NotesManageReminderComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public note!: Note;
   @Input() public isOpen = false;
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   @ViewChild('modal') modal!: IonModal;
   public reminder!: NoteReminder | undefined;
   public locale!: string;
@@ -63,7 +63,7 @@ export class NotesManageReminder implements OnInit, OnDestroy {
   public onModalDismiss(): void {
     this.isEdit = false;
     this.invalidDate = false;
-    this.close.next();
+    this.dismiss.next();
   }
 
   public getModalTitle(): string {

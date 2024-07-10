@@ -1,4 +1,4 @@
-<app-notes-selected-header [notes]="notes" [isCustomLayout]="true" (close)="cancel()">
+<app-notes-selected-header [notes]="notes" [isCustomLayout]="true" (dismiss)="cancel()">
   <ion-button [disabled]="getSelectedNotes().length < 1" (click)="unarchive()">
     <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
   </ion-button>

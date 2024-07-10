@@ -15,7 +15,7 @@ import { NOTES_SELECTED_HEADER_DEPS } from "./notes-selected-header.dependencies
 export class NotesSelectedHeaderComponent implements OnDestroy {
   @Input({ required: true }) public notes!: Note[];
   @Input() public isCustomLayout = false;
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   public isColorPickerOpen = false;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -39,7 +39,7 @@ export class NotesSelectedHeaderComponent implements OnDestroy {
   }
 
   public cancel(): void {
-    this.close.emit();
+    this.dismiss.emit();
   }
 
   public isEachNotePinned(): boolean {

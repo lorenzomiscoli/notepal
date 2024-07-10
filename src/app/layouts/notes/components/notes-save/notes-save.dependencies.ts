@@ -20,9 +20,8 @@ import { TranslateModule } from "@ngx-translate/core";
 import { NgxEditorModule } from "ngx-editor";
 
 import { NotesEditorToolsComponent } from "../../../../../app/components/notes-editor-tools/notes-editor-tools.component";
-import { ContenteditableValueAccessor } from "../../../../../app/directives/contenteditable.directive";
-import { NotesColorPicker } from "../../../../components/notes-color-picker/notes-color-picker.component";
-import { NotesManageReminder } from "../../../../components/notes-manage-reminder/notes-manage-reminder.component";
+import { NotesColorPickerComponent } from "../../../../components/notes-color-picker/notes-color-picker.component";
+import { NotesManageReminderComponent } from "../../../../components/notes-manage-reminder/notes-manage-reminder.component";
 import { NotesMoveComponent } from "../../../../components/notes-menu/components/notes-move/notes-move.component";
 import { ReminderDateDirective } from "../../../../directives/reminder-date.directive";
 import { DateFormatterPipe } from "../../../../pipes/date-formatter.directive";
@@ -45,12 +44,11 @@ export const NOTES_SAVE_DEPS = [
   IonTextarea,
   IonToast,
   TranslateModule,
-  NotesColorPicker,
-  NotesManageReminder,
+  NotesColorPickerComponent,
+  NotesManageReminderComponent,
   NotesMoveComponent,
   ReminderDateDirective,
   DateFormatterPipe,
-  ContenteditableValueAccessor,
   NotesEditorToolsComponent,
   NgxEditorModule
 ]

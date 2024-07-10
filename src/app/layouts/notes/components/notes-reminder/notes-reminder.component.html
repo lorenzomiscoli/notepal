@@ -5,7 +5,7 @@
   </ion-buttons>
 </div>
 <ng-template #elseBlock>
-  <app-notes-selected-header [notes]="notes" (close)="deselectAll()"></app-notes-selected-header>
+  <app-notes-selected-header [notes]="notes" (dismiss)="deselectAll()"></app-notes-selected-header>
 </ng-template>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">

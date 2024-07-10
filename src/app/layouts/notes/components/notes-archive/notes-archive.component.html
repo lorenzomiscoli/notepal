@@ -1,19 +1,23 @@
-<div class="toolbar" *ngIf="!selectedMode ; else elseBlock">
+@if(!selectedMode){
+<div class="toolbar">
   <ion-buttons>
     <ion-back-button defaultHref="/notes/more" text=""></ion-back-button>
     <div class="toolbar-title">{{'archivePage'|translate}}</div>
   </ion-buttons>
 </div>
-<ng-template #elseBlock>
-  <app-notes-archive-selected-header [notes]="notes" (close)="deselectAll()"></app-notes-archive-selected-header>
-</ng-template>
+}@else{
+<app-notes-archive-selected-header [notes]="notes" (dismiss)="deselectAll()"></app-notes-archive-selected-header>
+}
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" appLongPress (tap)="tap(note)"
-      (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
+    @for(note of notes | appSortNotes:sortMode:sortDirection; track note.id){
+    <app-notes-card appLongPress (tap)="tap(note)" (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
+    }
   </ngx-masonry>
-  <div class="empty-content-container" *ngIf="notes.length === 0">
+  @if(notes.length === 0){
+  <div class="empty-content-container">
     <img src="assets/images/archive.svg" alt="Add note" width="75" height="auto">
     <p>{{'emptyArchive' | translate}}</p>
   </div>
+  }
 </div>

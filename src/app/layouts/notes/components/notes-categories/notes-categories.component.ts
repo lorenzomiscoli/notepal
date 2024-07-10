@@ -2,21 +2,21 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 
 import { AlertButton, AlertInput, Platform } from "@ionic/angular";
 import { NavController, ToastController } from "@ionic/angular/standalone";
-import { Subject, Subscription, finalize, from, map, switchMap, takeUntil } from "rxjs";
 import { TranslateService } from "@ngx-translate/core";
+import { Subject, Subscription, finalize, from, map, switchMap, takeUntil } from "rxjs";
 
-import { NOTES_CATEGORIES_DEPS } from "./notes-categories.dependencies";
 import { NoteCategory } from "../../../../interfaces/note.interface";
 import { NotesCategoryService } from "../../../../services/notes-category.service";
 import { NotesService } from "../../../../services/notes.service";
+import { NOTES_CATEGORIES_DEPS } from "./notes-categories.dependencies";
 
 @Component({
   templateUrl: "./notes-categories.component.html",
-  styleUrls: ["./notes-categories.component.scss"],
+  styleUrl: "./notes-categories.component.scss",
   standalone: true,
   imports: [NOTES_CATEGORIES_DEPS]
 })
-export class NotesCategories implements OnInit, OnDestroy {
+export class NotesCategoriesComponent implements OnInit, OnDestroy {
   public categories: NoteCategory[] = [];
   public totalNotes: number = 0;
   public selectedMode = false;

@@ -2,12 +2,15 @@
   [locale]="locale" [firstDayOfWeek]="firstDayOfWeek"></ion-datetime>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes  | appSortNotes:sortMode:sortDirection" [note]="note" ngxMasonryItem
-      appLongPress (tap)="tap(note)"></app-notes-card>
+    @for(note of notes | appSortNotes:sortMode:sortDirection ; track note.id){
+    <app-notes-card [note]="note" ngxMasonryItem appLongPress (tap)="tap(note)"></app-notes-card>
+    }
   </ngx-masonry>
-  <div class="empty-content-container" *ngIf="isEmpty">
+  @if(isEmpty){
+  <div class="empty-content-container">
     <p>{{'noNotesHere' | translate}}</p>
   </div>
+  }
 </div>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="add-notes-btn">
   <ion-fab-button routerLink="/notes/save" [queryParams]="{creationDate:selectedDate}" [disabled]="!isInsertBtnEnabled">

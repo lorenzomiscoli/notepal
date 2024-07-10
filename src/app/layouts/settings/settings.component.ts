@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit, inject } from "@angular/core";
 
-import { AppLanguage, AppTheme, Setting } from "../../interfaces/setting.interface";
+import { Subject, Subscription, take, takeUntil } from "rxjs";
+
+import { AppLanguage, AppTheme } from "../../interfaces/setting.interface";
 import { SettingsService } from "../../services/settings.service";
 import { SETTINGS_DEPS } from "./settings.dependencies";
-import { Subject, Subscription, take, takeUntil } from "rxjs";
 
 @Component({
   templateUrl: "./settings.component.html",

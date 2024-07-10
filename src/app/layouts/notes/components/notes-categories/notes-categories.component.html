@@ -1,45 +1,60 @@
-<div class="toolbar" *ngIf="!selectedMode; else elseBlock">
+@if(!selectedMode){
+<div class="toolbar">
   <ion-buttons>
     <ion-back-button defaultHref="/notes/list" text=""></ion-back-button>
     <div class="toolbar-title">{{'categories'|translate}}</div>
   </ion-buttons>
 </div>
-<ng-template #elseBlock>
-  <app-notes-categories-selected-header [categories]="categories"
-    (close)="deselectAll()"></app-notes-categories-selected-header>
-</ng-template>
-<div class="content" *ngIf="!isLoading">
+}@else{
+<app-notes-categories-selected-header [categories]="categories"
+  (dismiss)="deselectAll()"></app-notes-categories-selected-header>
+}
+@if(!isLoading){
+<div class="content">
   <ul class="categories">
-    <li class="category-item ion-activatable ripple-parent" *ngFor="let category of categories" appLongPress
-      (tap)="onTap(category)" (press)="onPress(category)">
+    @for(category of categories; track category.id){
+    <li class="category-item ion-activatable ripple-parent" appLongPress (tap)="onTap(category)"
+      (press)="onPress(category)">
       <ion-ripple-effect></ion-ripple-effect>
       <div class="category-item-details">
         <ion-icon name="checkmark-sharp" [ngStyle]="{'visibility': category.isDefault ? 'visible' : 'hidden' }"
           class="category-icon category-item-icon"></ion-icon>
         <p>{{category.name}}</p>
       </div>
-      <div *ngIf="category.isSystem; else elseBlock">
+      @if(category.isSystem){
+      <div>
         <p class="category-item-note">{{totalNotes}}</p>
       </div>
-      <ng-template #elseBlock>
-        <div *ngIf="selectedMode" class="category-item-check-container">
-          <ion-icon name="ellipse-outline" *ngIf="!category.isSelected" class="category-icon"></ion-icon>
-          <ion-icon name="checkmark-circle" *ngIf="category.isSelected"
-            class="category-icon category-item-icon-check"></ion-icon>
-        </div>
-        <div *ngIf="!selectedMode">
-          <p class="category-item-note">{{category.notesCount}}</p>
-        </div>
-      </ng-template>
+      }@else{
+      @if(selectedMode){
+      <div class="category-item-check-container">
+        @if(!category.isSelected){
+        <ion-icon name="ellipse-outline" class="category-icon"></ion-icon>
+        }
+        @if(category.isSelected){
+        <ion-icon name="checkmark-circle" class="category-icon category-item-icon-check"></ion-icon>
+        }
+      </div>
+      }
+      @if(!selectedMode){
+      <div>
+        <p class="category-item-note">{{category.notesCount}}</p>
+      </div>
+      }
+      }
     </li>
+    }
   </ul>
-  <div class="add-category-container" *ngIf="!selectedMode">
+  @if(!selectedMode){
+  <div class="add-category-container">
     <ion-button expand="block" (click)="openInsertAlert()">
       <ion-icon slot="start" name="add-circle"></ion-icon>
       {{'add'|translate}} {{'category'|translate}}
     </ion-button>
   </div>
+  }
 </div>
+}
 <ion-alert [isOpen]="isInsertAlertOpen" header="{{'newCategory'| translate}}" [buttons]="alertButtons"
   [inputs]="alertInputs" (ionAlertDidDismiss)="isInsertAlertOpen = false"
   (ionAlertDidPresent)="focusAlertInput()"></ion-alert>

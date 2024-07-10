@@ -14,9 +14,9 @@ import { NotesCategoryService } from '../../../../services/notes-category.servic
   standalone: true,
   imports: [NOTES_CATEGORIES_SELECTED_HEADER_DEPS]
 })
-export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
+export class NotesCategoriesSelectedHeaderComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public categories!: NoteCategory[];
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   public isUpdateAlertOpen = false;
   public isDeleteAlertOpen = false;
   public alertUpdateButtons: AlertButton[] = [];
@@ -40,7 +40,7 @@ export class NotesCategoriesSelectedHeader implements OnInit, OnDestroy {
   }
 
   public deselectAll(): void {
-    this.close.next();
+    this.dismiss.next();
   }
 
   public getSelectedCategories(): NoteCategory[] {

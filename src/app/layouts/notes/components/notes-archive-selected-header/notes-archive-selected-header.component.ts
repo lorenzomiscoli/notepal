@@ -14,7 +14,7 @@ import { NOTES_ARCHIVE_SELECTED_HEADER_DEPS } from "./notes-archive-selected-hea
 })
 export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   @Input({ required: true }) public notes!: Note[];
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private notesService: NotesService) { }
@@ -29,7 +29,7 @@ export class NotesArchiveSelectedHeaderComponent implements OnDestroy {
   }
 
   public cancel(): void {
-    this.close.next();
+    this.dismiss.next();
   }
 
   public unarchive(): void {

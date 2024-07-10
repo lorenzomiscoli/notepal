@@ -15,7 +15,7 @@ import { NOTES_CALENDAR_DEPS } from "./notes-calendar.dependencies";
 
 @Component({
   templateUrl: "./notes-calendar.component.html",
-  styleUrls: ["./notes-calendar.component.scss"],
+  styleUrl: "./notes-calendar.component.scss",
   standalone: true,
   imports: [NOTES_CALENDAR_DEPS]
 })

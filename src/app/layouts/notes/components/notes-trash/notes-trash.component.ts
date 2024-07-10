@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { NavController, Platform } from "@ionic/angular/standalone";
 import { NgxMasonryOptions } from "ngx-masonry";
@@ -9,11 +10,10 @@ import { Note, SortDirection, SortMode, ViewMode } from "../../../../interfaces/
 import { NotesSettingService } from "../../../../services/notes-setting.service";
 import { NotesService } from "../../../../services/notes.service";
 import { NOTES_TRASH_DEPS } from "./notes-trash.dependencies";
-import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./notes-trash.component.html",
-  styleUrls: ["./notes-trash.component.scss"],
+  styleUrl: "./notes-trash.component.scss",
   standalone: true,
   imports: [NOTES_TRASH_DEPS]
 })

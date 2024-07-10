@@ -16,7 +16,7 @@ import { NOTES_TRASH_SELECTED_HEADER_DEPS } from "./notes-trash-selected-header.
 })
 export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public notes!: Note[];
-  @Output() public close = new EventEmitter<void>();
+  @Output() public dismiss = new EventEmitter<void>();
   public isDeleteAlertOpen = false;
   public deleteAlertBtns!: AlertButton[];
   private destroy$: Subject<boolean> = new Subject<boolean>();
@@ -37,7 +37,7 @@ export class NotesTrashSelectedHeaderComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    this.close.next();
+    this.dismiss.next();
   }
 
   public undelete(): void {

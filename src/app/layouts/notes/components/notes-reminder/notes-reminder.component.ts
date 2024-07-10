@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 
 import { NavController, Platform } from "@ionic/angular/standalone";
 import { NgxMasonryOptions } from "ngx-masonry";
@@ -9,7 +10,6 @@ import { NotesSettingService } from "../../../../../app/services/notes-setting.s
 import { NotesService } from "../../../../../app/services/notes.service";
 import { environment } from "../../../../../environments/environment";
 import { NOTES_REMINDER_DEPS } from "./notes-reminder.dependencies";
-import { Router } from "@angular/router";
 
 @Component({
   templateUrl: "./notes-reminder.component.html",

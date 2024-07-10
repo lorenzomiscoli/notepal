@@ -17,7 +17,7 @@ import { NOTES_SAVE_DEPS } from "./notes-save.dependencies";
 
 @Component({
   templateUrl: "./notes-save.component.html",
-  styleUrls: ["./notes-save.component.scss"],
+  styleUrl: "./notes-save.component.scss",
   standalone: true,
   imports: [NOTES_SAVE_DEPS]
 })

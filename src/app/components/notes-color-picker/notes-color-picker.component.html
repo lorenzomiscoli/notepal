@@ -6,14 +6,14 @@
       <div class="modal-content">
         <div class="color-container">
           <span class="color" [ngClass]="{'activated':isSelected(null)}" (click)="changeColor(undefined)">
-            @if(isSelected(null)){
+            @if(!isSelected(null)){
             <ion-icon src="assets/icons/reset-color-outline.svg"></ion-icon>
             }
             @if(isSelected(null)){
             <ion-icon color="primary" name="checkmark-outline"></ion-icon>
             }
           </span>
-          @for(background of backgrounds; track background){
+          @for(background of backgrounds; track $index){
           <span class="color" [ngStyle]="{'background-color':background}"
             [ngClass]="{'activated':isSelected(background)}" (click)="changeColor(background)">
             @if(isSelected(background)){

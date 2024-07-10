@@ -10,7 +10,7 @@
 }
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    @for(note of notes | appSortNotes:sortMode:sortDirection; track note.id){
+    @for(note of notes | appSortNotes:sortMode:sortDirection; track $index){
     <app-notes-card appLongPress (tap)="tap(note)" (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
     }
   </ngx-masonry>

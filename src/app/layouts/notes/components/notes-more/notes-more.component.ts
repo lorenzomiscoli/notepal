@@ -8,7 +8,6 @@ import { NOTES_MORE_DEPS } from "./notes-more.dependencies";
 
 @Component({
   templateUrl: "./notes-more.component.html",
-  styleUrls: ["./notes-more.component.scss"],
   standalone: true,
   imports: [NOTES_MORE_DEPS]
 })

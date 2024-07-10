@@ -4,19 +4,28 @@
       <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons *ngIf="!note.archived && !note.deleted; else elseBlock">
-    <ion-button (click)="pin()" *ngIf="!note.pinned">
+  @if(!note.archived && !note.deleted){
+  <ion-buttons>
+    @if(!note.pinned){
+    <ion-button (click)="pin()">
       <ion-icon slot="icon-only" src="assets/icons/push-pin-outline.svg"></ion-icon>
     </ion-button>
-    <ion-button (click)="pin()" *ngIf="note.pinned">
+    }
+    @if(note.pinned){
+    <ion-button (click)="pin()">
       <ion-icon slot="icon-only" src="assets/icons/push-pin.svg"></ion-icon>
     </ion-button>
-    <ion-button (click)="checkReminder()" *ngIf="!note.reminderId">
+    }
+    @if(!note.reminderId){
+    <ion-button (click)="checkReminder()">
       <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
     </ion-button>
-    <ion-button (click)="checkReminder()" *ngIf="note.reminderId">
+    }
+    @if(note.reminderId){
+    <ion-button (click)="checkReminder()">
       <ion-icon slot="icon-only" name="notifications"></ion-icon>
     </ion-button>
+    }
     <ion-button (click)="isColorPickerOpen = true">
       <ion-icon slot="icon-only" name="color-palette-outline"></ion-icon>
     </ion-button>
@@ -42,21 +51,25 @@
       </ng-template>
     </ion-popover>
   </ion-buttons>
-  <ng-template #elseBlock>
-    <ion-buttons *ngIf="note.archived && !note.deleted">
-      <ion-button (click)="archive(false)">
-        <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <ion-buttons *ngIf="note.deleted">
-      <ion-button (click)="delete(false)">
-        <ion-icon slot="icon-only" src="assets/icons/undelete-outline.svg"></ion-icon>
-      </ion-button>
-      <ion-button (click)="isDeleteAlertOpen = true">
-        <ion-icon slot="icon-only" name="trash-bin-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ng-template>
+  }@else{
+  @if(note.archived && !note.deleted){
+  <ion-buttons>
+    <ion-button (click)="archive(false)">
+      <ion-icon slot="icon-only" src="assets/icons/unarchive-outline.svg"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  }
+  @if(note.deleted){
+  <ion-buttons>
+    <ion-button (click)="delete(false)">
+      <ion-icon slot="icon-only" src="assets/icons/undelete-outline.svg"></ion-icon>
+    </ion-button>
+    <ion-button (click)="isDeleteAlertOpen = true">
+      <ion-icon slot="icon-only" name="trash-bin-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  }
+  }
 </div>
 <div class="content">
   <form class="form-container" [formGroup]="form">
@@ -64,25 +77,32 @@
     <ion-label class="edit-date"><span>{{'lastModified'|translate}}: </span>{{note.lastModifiedDate |
       appDatePipe:'short'
       }}<span></span></ion-label>
-    <div class="meta-container" *ngIf="note.categoryId || note.reminderId">
-      <ion-chip *ngIf="note.reminderId" (click)="checkReminder()">
+    @if(note.categoryId || note.reminderId){
+    <div class="meta-container">
+      @if(note.reminderId){
+      <ion-chip (click)="checkReminder()">
         <ion-icon name="alarm-outline"></ion-icon>
         <ion-label appReminderDate [reminderDate]="note.reminderDate">{{note.reminderDate |
           appDatePipe:'long'}}</ion-label>
       </ion-chip>
-      <ion-chip *ngIf="note.categoryId" (click)="isMoveModalOpen = true">
+      }
+      @if(note.categoryId){
+      <ion-chip (click)="isMoveModalOpen = true">
         <ion-icon name="pricetag-outline"></ion-icon>
         <ion-label>{{note.categoryName}}</ion-label>
       </ion-chip>
+      }
     </div>
+    }
     <div class="note-editor">
       <ngx-editor [editor]="editor" placeholder="{{ 'note' | translate }}" (focusIn)="isEditorFocus=true"
         (focusOut)="isEditorFocus = false" formControlName="value"></ngx-editor>
     </div>
   </form>
 </div>
-<app-notes-editor-tools *ngIf="isEditorFocus" (mousedown)="keepFocus($event)"
-  [editor]="editor"></app-notes-editor-tools>
+@if(isEditorFocus){
+<app-notes-editor-tools (mousedown)="keepFocus($event)" [editor]="editor"></app-notes-editor-tools>
+}
 <app-notes-color-picker [selectedNotes]="[note]" [isOpen]="isColorPickerOpen"
   (dismiss)="isColorPickerOpen=false"></app-notes-color-picker>
 <app-notes-manage-reminder [note]="note" [isOpen]="isReminderOpen"

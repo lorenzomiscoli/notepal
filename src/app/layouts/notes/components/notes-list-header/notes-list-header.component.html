@@ -7,12 +7,16 @@
     <ion-button (click)="isSortModalOpen = true">
       <ion-icon name="swap-vertical-outline" slot="icon-only"></ion-icon>
     </ion-button>
-    <ion-button (click)="changeView(viewModeType.LIST)" *ngIf="isGridView()">
+    @if(isGridView()){
+    <ion-button (click)="changeView(viewModeType.LIST)">
       <ion-icon name="list-outline" slot="icon-only"></ion-icon>
     </ion-button>
-    <ion-button (click)="changeView(viewModeType.GRID)" *ngIf="!isGridView()">
+    }
+    @if(!isGridView()){
+    <ion-button (click)="changeView(viewModeType.GRID)">
       <ion-icon name="grid-outline" slot="icon-only"></ion-icon>
     </ion-button>
+    }
   </ion-buttons>
 </div>
 <ion-modal [isOpen]="isSortModalOpen" handle="false" (ionModalDidDismiss)="isSortModalOpen = false">

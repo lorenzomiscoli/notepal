@@ -1,41 +1,49 @@
 <div class="toolbar" [ngClass]="{'empty':!filterMode}">
-  <ion-buttons *ngIf="filterMode">
+  @if(filterMode){
+  <ion-buttons>
     <ion-button (click)="resetBackButton()">
       <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
+  }
   <div class="searchbar-container">
     <div class="searchbar">
       <ion-icon name="search-outline"></ion-icon>
       <input type="text" placeholder="{{'searchNotes'|translate}}" (keyup)="onSearch(searchInput.value)"
         [(ngModel)]="filterValue" #searchInput>
-      <ion-icon name="close-outline" class="clear-icon" *ngIf="filterValue" (click)="onCancel('')"></ion-icon>
+      @if(filterValue){
+      <ion-icon name="close-outline" class="clear-icon" (click)="onCancel('')"></ion-icon>
+      }
     </div>
   </div>
 </div>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"
-      ngxMasonryItem></app-notes-card>
+    @for(note of notes; track $index){
+    <app-notes-card [note]="note" appLongPress (tap)="onTap(note)" ngxMasonryItem></app-notes-card>
+    }
   </ngx-masonry>
-  <ng-container *ngIf="!filterMode && !isSearch">
-    <div class="categories-container">
-      <h3 class="filter-title">{{'categories'|translate}}</h3>
-      <ion-chip *ngFor="let category of categories" (click)="selectCategory(category)">
-        {{category.name}}
-      </ion-chip>
-      <span *ngIf="!categories.length">{{'noCategories'|translate}}</span>
+  @if(!filterMode && !isSearch){
+  <div class="categories-container">
+    <h3 class="filter-title">{{'categories'|translate}}</h3>
+    @for(category of categories; track $index){
+    <ion-chip (click)="selectCategory(category)">
+      {{category.name}}
+    </ion-chip>
+    } @empty{
+    <span>{{'noCategories'|translate}}</span>
+    }
+  </div>
+  <div>
+    <h3 class="filter-title">{{'colors'|translate}}</h3>
+    <div class="colors-container">
+      @for(background of backgrounds; track $index){
+      <span class="color" [ngStyle]="{'background-color':background}" (click)="selectColor(background)"></span>
+      }
+      <span class="color" (click)="selectColor(null)"></span>
     </div>
-    <div>
-      <h3 class="filter-title">{{'colors'|translate}}</h3>
-      <div class="colors-container">
-        <span class="color" [ngStyle]="{'background-color':background}" *ngFor="let background of backgrounds"
-          (click)="selectColor(background)">
-        </span>
-        <span class="color" (click)="selectColor(null)"></span>
-      </div>
-    </div>
-  </ng-container>
+  </div>
+  }
   <div class="empty-content-container" [ngClass]="{'ion-hide': !isSearch || notes.length > 0}">
     <img src="assets/images/search.svg" alt="Not found" width="75" height="auto" priority>
     <p>{{'noNotesFound' | translate}}</p>

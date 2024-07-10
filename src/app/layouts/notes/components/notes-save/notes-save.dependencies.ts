@@ -1,4 +1,4 @@
-import { DatePipe, NgIf } from "@angular/common";
+import { DatePipe } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 
 import {
@@ -28,7 +28,6 @@ import { DateFormatterPipe } from "../../../../pipes/date-formatter.directive";
 
 export const NOTES_SAVE_DEPS = [
   DatePipe,
-  NgIf,
   ReactiveFormsModule,
   IonAlert,
   IonBackButton,

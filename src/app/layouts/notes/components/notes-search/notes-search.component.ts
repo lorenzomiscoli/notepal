@@ -14,7 +14,7 @@ import { NOTES_SEARCH_DEPS } from "./notes-search.dependencies";
 
 @Component({
   templateUrl: "./notes-search.component.html",
-  styleUrls: ["./notes-search.component.scss"],
+  styleUrl: "./notes-search.component.scss",
   standalone: true,
   imports: [NOTES_SEARCH_DEPS]
 })

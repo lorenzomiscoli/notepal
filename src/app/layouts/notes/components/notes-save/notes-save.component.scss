@@ -1,4 +1,4 @@
-:host{
+:host {
   --ngx-editor-text-color: var(--color) !important;
 }
 
@@ -33,7 +33,7 @@ ion-popover {
 }
 
 .meta-container {
-  margin: 10px -4px 10px -4px;
+  margin: 10px 0 10px 0;
 }
 
 .note-editor {
@@ -49,4 +49,9 @@ ion-popover {
   flex-direction: column;
   height: 100%;
   overflow: auto;
+}
+
+.meta-field {
+  margin-left: 0;
+  margin-right: 8px;
 }

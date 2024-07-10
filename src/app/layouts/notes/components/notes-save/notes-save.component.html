@@ -80,14 +80,14 @@
     @if(note.categoryId || note.reminderId){
     <div class="meta-container">
       @if(note.reminderId){
-      <ion-chip (click)="checkReminder()">
+      <ion-chip class="meta-field" (click)="checkReminder()">
         <ion-icon name="alarm-outline"></ion-icon>
         <ion-label appReminderDate [reminderDate]="note.reminderDate">{{note.reminderDate |
           appDatePipe:'long'}}</ion-label>
       </ion-chip>
       }
       @if(note.categoryId){
-      <ion-chip (click)="isMoveModalOpen = true">
+      <ion-chip class="meta-field" (click)="isMoveModalOpen = true">
         <ion-icon name="pricetag-outline"></ion-icon>
         <ion-label>{{note.categoryName}}</ion-label>
       </ion-chip>

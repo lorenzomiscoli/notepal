@@ -13,7 +13,7 @@
             <ion-icon color="primary" name="checkmark-outline"></ion-icon>
             }
           </span>
-          @for(background of backgrounds; track $index){
+          @for(background of backgrounds; track background){
           <span class="color" [ngStyle]="{'background-color':background}"
             [ngClass]="{'activated':isSelected(background)}" (click)="changeColor(background)">
             @if(isSelected(background)){

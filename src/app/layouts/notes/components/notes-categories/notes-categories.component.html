@@ -12,7 +12,7 @@
 @if(!isLoading){
 <div class="content">
   <ul class="categories">
-    @for(category of categories; track $index){
+    @for(category of categories; track category.id){
     <li class="category-item ion-activatable ripple-parent" appLongPress (tap)="onTap(category)"
       (press)="onPress(category)">
       <ion-ripple-effect></ion-ripple-effect>

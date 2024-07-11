@@ -9,7 +9,7 @@
             <div>
               <ion-radio [value]="0" labelPlacement="end">{{'all' | translate}}</ion-radio>
             </div>
-            @for(category of categories; track $index){
+            @for(category of categories; track category.id){
             <div>
               <ion-radio [value]="category.id" labelPlacement="end">{{category.name}}</ion-radio>
             </div>

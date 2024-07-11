@@ -167,8 +167,13 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     const creationDate = this.creationDate ? this.creationDate : new Date().toISOString();
     const categoryId: number | undefined = this.notesCategoryService.selectedCategory$.value;
     this.notesService.insert(creationDate, categoryId)
-      .pipe(takeUntil(this.destroy$)).subscribe((id) => {
-        this.id = id;
+      .pipe(takeUntil(this.destroy$), switchMap(id => {
+        return this.notesService.findById(id);
+      })).subscribe((note) => {
+        note = note as Note;
+        this.id = note.id;
+        this.note = note;
+        console.log(note);
         this.isTemporary = true;
       });
     this.onFormChanges();

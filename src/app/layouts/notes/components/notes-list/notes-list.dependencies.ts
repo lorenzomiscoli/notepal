@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgFor } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { IonFab, IonIcon } from '@ionic/angular/standalone';
@@ -13,6 +13,7 @@ import { SortNotesPipe } from './../../../../pipes/sort-property.pipe';
 
 export const NOTES_LIST_DEPS = [
   NgClass,
+  NgFor,
   RouterLink,
   IonFab,
   IonIcon,

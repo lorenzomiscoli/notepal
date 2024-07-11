@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgFor } from '@angular/common';
 
 import { IonBackButton, IonButton, IonButtons, IonIcon } from '@ionic/angular/standalone';
 import { TranslateModule } from '@ngx-translate/core';
@@ -11,6 +11,7 @@ import { NotesTrashSelectedHeaderComponent } from '../notes-trash-selected-heade
 
 export const NOTES_TRASH_DEPS = [
   NgClass,
+  NgFor,
   IonBackButton,
   IonButton,
   IonButtons,

@@ -2,9 +2,9 @@
   [locale]="locale" [firstDayOfWeek]="firstDayOfWeek"></ion-datetime>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    @for(note of notes | appSortNotes:sortMode:sortDirection ; track $index){
-    <app-notes-card [note]="note" ngxMasonryItem appLongPress (tap)="tap(note)"></app-notes-card>
-    }
+    <!--*ngFor instead of @for to trigger changes for ngx-masonry-->
+    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" [note]="note" ngxMasonryItem
+      appLongPress (tap)="tap(note)"></app-notes-card>
   </ngx-masonry>
   @if(isEmpty){
   <div class="empty-content-container">

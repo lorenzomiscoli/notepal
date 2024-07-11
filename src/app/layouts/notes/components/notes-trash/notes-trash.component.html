@@ -13,9 +13,9 @@
   <span class="warning">{{'trashWarning'|translate}}</span>
   }
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    @for(note of notes | appSortNotes:sortMode:sortDirection; track $index){
-    <app-notes-card appLongPress (tap)="tap(note)" (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
-    }
+    <!--*ngFor instead of @for to trigger changes for ngx-masonry-->
+    <app-notes-card *ngFor="let note of notes | appSortNotes:sortMode:sortDirection" appLongPress (tap)="tap(note)"
+      (press)="press(note)" [note]="note" ngxMasonryItem></app-notes-card>
   </ngx-masonry>
   @if(notes.length === 0){
   <div class="empty-content-container">

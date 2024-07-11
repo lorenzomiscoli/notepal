@@ -19,9 +19,9 @@
 </div>
 <div class="content">
   <ngx-masonry [options]="masonryOptions" [ordered]="true" class="masonry" [ngClass]="{'masonry': viewMode === 'grid'}">
-    @for(note of notes; track $index){
-    <app-notes-card [note]="note" appLongPress (tap)="onTap(note)" ngxMasonryItem></app-notes-card>
-    }
+    <!--*ngFor instead of @for to trigger changes for ngx-masonry-->
+    <app-notes-card *ngFor="let note of notes" [note]="note" appLongPress (tap)="onTap(note)"
+      ngxMasonryItem></app-notes-card>
   </ngx-masonry>
   @if(!filterMode && !isSearch){
   <div class="categories-container">

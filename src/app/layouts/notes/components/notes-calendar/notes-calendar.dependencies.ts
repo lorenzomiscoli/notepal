@@ -1,4 +1,4 @@
-import { NgClass } from "@angular/common";
+import { NgClass, NgFor } from "@angular/common";
 import { RouterLink } from "@angular/router";
 
 import { IonDatetime, IonFab, IonFabButton, IonIcon } from "@ionic/angular/standalone";
@@ -11,6 +11,7 @@ import { NotesCardComponent } from "../../../../components/notes-card/notes-card
 
 export const NOTES_CALENDAR_DEPS = [
   NgClass,
+  NgFor,
   RouterLink,
   IonDatetime,
   IonFab,

@@ -173,7 +173,6 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
         note = note as Note;
         this.id = note.id;
         this.note = note;
-        console.log(note);
         this.isTemporary = true;
       });
     this.onFormChanges();

@@ -9,7 +9,7 @@
   <div class="card-title">{{note.title}}</div>
   <div class="card-content">
     <div class="overlay"></div>
-    <div [innerHTML]="note.value"></div>
+    <div [innerHTML]="note.value |sanitizeHtml"></div>
     @if(note.reminderId || note.categoryId){
     <div class="date-reminder">
       @if(note.reminderId){

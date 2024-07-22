@@ -137,7 +137,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   }
 
   private onFormChanges(): void {
-    this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(250)).subscribe(() => this.update());
+    this.form.valueChanges.pipe(takeUntil(this.destroy$), debounceTime(150)).subscribe(() => this.update());
   }
 
   public pin(): void {

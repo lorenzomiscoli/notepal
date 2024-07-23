@@ -71,7 +71,8 @@ export class NotesTrashComponent implements OnInit, OnDestroy {
   }
 
   private findDeleted(): void {
-    this.notesService.findDeleted().pipe(take(1)).subscribe((notes) => this.notes = notes);
+    this.notesService.deleteExpired().pipe(take(1),
+      switchMap(() => this.notesService.findDeleted())).subscribe((notes) => this.notes = notes);
   }
 
   public tap(note: Note): void {

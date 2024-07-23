@@ -23,6 +23,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -49,6 +50,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -80,6 +82,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -107,6 +110,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -134,6 +138,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -162,6 +167,7 @@ export class NotesService {
       n.value,
       n.creation_date as creationDate,
       n.last_modified_date as lastModifiedDate,
+      n.deleted_date as deletedDate,
       n.pinned,
       n.background,
       n.category_id as categoryId,
@@ -198,6 +204,7 @@ export class NotesService {
       n.value,
       n.creation_date as creationDate,
       n.last_modified_date as lastModifiedDate,
+      n.deleted_date as deletedDate,
       n.pinned,
       n.background,
       n.category_id as categoryId,
@@ -239,6 +246,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -266,6 +274,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -292,6 +301,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -317,6 +327,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -341,6 +352,7 @@ export class NotesService {
     n.value,
     n.creation_date as creationDate,
     n.last_modified_date as lastModifiedDate,
+    n.deleted_date as deletedDate,
     n.pinned,
     n.background,
     n.category_id as categoryId,
@@ -448,8 +460,9 @@ export class NotesService {
 
   public delete(ids: number[], deleted: boolean): Observable<any> {
     const value = deleted ? 1 : 0;
-    const sql = `UPDATE note SET deleted = ? WHERE id IN (${ids.join()});`;
-    return from(this.storageService.db.run(sql, [value], true)).pipe(tap(() => {
+    const deletedDate = deleted ? new Date().toISOString() : null;
+    const sql = `UPDATE note SET deleted = ?, deleted_date = ? WHERE id IN (${ids.join()});`;
+    return from(this.storageService.db.run(sql, [value, deletedDate], true)).pipe(tap(() => {
       this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE, changes: { deleted: value } });
     }), switchMap(() => this.updateNotifications(ids, value)));
   }
@@ -459,6 +472,11 @@ export class NotesService {
     return from(this.storageService.db.run(sql, [], true)).pipe(tap(() => {
       this.notesUpdated$.next({ ids: ids, action: NoteAction.DELETE_FOREVER });
     }), switchMap(() => cancelNotification(ids)));
+  }
+
+  public deleteExpired(): Observable<capSQLiteChanges> {
+    const sql = `DELETE FROM note WHERE deleted = 1 AND deleted_date <= date('now','-7 day')`;
+    return from(this.storageService.db.run(sql, [], true));
   }
 
   private updateNotifications(ids: number[], available: number): Observable<any> {

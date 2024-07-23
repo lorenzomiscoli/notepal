@@ -6,6 +6,7 @@ export interface Note {
   value: string;
   creationDate: string;
   lastModifiedDate: string;
+  deletedDate: string;
   pinned: number;
   background: string | undefined;
   categoryId: number | undefined;

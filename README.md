@@ -1,4 +1,7 @@
 # Notepal
+
+![Notepal](docs/images/notepal-preview.png)
+
 Mobile application that allows you to keep notes.
 
 ## Features

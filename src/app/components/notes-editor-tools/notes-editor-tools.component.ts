@@ -38,7 +38,7 @@ export class NotesEditorToolsComponent implements OnInit {
       quality: 75,
       allowEditing: false,
       source: CameraSource.Camera,
-      resultType: CameraResultType.Uri
+      resultType: CameraResultType.Base64
     })).subscribe(image => this.renderImage(image));
   }
 
@@ -56,7 +56,7 @@ export class NotesEditorToolsComponent implements OnInit {
           quality: 75,
           allowEditing: false,
           source: CameraSource.Photos,
-          resultType: CameraResultType.Uri
+          resultType: CameraResultType.Base64
         }));
       }
     })).subscribe(image => {
@@ -66,7 +66,8 @@ export class NotesEditorToolsComponent implements OnInit {
   }
 
   private renderImage(image: Photo): void {
-    this.editor.commands.insertImage(image.webPath as string).scrollIntoView().focus().exec();
+    const src = `data:image/${image.format};base64,${image.base64String}`;
+    this.editor.commands.insertImage(src).scrollIntoView().focus().exec();
     this.editor.commands.insertNewLine().exec();
   }
 

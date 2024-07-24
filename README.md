@@ -2,7 +2,13 @@
 
 ![Notepal](docs/images/notepal-preview.png)
 
-Mobile application that allows you to keep notes.
+Mobile app for taking notes, to-do list, shopping list with reminders and much more.
+
+This app has been built with Ionic and Angular and supports only Android.
+
+## Preview
+
+https://github.com/user-attachments/assets/66d504ea-aad1-4b2c-86e2-c2c8bed1e05c
 
 ## Features
 - :art: Colorful Backgrounds

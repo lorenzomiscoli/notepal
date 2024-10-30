@@ -95,8 +95,8 @@ export class NotesCalendarComponent implements OnInit, ViewWillEnter, ViewWillLe
   }
 
   private findCreationDatesOnNotesUpdate(): void {
-    this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$),
-      switchMap(() => this.findCreationDates()), switchMap(() => this.findByCreationDate())).subscribe();
+    this.notesService.notesUpdated$.pipe(switchMap(() => this.findCreationDates()),
+      switchMap(() => this.findByCreationDate()), takeUntil(this.destroy$)).subscribe();
   }
 
   private setHighlightedDates(notesDates: { creationDate: string }[]): void {

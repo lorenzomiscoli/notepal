@@ -68,16 +68,16 @@ export class NotesListComponent implements OnInit, ViewWillEnter, ViewWillLeave 
   }
 
   private findNotesOnCategorySelection(): void {
-    this.notesCategoryService.selectedCategory$.pipe(takeUntil(this.destroy$), switchMap((categoryId) => {
+    this.notesCategoryService.selectedCategory$.pipe(switchMap((categoryId) => {
       this.categoryId = categoryId;
       return this.findNotes();
-    })).subscribe(notes => this.notes = notes);
+    }), takeUntil(this.destroy$)).subscribe(notes => this.notes = notes);
   }
 
   private findNotesOnNotesUpdate(): void {
-    this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
+    this.notesService.notesUpdated$.pipe(switchMap(() => {
       return this.findNotes();
-    })).subscribe(notes => this.notes = notes);
+    }), takeUntil(this.destroy$)).subscribe(notes => this.notes = notes);
   }
 
   private findNotes(): Observable<Note[]> {

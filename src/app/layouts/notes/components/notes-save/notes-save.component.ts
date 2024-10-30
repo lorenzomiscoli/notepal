@@ -167,9 +167,9 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
     const creationDate = this.creationDate ? this.creationDate : new Date().toISOString();
     const categoryId: number | undefined = this.notesCategoryService.selectedCategory$.value;
     this.notesService.insert(creationDate, categoryId)
-      .pipe(takeUntil(this.destroy$), switchMap(id => {
+      .pipe(switchMap(id => {
         return this.notesService.findById(id);
-      })).subscribe((note) => {
+      }), takeUntil(this.destroy$)).subscribe((note) => {
         note = note as Note;
         this.id = note.id;
         this.note = note;
@@ -219,7 +219,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
   public share(): void {
     const value = this.form.value.value ? toHTML(this.form.value.value) : '';
     from(Share.canShare())
-      .pipe(takeUntil(this.destroy$), switchMap((shareResult: CanShareResult) => {
+      .pipe(switchMap((shareResult: CanShareResult) => {
         if (shareResult.value) {
           return Share.share({
             title: this.form.value.title,
@@ -231,7 +231,7 @@ export class NotesSaveComponent implements OnInit, OnDestroy, ViewDidEnter {
           this.isToastOpen = true;
           return of()
         }
-      })).subscribe();
+      }), takeUntil(this.destroy$)).subscribe();
   }
 
 }

@@ -122,13 +122,13 @@ export class NotesCategoriesSelectedHeaderComponent implements OnInit, OnDestroy
       return false;
     }
     const id = this.getSelectedCategories()[0].id;
-    this.notesCategoryService.existsByIdNotAndName(id, value.nameUpdate).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
+    this.notesCategoryService.existsByIdNotAndName(id, value.nameUpdate).pipe(switchMap(isPresent => {
       if (isPresent) {
         throw { isPresent: true };
       } else {
         return this.notesCategoryService.update(id, value.nameUpdate)
       }
-    })).subscribe({
+    }), takeUntil(this.destroy$)).subscribe({
       next: () => {
         this.getSelectedCategories()[0].name = value.nameUpdate;
       },

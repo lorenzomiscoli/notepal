@@ -37,9 +37,9 @@ export class NotesArchiveComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.findSettings();
     this.findArchived();
-    this.notesService.notesUpdated$.pipe(takeUntil(this.destroy$), switchMap(() => {
+    this.notesService.notesUpdated$.pipe(switchMap(() => {
       return this.notesService.findArchived();
-    })).subscribe(notes => this.notes = notes);
+    }), takeUntil(this.destroy$)).subscribe(notes => this.notes = notes);
     this.handleBackButton();
   }
 

@@ -51,10 +51,10 @@ export class NotesCategoriesComponent implements OnInit, OnDestroy {
 
   private getAllCategories(): void {
     this.isLoading = true;
-    this.notesService.count().pipe(takeUntil(this.destroy$), switchMap(notesCount => {
+    this.notesService.count().pipe(switchMap(notesCount => {
       this.totalNotes = notesCount.totalNotes;
       return this.notesCategoryService.findAll();
-    }), map(categories => this.mapCategories(categories)), finalize(() => this.isLoading = false))
+    }), map(categories => this.mapCategories(categories)), finalize(() => this.isLoading = false), takeUntil(this.destroy$))
       .subscribe((categories) => this.categories = categories);
   }
 
@@ -156,13 +156,13 @@ export class NotesCategoriesComponent implements OnInit, OnDestroy {
       this.showError(this.translateService.instant("categoryCannotBeEmpty"));
       return false;
     }
-    this.notesCategoryService.existsByName(value.nameInsert).pipe(takeUntil(this.destroy$), switchMap(isPresent => {
+    this.notesCategoryService.existsByName(value.nameInsert).pipe(switchMap(isPresent => {
       if (isPresent) {
         throw { isPresent: true };
       } else {
         return this.notesCategoryService.insert(value.nameInsert);
       }
-    })).subscribe(({
+    }), takeUntil(this.destroy$)).subscribe(({
       next: (id) => {
         this.categories.push({ id: id, name: value.nameInsert, notesCount: 0, isSelected: false });
       },
